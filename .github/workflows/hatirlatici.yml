@@ -2,26 +2,26 @@ name: Ogun Hatirlaticilari
 
 on:
   schedule:
-    # Türkiye saati 10:00
-    - cron: "0 7 * * *"
+    # Turkiye saati 10:03
+    - cron: "3 7 * * *"
 
-    # Türkiye saati 12:00
-    - cron: "0 9 * * *"
+    # Turkiye saati 12:03
+    - cron: "3 9 * * *"
 
-    # Türkiye saati 14:00
-    - cron: "0 11 * * *"
+    # Turkiye saati 14:03
+    - cron: "3 11 * * *"
 
-    # Türkiye saati 15:00
-    - cron: "0 12 * * *"
+    # Turkiye saati 15:03
+    - cron: "3 12 * * *"
 
-    # Türkiye saati 16:00
-    - cron: "0 13 * * *"
+    # Turkiye saati 16:03
+    - cron: "3 13 * * *"
 
-    # Türkiye saati 18:30
-    - cron: "30 15 * * *"
+    # Turkiye saati 18:33
+    - cron: "33 15 * * *"
 
-    # Türkiye saati 21:00
-    - cron: "0 18 * * *"
+    # Turkiye saati 21:03
+    - cron: "3 18 * * *"
 
   workflow_dispatch:
     inputs:
