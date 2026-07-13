@@ -1,0 +1,74 @@
+name: Öðün Hatýrlatýcýlarý
+
+on:
+  schedule:
+    # Türkiye 10:00
+    - cron: "0 7 * * *"
+
+    # Türkiye 12:00
+    - cron: "0 9 * * *"
+
+    # Türkiye 14:00
+    - cron: "0 11 * * *"
+
+    # Türkiye 15:00
+    - cron: "0 12 * * *"
+
+    # Türkiye 16:00
+    - cron: "0 13 * * *"
+
+    # Türkiye 18:30
+    - cron: "30 15 * * *"
+
+    # Türkiye 21:00
+    - cron: "0 18 * * *"
+
+  workflow_dispatch:
+    inputs:
+      ogun:
+        description: "Elle test edilecek öðün"
+        required: true
+        default: "uyandiginda"
+        type: choice
+        options:
+          - uyandiginda
+          - sabah
+          - ara-ogun-1
+          - ogle
+          - ara-ogun-2
+          - aksam
+          - yatmadan-once
+
+jobs:
+  bildirim-gonder:
+    name: Bildirimi gönder
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Projeyi indir
+        uses: actions/checkout@v4
+
+      - name: Node.js kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Paketleri yükle
+        run: npm ci
+
+      - name: Öðün bildirimini gönder
+        run: npm run hatirlatici:gonder
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_SUBJECT: ${{ secrets.VAPID_SUBJECT }}
+
+          GITHUB_EVENT_SCHEDULE: ${{ github.event.schedule }}
+          MANUEL_OGUN_ID: ${{ github.event.inputs.ogun }}
