@@ -1,4 +1,4 @@
-﻿import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import webpush from "web-push";
 
 const ZORUNLU_DEGISKENLER = [

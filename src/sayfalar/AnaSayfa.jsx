@@ -77,7 +77,7 @@ function kayitlariOku() {
             su,
         };
     } catch (error) {
-        console.error("Günlük kayıtlar okunamadı:", error);
+        console.error("GÃ¼nlÃ¼k kayÄ±tlar okunamadÄ±:", error);
 
         return {
             tamamlananlar: [],
@@ -142,25 +142,25 @@ function kalanSureMetni(saat) {
     const fark = hedefDakika - toplamDakika;
 
     if (fark === 0) {
-        return "Öğün saati geldi";
+        return "Ã–ÄŸÃ¼n saati geldi";
     }
 
     if (fark < 0) {
-        return "Öğün saati geçti";
+        return "Ã–ÄŸÃ¼n saati geÃ§ti";
     }
 
     const saatFarki = Math.floor(fark / 60);
     const dakikaFarki = fark % 60;
 
     if (saatFarki === 0) {
-        return `${dakikaFarki} dakika kaldı`;
+        return `${dakikaFarki} dakika kaldÄ±`;
     }
 
     if (dakikaFarki === 0) {
-        return `${saatFarki} saat kaldı`;
+        return `${saatFarki} saat kaldÄ±`;
     }
 
-    return `${saatFarki} saat ${dakikaFarki} dakika kaldı`;
+    return `${saatFarki} saat ${dakikaFarki} dakika kaldÄ±`;
 }
 
 function bugununTarihiniGetir() {
@@ -270,17 +270,17 @@ export default function AnaSayfa() {
             await telefonuKaydet(pushAboneligi);
 
             setBildirimMesaji(
-                "Bildirimler hazır. Öğün saatlerinde bu telefona hatırlatma gelecek.",
+                "Bildirimler hazÄ±r. Ã–ÄŸÃ¼n saatlerinde bu telefona hatÄ±rlatma gelecek.",
             );
         } catch (error) {
             console.error(
-                "Bildirim açma hatası:",
+                "Bildirim aÃ§ma hatasÄ±:",
                 error,
             );
 
             setBildirimHatasi(
                 error?.message ||
-                "Bildirimler açılırken beklenmeyen bir hata oluştu.",
+                "Bildirimler aÃ§Ä±lÄ±rken beklenmeyen bir hata oluÅŸtu.",
             );
         } finally {
             setBildirimYukleniyor(false);
@@ -296,12 +296,12 @@ export default function AnaSayfa() {
                     </span>
 
                     <h1>
-                        Günaydın <span>Güzelim</span>
+                        GÃ¼naydÄ±n <span>GÃ¼zelim</span>
                     </h1>
 
                     <p>
-                        Bugün de kendin için güzel bir adım
-                        atıyorsun.
+                        BugÃ¼n de kendin iÃ§in gÃ¼zel bir adÄ±m
+                        atÄ±yorsun.
                     </p>
                 </div>
 
@@ -323,7 +323,7 @@ export default function AnaSayfa() {
                 </div>
 
                 <div>
-                    <span>Günün motivasyonu</span>
+                    <span>GÃ¼nÃ¼n motivasyonu</span>
                     <p>{motivasyonMesaji}</p>
                 </div>
             </section>
@@ -331,11 +331,11 @@ export default function AnaSayfa() {
             {sonrakiOgun ? (
                 <section className="sonraki-ogun-karti">
                     <div className="sonraki-ogun-ust">
-                        <span>Sıradaki öğün</span>
+                        <span>SÄ±radaki Ã¶ÄŸÃ¼n</span>
 
                         <div className="canli-durum">
                             <i />
-                            Yaklaşıyor
+                            YaklaÅŸÄ±yor
                         </div>
                     </div>
 
@@ -369,11 +369,11 @@ export default function AnaSayfa() {
 
                     <div>
                         <strong>
-                            Bugünkü program tamamlandı
+                            BugÃ¼nkÃ¼ program tamamlandÄ±
                         </strong>
 
                         <span>
-                            Bugün gösterdiğin çabayla
+                            BugÃ¼n gÃ¶sterdiÄŸin Ã§abayla
                             gurur duyuyorum.
                         </span>
                     </div>
@@ -384,10 +384,10 @@ export default function AnaSayfa() {
                 <div className="ilerleme-ust">
                     <div>
                         <span className="mini-baslik">
-                            Günlük ilerleme
+                            GÃ¼nlÃ¼k ilerleme
                         </span>
 
-                        <h2>Bugünkü Programın</h2>
+                        <h2>BugÃ¼nkÃ¼ ProgramÄ±n</h2>
                     </div>
 
                     <div className="ilerleme-yuzde">
@@ -407,13 +407,13 @@ export default function AnaSayfa() {
                 <div className="ilerleme-alt">
                     <span>
                         {tamamlananSayisi} /{" "}
-                        {toplamOgunSayisi} öğün
-                        tamamlandı
+                        {toplamOgunSayisi} Ã¶ÄŸÃ¼n
+                        tamamlandÄ±
                     </span>
 
                     <span className="seri-bilgisi">
                         <Flame size={15} />
-                        1 günlük seri
+                        1 gÃ¼nlÃ¼k seri
                     </span>
                 </div>
             </section>
@@ -422,14 +422,14 @@ export default function AnaSayfa() {
                 <div className="bolum-baslik">
                     <div>
                         <span className="mini-baslik">
-                            Beslenme planı
+                            Beslenme planÄ±
                         </span>
 
-                        <h2>Bugünkü Öğünler</h2>
+                        <h2>BugÃ¼nkÃ¼ Ã–ÄŸÃ¼nler</h2>
                     </div>
 
                     <span className="ogun-sayisi">
-                        {toplamOgunSayisi} öğün
+                        {toplamOgunSayisi} Ã¶ÄŸÃ¼n
                     </span>
                 </div>
 
@@ -463,11 +463,11 @@ export default function AnaSayfa() {
 
                 <div className="bildirim-metin">
                     <strong>
-                        Bildirimleri aç
+                        Bildirimleri aÃ§
                     </strong>
 
                     <span>
-                        Öğün saatlerini kaçırma
+                        Ã–ÄŸÃ¼n saatlerini kaÃ§Ä±rma
                     </span>
                 </div>
 
@@ -481,8 +481,8 @@ export default function AnaSayfa() {
                     }
                 >
                     {bildirimYukleniyor
-                        ? "Açılıyor..."
-                        : "Aç"}
+                        ? "AÃ§Ä±lÄ±yor..."
+                        : "AÃ§"}
                 </button>
             </section>
 
@@ -491,7 +491,7 @@ export default function AnaSayfa() {
                     <CheckCircle2 size={19} />
 
                     <div>
-                        <strong>Başarılı</strong>
+                        <strong>BaÅŸarÄ±lÄ±</strong>
                         <span>
                             {bildirimMesaji}
                         </span>
@@ -505,7 +505,7 @@ export default function AnaSayfa() {
 
                     <div>
                         <strong>
-                            Bildirim açılamadı
+                            Bildirim aÃ§Ä±lamadÄ±
                         </strong>
 
                         <span>

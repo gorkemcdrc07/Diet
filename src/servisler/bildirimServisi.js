@@ -1,4 +1,4 @@
-﻿function base64UrlToUint8Array(base64Url) {
+function base64UrlToUint8Array(base64Url) {
     const padding = "=".repeat(
         (4 - (base64Url.length % 4)) % 4,
     );

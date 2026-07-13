@@ -7,7 +7,7 @@ import {
 function supabaseKontrolEt() {
     if (!supabaseHazir || !supabase) {
         throw new Error(
-            "Supabase bağlantı bilgileri .env dosyasında bulunamadı.",
+            "Supabase baÄŸlantÄ± bilgileri .env dosyasÄ±nda bulunamadÄ±.",
         );
     }
 }
@@ -15,7 +15,7 @@ function supabaseKontrolEt() {
 function abonelikBilgisiniHazirla(pushAboneligi) {
     if (!pushAboneligi) {
         throw new Error(
-            "Telefonun bildirim bilgisi oluşturulamadı.",
+            "Telefonun bildirim bilgisi oluÅŸturulamadÄ±.",
         );
     }
 
@@ -27,7 +27,7 @@ function abonelikBilgisiniHazirla(pushAboneligi) {
 
     if (!endpoint || !p256dh || !auth) {
         throw new Error(
-            "Telefonun bildirim bilgileri eksik oluşturuldu.",
+            "Telefonun bildirim bilgileri eksik oluÅŸturuldu.",
         );
     }
 
@@ -83,12 +83,12 @@ export async function telefonuPasifYap() {
 
     if (error) {
         console.error(
-            "Telefon bildirimleri kapatılamadı:",
+            "Telefon bildirimleri kapatÄ±lamadÄ±:",
             error,
         );
 
         throw new Error(
-            `Bildirim durumu güncellenemedi: ${error.message}`,
+            `Bildirim durumu gÃ¼ncellenemedi: ${error.message}`,
         );
     }
 }

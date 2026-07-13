@@ -7,10 +7,10 @@ const supabaseAnonKey =
     import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
 
 /*
- * Yanl��l�kla �u �ekilde girilse bile:
+ * YanlÄ±ÅŸlÄ±kla ÅŸu ÅŸekilde girilse bile:
  * https://proje.supabase.co/rest/v1/
  *
- * otomatik olarak �una �evirir:
+ * otomatik olarak ÅŸuna Ã§evirir:
  * https://proje.supabase.co
  */
 const supabaseUrl = supabaseUrlHam
@@ -40,7 +40,7 @@ export const supabaseHazir =
     Boolean(supabaseAnonKey);
 
 if (!supabaseHazir) {
-    console.error("Supabase ayarlar� ge�ersiz.", {
+    console.error("Supabase ayarlarÄ± geÃ§ersiz.", {
         urlVarMi: Boolean(supabaseUrlHam),
         temizlenmisUrl: supabaseUrl,
         urlGecerliMi: supabaseUrlGecerliMi(supabaseUrl),

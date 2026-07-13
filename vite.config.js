@@ -23,11 +23,11 @@ export default defineConfig({
             ],
 
             manifest: {
-                name: "Güzelim İçin Beslenme Asistanı",
+                name: "GÃ¼zelim Ä°Ã§in Beslenme AsistanÄ±",
                 short_name: "Beslenme",
 
                 description:
-                    "Günlük beslenme programı, su takibi ve öğün hatırlatıcıları.",
+                    "GÃ¼nlÃ¼k beslenme programÄ±, su takibi ve Ã¶ÄŸÃ¼n hatÄ±rlatÄ±cÄ±larÄ±.",
 
                 lang: "tr",
                 dir: "ltr",

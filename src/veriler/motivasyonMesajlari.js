@@ -1,9 +1,9 @@
 export const motivasyonMesajlari = [
-    "Bugün attığın küçük adımlar, yarının büyük mutluluğu olacak.",
-    "Kendine iyi baktığın her an, seni hedeflerine biraz daha yaklaştırıyor.",
-    "Bugün de seninle gurur duyuyorum.",
-    "Güzel bir gün, kendine verdiğin güzel bir sözle başlar.",
-    "Sen her hâlinle çok güzelsin, bu program sadece daha iyi hissetmen için.",
+    "BugÃ¼n attÄ±ÄŸÄ±n kÃ¼Ã§Ã¼k adÄ±mlar, yarÄ±nÄ±n bÃ¼yÃ¼k mutluluÄŸu olacak.",
+    "Kendine iyi baktÄ±ÄŸÄ±n her an, seni hedeflerine biraz daha yaklaÅŸtÄ±rÄ±yor.",
+    "BugÃ¼n de seninle gurur duyuyorum.",
+    "GÃ¼zel bir gÃ¼n, kendine verdiÄŸin gÃ¼zel bir sÃ¶zle baÅŸlar.",
+    "Sen her hÃ¢linle Ã§ok gÃ¼zelsin, bu program sadece daha iyi hissetmen iÃ§in.",
 ];
 
 export function rastgeleMotivasyonMesaji() {
