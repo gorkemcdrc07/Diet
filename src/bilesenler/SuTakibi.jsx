@@ -12,7 +12,7 @@ export default function SuTakibi({
         <section className="su-karti">
             <div className="su-ust">
                 <div>
-                    <span className="mini-baslik">GÃ¼nlÃ¼k hedef</span>
+                    <span className="mini-baslik">Günlük hedef</span>
                     <h2>Su Takibi</h2>
                 </div>
 
@@ -34,25 +34,25 @@ export default function SuTakibi({
                     type="button"
                     onClick={onAzalt}
                     disabled={miktar === 0}
-                    aria-label="Su miktarÄ±nÄ± azalt"
+                    aria-label="Su miktarını azalt"
                 >
                     <Minus size={20} />
                 </button>
 
                 <div className="su-gorsel">
-                    <span>ğŸ’§</span>
+                    <span>💧</span>
 
                     <div>
                         <strong>
                             {miktar >= hedef
-                                ? "Hedef tamamlandÄ±"
-                                : `${hedef - miktar} bardak kaldÄ±`}
+                                ? "Hedef tamamlandı"
+                                : `${hedef - miktar} bardak kaldı`}
                         </strong>
 
                         <small>
                             {miktar >= hedef
-                                ? "BugÃ¼n harika ilerledin"
-                                : "Bir bardak daha iÃ§ebilirsin"}
+                                ? "Bugün harika ilerledin"
+                                : "Bir bardak daha içebilirsin"}
                         </small>
                     </div>
                 </div>
@@ -61,7 +61,7 @@ export default function SuTakibi({
                     type="button"
                     onClick={onArtir}
                     disabled={miktar >= hedef}
-                    aria-label="Su miktarÄ±nÄ± artÄ±r"
+                    aria-label="Su miktarını artır"
                 >
                     <Plus size={20} />
                 </button>

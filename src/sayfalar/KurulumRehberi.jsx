@@ -14,7 +14,7 @@ export default function KurulumRehberi() {
                 </div>
 
                 <div>
-                    <span>Telefonuna yÃ¼kle</span>
+                    <span>Telefonuna yükle</span>
                     <h1>Kurulum Rehberi</h1>
                 </div>
             </header>
@@ -27,9 +27,9 @@ export default function KurulumRehberi() {
                 </div>
 
                 <div>
-                    <strong>TarayÄ±cÄ± menÃ¼sÃ¼nÃ¼ aÃ§</strong>
+                    <strong>Tarayıcı menüsünü aç</strong>
                     <span>
-                        Safari veya Chrome menÃ¼sÃ¼ne dokun.
+                        Safari veya Chrome menüsüne dokun.
                     </span>
                 </div>
             </section>
@@ -44,7 +44,7 @@ export default function KurulumRehberi() {
                 <div>
                     <strong>Ana ekrana ekle</strong>
                     <span>
-                        â€œAna Ekrana Ekleâ€ seÃ§eneÄŸine dokun.
+                        “Ana Ekrana Ekle” seçeneğine dokun.
                     </span>
                 </div>
             </section>
@@ -59,7 +59,7 @@ export default function KurulumRehberi() {
                 <div>
                     <strong>Bildirimlere izin ver</strong>
                     <span>
-                        UygulamayÄ± ana ekrandan aÃ§Ä±p bildirimleri etkinleÅŸtir.
+                        Uygulamayı ana ekrandan açıp bildirimleri etkinleştir.
                     </span>
                 </div>
             </section>

@@ -51,7 +51,7 @@ export default function OgunKarti({
             {detayAcik && (
                 <div className="ogun-detay">
                     <div className="ogun-detay-bolum">
-                        <h4>TÃ¼ketilecekler</h4>
+                        <h4>Tüketilecekler</h4>
 
                         <ul>
                             {ogun.icerikler.map((icerik) => (
@@ -65,7 +65,7 @@ export default function OgunKarti({
 
                     {ogun.secenekler?.length > 0 && (
                         <div className="ogun-detay-bolum">
-                            <h4>Alternatif seÃ§enekler</h4>
+                            <h4>Alternatif seçenekler</h4>
 
                             <ul>
                                 {ogun.secenekler.map((secenek) => (
@@ -103,12 +103,12 @@ export default function OgunKarti({
                         {tamamlandi ? (
                             <>
                                 <Check size={18} />
-                                TamamlandÄ±
+                                Tamamlandı
                             </>
                         ) : (
                             <>
                                 <Circle size={18} />
-                                Ã–ÄŸÃ¼nÃ¼ tamamladÄ±m
+                                Öğünü tamamladım
                             </>
                         )}
                     </button>
@@ -120,7 +120,7 @@ export default function OgunKarti({
                     type="button"
                     className="mini-tamamlandi"
                     onClick={() => onToggle(ogun.id)}
-                    aria-label="Tamamlanma durumunu deÄŸiÅŸtir"
+                    aria-label="Tamamlanma durumunu değiştir"
                 >
                     <Check size={16} />
                 </button>

@@ -6,8 +6,8 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 self.addEventListener("push", (event) => {
     let veri = {
-        baslik: "Beslenme HatÄ±rlatÄ±cÄ±sÄ±",
-        mesaj: "Ã–ÄŸÃ¼n saatini kontrol etmeyi unutma.",
+        baslik: "Beslenme Hatırlatıcısı",
+        mesaj: "Öğün saatini kontrol etmeyi unutma.",
         ikon: "/ikonlar/ikon-192.png",
         rozet: "/ikonlar/ikon-192.png",
         url: "/",
@@ -42,7 +42,7 @@ self.addEventListener("push", (event) => {
         actions: [
             {
                 action: "uygulamayi-ac",
-                title: "ProgramÄ± AÃ§",
+                title: "Programı Aç",
             },
         ],
     };

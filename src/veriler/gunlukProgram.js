@@ -1,4 +1,4 @@
-export const gunlukProgram = [
+﻿export const gunlukProgram = [
     {
         id: "uyandiginda",
         sira: 1,

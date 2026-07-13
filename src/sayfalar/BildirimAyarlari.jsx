@@ -28,13 +28,13 @@ import {
 function izinMetniGetir(izin) {
     switch (izin) {
         case "granted":
-            return "Ä°zin verildi";
+            return "İzin verildi";
 
         case "denied":
-            return "Ä°zin reddedildi";
+            return "İzin reddedildi";
 
         case "default":
-            return "HenÃ¼z izin verilmedi";
+            return "Henüz izin verilmedi";
 
         default:
             return "Desteklenmiyor";
@@ -112,14 +112,14 @@ export default function BildirimAyarlari() {
             );
 
             setMesaj(
-                "Bildirimler hazÄ±r. Ã–ÄŸÃ¼n saatlerinde bu telefona hatÄ±rlatma gelecek.",
+                "Bildirimler hazır. Öğün saatlerinde bu telefona hatırlatma gelecek.",
             );
         } catch (error) {
             console.error(error);
 
             setHata(
                 error?.message ||
-                "Bildirimler aÃ§Ä±lamadÄ±.",
+                "Bildirimler açılamadı.",
             );
 
             setIzin(
@@ -142,14 +142,14 @@ export default function BildirimAyarlari() {
             setBildirimlerAcik(false);
 
             setMesaj(
-                "Bu telefondaki Ã¶ÄŸÃ¼n bildirimleri kapatÄ±ldÄ±.",
+                "Bu telefondaki öğün bildirimleri kapatıldı.",
             );
         } catch (error) {
             console.error(error);
 
             setHata(
                 error?.message ||
-                "Bildirimler kapatÄ±lamadÄ±.",
+                "Bildirimler kapatılamadı.",
             );
         } finally {
             setIslem("");
@@ -169,14 +169,14 @@ export default function BildirimAyarlari() {
             );
 
             setMesaj(
-                "Test bildirimi baÅŸarÄ±yla gÃ¶nderildi.",
+                "Test bildirimi başarıyla gönderildi.",
             );
         } catch (error) {
             console.error(error);
 
             setHata(
                 error?.message ||
-                "Test bildirimi gÃ¶nderilemedi.",
+                "Test bildirimi gönderilemedi.",
             );
 
             setIzin(
@@ -196,7 +196,7 @@ export default function BildirimAyarlari() {
 
                 <div>
                     <span>
-                        Ã–ÄŸÃ¼n hatÄ±rlatÄ±cÄ±larÄ±
+                        Öğün hatırlatıcıları
                     </span>
 
                     <h1>Bildirimler</h1>
@@ -209,12 +209,12 @@ export default function BildirimAyarlari() {
 
                     <div>
                         <strong>
-                            Bildirim desteÄŸi bulunamadÄ±
+                            Bildirim desteği bulunamadı
                         </strong>
 
                         <span>
-                            UygulamayÄ± gÃ¼ncel bir tarayÄ±cÄ±dan
-                            veya telefona yÃ¼kledikten sonra aÃ§.
+                            Uygulamayı güncel bir tarayıcıdan
+                            veya telefona yükledikten sonra aç.
                         </span>
                     </div>
                 </section>
@@ -241,12 +241,12 @@ export default function BildirimAyarlari() {
                         {yukleniyor
                             ? "Kontrol ediliyor"
                             : bildirimlerAcik
-                                ? "Bildirimler hazÄ±r"
-                                : "Bildirimler kapalÄ±"}
+                                ? "Bildirimler hazır"
+                                : "Bildirimler kapalı"}
                     </strong>
 
                     <small>
-                        TarayÄ±cÄ± izni:{" "}
+                        Tarayıcı izni:{" "}
                         {izinMetniGetir(izin)}
                     </small>
                 </div>
@@ -258,7 +258,7 @@ export default function BildirimAyarlari() {
 
                     <div>
                         <strong>
-                            Ä°ÅŸlem baÅŸarÄ±sÄ±z
+                            İşlem başarısız
                         </strong>
 
                         <span>{hata}</span>
@@ -272,7 +272,7 @@ export default function BildirimAyarlari() {
 
                     <div>
                         <strong>
-                            Ä°ÅŸlem baÅŸarÄ±lÄ±
+                            İşlem başarılı
                         </strong>
 
                         <span>{mesaj}</span>
@@ -301,7 +301,7 @@ export default function BildirimAyarlari() {
                             <BellRing size={20} />
                         )}
 
-                        Bildirimleri AÃ§
+                        Bildirimleri Aç
                     </button>
                 ) : (
                     <button
@@ -342,7 +342,7 @@ export default function BildirimAyarlari() {
                         <Send size={19} />
                     )}
 
-                    Test Bildirimi GÃ¶nder
+                    Test Bildirimi Gönder
                 </button>
             </section>
 
@@ -354,11 +354,11 @@ export default function BildirimAyarlari() {
 
                     <div className="ayar-metin">
                         <strong>
-                            Ã–ÄŸÃ¼n hatÄ±rlatmalarÄ±
+                            Öğün hatırlatmaları
                         </strong>
 
                         <span>
-                            Programdaki yedi Ã¶ÄŸÃ¼n
+                            Programdaki yedi öğün
                             saatinde
                         </span>
                     </div>
@@ -370,8 +370,8 @@ export default function BildirimAyarlari() {
                             }`}
                     >
                         {bildirimlerAcik
-                            ? "AÃ§Ä±k"
-                            : "KapalÄ±"}
+                            ? "Açık"
+                            : "Kapalı"}
                     </span>
                 </div>
 
@@ -398,8 +398,8 @@ export default function BildirimAyarlari() {
                             }`}
                     >
                         {bildirimlerAcik
-                            ? "HazÄ±r"
-                            : "KayÄ±tlÄ± deÄŸil"}
+                            ? "Hazır"
+                            : "Kayıtlı değil"}
                     </span>
                 </div>
             </section>
@@ -409,13 +409,13 @@ export default function BildirimAyarlari() {
 
                 <div>
                     <strong>
-                        YalnÄ±zca Ã¶ÄŸÃ¼n hatÄ±rlatmalarÄ±
+                        Yalnızca öğün hatırlatmaları
                     </strong>
 
                     <span>
                         Bu uygulama sadece beslenme
-                        programÄ±ndaki saatlerde bildirim
-                        gÃ¶nderecek.
+                        programındaki saatlerde bildirim
+                        gönderecek.
                     </span>
                 </div>
             </section>

@@ -13,7 +13,7 @@ const menuElemanlari = [
     },
     {
         id: "program",
-        etiket: "ProgramÄ±m",
+        etiket: "Programım",
         ikon: CalendarDays,
     },
     {

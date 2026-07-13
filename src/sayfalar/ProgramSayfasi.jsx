@@ -10,8 +10,8 @@ export default function ProgramSayfasi() {
                 </div>
 
                 <div>
-                    <span>Beslenme planÄ±</span>
-                    <h1>ProgramÄ±m</h1>
+                    <span>Beslenme planı</span>
+                    <h1>Programım</h1>
                 </div>
             </header>
 
