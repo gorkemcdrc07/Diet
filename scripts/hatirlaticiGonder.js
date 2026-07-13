@@ -1,7 +1,7 @@
 ﻿import { createClient } from "@supabase/supabase-js";
 import webpush from "web-push";
 
-const gerekliDegiskenler = [
+const ZORUNLU_DEGISKENLER = [
     "SUPABASE_URL",
     "SUPABASE_SERVICE_ROLE_KEY",
     "VAPID_PUBLIC_KEY",
@@ -9,115 +9,157 @@ const gerekliDegiskenler = [
     "VAPID_SUBJECT",
 ];
 
-for (const degisken of gerekliDegiskenler) {
-    if (!process.env[degisken]) {
-        console.error(`Eksik ortam değişkeni: ${degisken}`);
-        process.exit(1);
+function ortamDegiskenleriniKontrolEt() {
+    const eksikDegiskenler = ZORUNLU_DEGISKENLER.filter(
+        (degisken) => !process.env[degisken]?.trim(),
+    );
+
+    if (eksikDegiskenler.length > 0) {
+        throw new Error(
+            `Eksik GitHub Secret değerleri: ${eksikDegiskenler.join(", ")}`,
+        );
     }
 }
 
+ortamDegiskenleriniKontrolEt();
+
 const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    process.env.SUPABASE_URL.trim().replace(/\/+$/, ""),
+    process.env.SUPABASE_SERVICE_ROLE_KEY.trim(),
     {
         auth: {
             persistSession: false,
             autoRefreshToken: false,
+            detectSessionInUrl: false,
         },
     },
 );
 
 webpush.setVapidDetails(
-    process.env.VAPID_SUBJECT,
-    process.env.VAPID_PUBLIC_KEY,
-    process.env.VAPID_PRIVATE_KEY,
+    process.env.VAPID_SUBJECT.trim(),
+    process.env.VAPID_PUBLIC_KEY.trim(),
+    process.env.VAPID_PRIVATE_KEY.trim(),
 );
 
-const bildirimProgrami = {
+const OGUN_PROGRAMI = {
     uyandiginda: {
         saat: "10:00",
-        baslik: "Günaydın güzelim 🌸",
+        basliklar: [
+            "Günaydın güzelim 🌸",
+            "Yeni bir güne merhaba ❤️",
+            "Kefir zamanı güzelim 🥛",
+        ],
         mesajlar: [
             "Kefir saatin geldi. Güne kendine iyi bakarak başlayalım ❤️",
-            "Günaydın güzelim. Kefirini içip güne güzel bir başlangıç yapma zamanı 🥛",
-            "Yeni bir gün, yeni bir güzel adım. Kefirini unutma ❤️",
+            "Laktozsuz kefirini, chia ve keten tohumunu unutma güzelim.",
+            "Güne güzel bir başlangıç yapma zamanı. Bugün de seninle gurur duyuyorum 🥰",
         ],
+        url: "/",
     },
 
     sabah: {
         saat: "12:00",
-        baslik: "Kahvaltı zamanı 🍳",
-        mesajlar: [
-            "Güzel bir kahvaltıyla enerjini yenileme zamanı ❤️",
-            "Kahvaltı saatin geldi güzelim. Bugün de kendine iyi bakmayı unutma.",
-            "Minik bir hatırlatma: Kahvaltın seni bekliyor 🥰",
+        basliklar: [
+            "Kahvaltı zamanı 🍳",
+            "Güzel bir kahvaltı molası ❤️",
+            "Enerjini yenileme zamanı 🌸",
         ],
+        mesajlar: [
+            "Kahvaltı saatin geldi güzelim. Kendine iyi bakmayı unutma.",
+            "Yumurta, yeşillik, peynir ve ekmeğin seni bekliyor 🥰",
+            "Tenis günüyse iki yumurtayı unutma. Afiyet olsun güzelim ❤️",
+        ],
+        url: "/",
     },
 
     "ara-ogun-1": {
         saat: "14:00",
-        baslik: "Küçük bir mola 🍵",
-        mesajlar: [
-            "Bitki çayını hazırlama zamanı. Bugün de çok iyi gidiyorsun ❤️",
-            "Kendine kısa bir mola verip bitki çayını içebilirsin güzelim.",
-            "Saat 14.00 oldu. Bitki çayı zamanı 🌿",
+        basliklar: [
+            "Küçük bir mola 🍵",
+            "Bitki çayı zamanı 🌿",
+            "Kendine güzel bir mola ver ❤️",
         ],
+        mesajlar: [
+            "Bitki çayını hazırlama zamanı. Bugün de çok iyi gidiyorsun.",
+            "Kısa bir mola verip çayını keyifle içebilirsin güzelim.",
+            "Saat 14.00 oldu. Kolajenli veya prebiyotikli yeşil çayını unutma 🌸",
+        ],
+        url: "/",
     },
 
     ogle: {
         saat: "15:00",
-        baslik: "Öğle öğünün hazır 🍎",
-        mesajlar: [
-            "Öğle öğününü atlamıyoruz. Kendine iyi baktığın için seninle gurur duyuyorum ❤️",
-            "Öğle öğünü zamanı güzelim. Programındaki seçeneklerden birini seçebilirsin.",
-            "Enerjini korumak için öğle öğününü unutma 🥰",
+        basliklar: [
+            "Öğle öğünün hazır 🍎",
+            "Öğle molası zamanı ❤️",
+            "Enerjini koruma zamanı 🌸",
         ],
+        mesajlar: [
+            "Öğle öğününü atlamıyoruz. Kendine iyi baktığın için seninle gurur duyuyorum.",
+            "Programındaki öğle seçeneklerinden birini seçebilirsin güzelim 🥰",
+            "Meyve, yoğurt veya diğer alternatiflerinden sana uygun olanı seçme zamanı.",
+        ],
+        url: "/",
     },
 
     "ara-ogun-2": {
         saat: "16:00",
-        baslik: "Bitki çayı zamanı 🌿",
-        mesajlar: [
-            "Kısa bir mola verip çayını içme zamanı güzelim ❤️",
-            "İkinci bitki çayı hatırlatman geldi 🍵",
-            "Bugün de çok güzel ilerliyorsun. Çayını unutma.",
+        basliklar: [
+            "Bitki çayı zamanı 🌿",
+            "İkinci küçük mola 🍵",
+            "Bugün çok güzel ilerliyorsun ❤️",
         ],
+        mesajlar: [
+            "Kısa bir mola verip bitki çayını içme zamanı güzelim.",
+            "Kolajenli yeşil çayını hazırlamayı unutma 🌸",
+            "Bir fincan çay ve kısa bir dinlenme sana çok iyi gelecek.",
+        ],
+        url: "/",
     },
 
     aksam: {
         saat: "18:30",
-        baslik: "Akşam yemeği zamanı 🥗",
-        mesajlar: [
-            "Günün dengeli akşam öğününü hazırlama zamanı. Çok güzel ilerliyorsun ❤️",
-            "Akşam yemeğin seni bekliyor güzelim. Afiyet olsun 🥰",
-            "Akşam öğününü atlamadan günü güzelce tamamlayalım.",
+        basliklar: [
+            "Akşam yemeği zamanı 🥗",
+            "Günün dengeli öğünü ❤️",
+            "Akşam öğünün seni bekliyor 🌸",
         ],
+        mesajlar: [
+            "Akşam yemeğini hazırlama zamanı. Bugün de çok güzel ilerliyorsun.",
+            "Ana yemek, salata, yoğurt ve seçtiğin eşdeğeri unutma güzelim 🥰",
+            "Günü dengeli bir akşam öğünüyle tamamlayalım. Afiyet olsun ❤️",
+        ],
+        url: "/",
     },
 
     "yatmadan-once": {
         saat: "21:00",
-        baslik: "Günün son hatırlatması 🌙",
-        mesajlar: [
-            "Bugünün son küçük öğünü geldi. Gösterdiğin çabayla gurur duyuyorum ❤️",
-            "Ayranını ve bugünkü programına uygunsa kabak çekirdeğini unutma güzelim.",
-            "Günü kendine iyi bakarak tamamladığın için seninle gurur duyuyorum 🌙",
+        basliklar: [
+            "Günün son hatırlatması 🌙",
+            "Gece öğünü zamanı ❤️",
+            "Bugünü güzelce tamamlayalım 🌸",
         ],
+        mesajlar: [
+            "Ayranını ve programına uygunsa kabak çekirdeğini unutma güzelim.",
+            "Bugünün son küçük öğünü geldi. Gösterdiğin çabayla gurur duyuyorum ❤️",
+            "Bugün kendine çok güzel baktın. Son hatırlatmanı da tamamlayalım 🌙",
+        ],
+        url: "/",
     },
 };
 
 /*
- * GitHub Actions cron ifadeleri UTC zamanındadır.
- * Türkiye UTC+3:
- *
- * 10:00 → 07:00 UTC
- * 12:00 → 09:00 UTC
- * 14:00 → 11:00 UTC
- * 15:00 → 12:00 UTC
- * 16:00 → 13:00 UTC
- * 18:30 → 15:30 UTC
- * 21:00 → 18:00 UTC
- */
-const cronOgunEslesmesi = {
+Türkiye saatleri için GitHub cron eşleşmeleri:
+
+10:00 -> 07:00
+12:00 -> 09:00
+14:00 -> 11:00
+15:00 -> 12:00
+16:00 -> 13:00
+18:30 -> 15:30
+21:00 -> 18:00
+*/
+const CRON_OGUN_ESLESMESI = {
     "0 7 * * *": "uyandiginda",
     "0 9 * * *": "sabah",
     "0 11 * * *": "ara-ogun-1",
@@ -127,39 +169,53 @@ const cronOgunEslesmesi = {
     "0 18 * * *": "yatmadan-once",
 };
 
-function rastgeleMesajGetir(mesajlar) {
-    const index = Math.floor(Math.random() * mesajlar.length);
-    return mesajlar[index];
+function rastgeleElemanGetir(liste) {
+    if (!Array.isArray(liste) || liste.length === 0) {
+        return "";
+    }
+
+    const index = Math.floor(Math.random() * liste.length);
+
+    return liste[index];
 }
 
-function gonderilecekOgunuBul() {
+function gonderilecekOgunIdGetir() {
     const manuelOgunId = process.env.MANUEL_OGUN_ID?.trim();
 
     if (manuelOgunId) {
         return manuelOgunId;
     }
 
-    const calisanCron = process.env.GITHUB_EVENT_SCHEDULE?.trim();
+    const cronIfadesi =
+        process.env.GITHUB_EVENT_SCHEDULE?.trim();
 
-    if (!calisanCron) {
+    if (!cronIfadesi) {
         throw new Error(
-            "Çalışan cron bilgisi bulunamadı. Yerel test için MANUEL_OGUN_ID tanımla.",
+            "Öğün belirlenemedi. Manuel test için MANUEL_OGUN_ID gereklidir.",
         );
     }
 
-    return cronOgunEslesmesi[calisanCron];
+    const ogunId = CRON_OGUN_ESLESMESI[cronIfadesi];
+
+    if (!ogunId) {
+        throw new Error(
+            `Cron ifadesi için öğün bulunamadı: ${cronIfadesi}`,
+        );
+    }
+
+    return ogunId;
 }
 
-async function telefonuGetir() {
+async function telefonBilgisiniGetir() {
     const { data, error } = await supabase
         .from("sevgilim_telefonu")
-        .select("endpoint, p256dh, auth, aktif")
+        .select("id, endpoint, p256dh, auth, aktif")
         .eq("id", 1)
         .maybeSingle();
 
     if (error) {
         throw new Error(
-            `Telefon bilgisi okunamadı: ${error.message}`,
+            `Telefon bilgisi Supabase'den okunamadı: ${error.message}`,
         );
     }
 
@@ -177,10 +233,16 @@ async function telefonuGetir() {
         return null;
     }
 
+    if (!data.endpoint || !data.p256dh || !data.auth) {
+        throw new Error(
+            "Telefonun push bilgileri eksik.",
+        );
+    }
+
     return data;
 }
 
-async function gecersizTelefonuPasifYap() {
+async function telefonuPasifYap() {
     const { error } = await supabase
         .from("sevgilim_telefonu")
         .update({
@@ -191,23 +253,23 @@ async function gecersizTelefonuPasifYap() {
 
     if (error) {
         console.error(
-            "Geçersiz telefon kaydı pasif yapılamadı:",
+            "Telefon kaydı pasif yapılamadı:",
             error.message,
         );
     }
 }
 
 async function bildirimiGonder() {
-    const ogunId = gonderilecekOgunuBul();
-    const ogun = bildirimProgrami[ogunId];
+    const ogunId = gonderilecekOgunIdGetir();
+    const ogun = OGUN_PROGRAMI[ogunId];
 
     if (!ogun) {
         throw new Error(
-            `Geçersiz veya bulunamayan öğün kimliği: ${ogunId}`,
+            `Geçersiz öğün kimliği: ${ogunId}`,
         );
     }
 
-    const telefon = await telefonuGetir();
+    const telefon = await telefonBilgisiniGetir();
 
     if (!telefon) {
         return;
@@ -222,20 +284,31 @@ async function bildirimiGonder() {
         },
     };
 
+    const baslik = rastgeleElemanGetir(
+        ogun.basliklar,
+    );
+
+    const mesaj = rastgeleElemanGetir(
+        ogun.mesajlar,
+    );
+
     const payload = JSON.stringify({
-        baslik: ogun.baslik,
-        mesaj: rastgeleMesajGetir(ogun.mesajlar),
+        baslik,
+        mesaj,
         ikon: "/ikonlar/ikon-192.png",
         rozet: "/ikonlar/ikon-192.png",
-        url: "/",
+        url: ogun.url,
         tag: `ogun-${ogunId}`,
         ogunId,
         saat: ogun.saat,
     });
 
-    console.log(
-        `${ogun.saat} - ${ogunId} bildirimi gönderiliyor...`,
-    );
+    console.log("--------------------------------");
+    console.log(`Öğün: ${ogunId}`);
+    console.log(`Saat: ${ogun.saat}`);
+    console.log(`Başlık: ${baslik}`);
+    console.log(`Mesaj: ${mesaj}`);
+    console.log("--------------------------------");
 
     try {
         const sonuc = await webpush.sendNotification(
@@ -248,26 +321,22 @@ async function bildirimiGonder() {
         );
 
         console.log(
-            `Bildirim başarıyla gönderildi. HTTP: ${sonuc.statusCode}`,
+            `Bildirim başarıyla gönderildi. HTTP durum kodu: ${sonuc.statusCode}`,
         );
     } catch (error) {
         const durumKodu = error?.statusCode;
 
         console.error(
-            "Push bildirimi gönderilemedi:",
+            "Bildirim gönderme hatası:",
             durumKodu || "",
-            error?.body || error?.message,
+            error?.body || error?.message || error,
         );
 
-        /*
-         * 404 veya 410, tarayıcıdaki push kaydının artık
-         * geçerli olmadığını gösterebilir.
-         */
         if (durumKodu === 404 || durumKodu === 410) {
-            await gecersizTelefonuPasifYap();
+            await telefonuPasifYap();
 
             console.log(
-                "Geçersiz telefon kaydı pasif duruma getirildi.",
+                "Push kaydı geçersiz olduğu için telefon pasif yapıldı.",
             );
         }
 
@@ -275,11 +344,17 @@ async function bildirimiGonder() {
     }
 }
 
-bildirimiGonder().catch((error) => {
-    console.error(
-        "Hatırlatıcı işlemi başarısız:",
-        error?.message || error,
-    );
+bildirimiGonder()
+    .then(() => {
+        console.log(
+            "Hatırlatıcı işlemi tamamlandı.",
+        );
+    })
+    .catch((error) => {
+        console.error(
+            "Hatırlatıcı çalıştırılamadı:",
+            error?.message || error,
+        );
 
-    process.exit(1);
-});
+        process.exit(1);
+    });
