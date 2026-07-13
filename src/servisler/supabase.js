@@ -1,11 +1,52 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrlHam =
+    import.meta.env.VITE_SUPABASE_URL?.trim();
+
+const supabaseAnonKey =
+    import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
+
+/*
+ * Yanlýþlýkla þu þekilde girilse bile:
+ * https://proje.supabase.co/rest/v1/
+ *
+ * otomatik olarak þuna çevirir:
+ * https://proje.supabase.co
+ */
+const supabaseUrl = supabaseUrlHam
+    ?.replace(/\/rest\/v1\/?$/i, "")
+    .replace(/\/+$/, "");
+
+function supabaseUrlGecerliMi(url) {
+    if (!url) {
+        return false;
+    }
+
+    try {
+        const adres = new URL(url);
+
+        return (
+            adres.protocol === "https:" &&
+            adres.hostname.endsWith(".supabase.co") &&
+            adres.pathname === "/"
+        );
+    } catch {
+        return false;
+    }
+}
 
 export const supabaseHazir =
-    Boolean(supabaseUrl) &&
+    supabaseUrlGecerliMi(supabaseUrl) &&
     Boolean(supabaseAnonKey);
+
+if (!supabaseHazir) {
+    console.error("Supabase ayarlarý geçersiz.", {
+        urlVarMi: Boolean(supabaseUrlHam),
+        temizlenmisUrl: supabaseUrl,
+        urlGecerliMi: supabaseUrlGecerliMi(supabaseUrl),
+        anonKeyVarMi: Boolean(supabaseAnonKey),
+    });
+}
 
 export const supabase = supabaseHazir
     ? createClient(supabaseUrl, supabaseAnonKey, {
@@ -16,5 +57,3 @@ export const supabase = supabaseHazir
         },
     })
     : null;
-
-    
