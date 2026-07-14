@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 function supabaseKontrolEt() {
     if (!supabase) {
         throw new Error(
-            "Supabase bağlantısı hazır değil.",
+            "Supabase baÄŸlantÄ±sÄ± hazÄ±r deÄŸil.",
         );
     }
 }
@@ -58,13 +58,13 @@ export async function magazaUrunleriniGetir({
 
     if (error) {
         console.error(
-            "Mağaza ürünleri alınamadı:",
+            "MaÄŸaza Ã¼rÃ¼nleri alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Mağaza ürünleri alınamadı.",
+            "MaÄŸaza Ã¼rÃ¼nleri alÄ±namadÄ±.",
         );
     }
 
@@ -110,13 +110,13 @@ export async function envanteriGetir() {
 
     if (error) {
         console.error(
-            "Envanter alınamadı:",
+            "Envanter alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Envanter alınamadı.",
+            "Envanter alÄ±namadÄ±.",
         );
     }
 
@@ -132,7 +132,7 @@ export async function magazaUrunuSatinAl(
 
     if (!urunId) {
         throw new Error(
-            "Satın alınacak ürün seçilmedi.",
+            "SatÄ±n alÄ±nacak Ã¼rÃ¼n seÃ§ilmedi.",
         );
     }
 
@@ -147,13 +147,13 @@ export async function magazaUrunuSatinAl(
 
     if (error) {
         console.error(
-            "Ürün satın alınamadı:",
+            "ÃœrÃ¼n satÄ±n alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Ürün satın alınamadı.",
+            "ÃœrÃ¼n satÄ±n alÄ±namadÄ±.",
         );
     }
 
@@ -168,7 +168,7 @@ export async function envanterUrununuKullan({
 
     if (!envanterId) {
         throw new Error(
-            "Kullanılacak envanter ürünü seçilmedi.",
+            "KullanÄ±lacak envanter Ã¼rÃ¼nÃ¼ seÃ§ilmedi.",
         );
     }
 
@@ -186,13 +186,13 @@ export async function envanterUrununuKullan({
 
     if (error) {
         console.error(
-            "Envanter ürünü kullanılamadı:",
+            "Envanter Ã¼rÃ¼nÃ¼ kullanÄ±lamadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Envanter ürünü kullanılamadı.",
+            "Envanter Ã¼rÃ¼nÃ¼ kullanÄ±lamadÄ±.",
         );
     }
 

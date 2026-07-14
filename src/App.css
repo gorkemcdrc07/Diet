@@ -1433,7 +1433,7 @@ article {
         transform: scale(1);
     }
 }
-/* Günlük romantik not */
+/* GÃ¼nlÃ¼k romantik not */
 
 .gunluk-not-karti {
     position: relative;
@@ -1830,7 +1830,7 @@ article {
     font-size: 8px;
     white-space: nowrap;
 }
-/* Premium açýlýr öðün kartlarý */
+/* Premium aÃ§Ä±lÄ±r Ã¶ÄŸÃ¼n kartlarÄ± */
 
 .premium-ogun-karti {
     position: relative;
@@ -2127,7 +2127,7 @@ article {
         background: #e5f5eb;
         box-shadow: none;
     }
-/* Ýstatistikler sayfasý */
+/* Ä°statistikler sayfasÄ± */
 
 .istatistikler-sayfasi {
     display: grid;
@@ -2498,7 +2498,7 @@ article {
     font-size: 8px;
     font-weight: 800;
 }
-/* Premium açýlýþ ekraný */
+/* Premium aÃ§Ä±lÄ±ÅŸ ekranÄ± */
 
 .uygulama-hazirlaniyor {
     overflow: hidden;
@@ -2725,7 +2725,7 @@ article {
             color: var(--ana-renk-koyu);
             background: var(--ana-renk-acik);
         }
-/* Bugünün özeti */
+/* BugÃ¼nÃ¼n Ã¶zeti */
 
 .gunun-ozeti-karti {
     position: relative;
@@ -2973,7 +2973,7 @@ article > small {
     article.tamamlandi {
         background: rgba(97, 185, 139, 0.1);
     }
-/* Aylýk geçmiþ takvimi */
+/* AylÄ±k geÃ§miÅŸ takvimi */
 
 .aylik-takvim-karti {
     padding: 18px;
@@ -3226,7 +3226,7 @@ article > small {
 .takvim-gun-detayi {
     background: rgba(255, 255, 255, 0.035);
 }
-/* Miço ve Viki saðlýk asistaný */
+/* MiÃ§o ve Viki saÄŸlÄ±k asistanÄ± */
 
 .mico-viki-asistan {
     position: relative;
@@ -3564,7 +3564,7 @@ article > small {
     }
 }
 /* =========================================================
-   MIÇO & VÝKÝ ASÝSTANI
+   MIÃ‡O & VÄ°KÄ° ASÄ°STANI
 ========================================================= */
 
 .mv-asistan {
@@ -4512,7 +4512,7 @@ span:last-child {
         }
 }
 /* =========================================================
-   MIÇO & VÝKÝ TAM EKRAN KUTLAMA ANÝMASYONU
+   MIÃ‡O & VÄ°KÄ° TAM EKRAN KUTLAMA ANÄ°MASYONU
 ========================================================= */
 
 .kk-katman {
@@ -4881,7 +4881,7 @@ span:last-child {
 }
 
 /* =========================================================
-   GÜNLÜK GÖREVLER
+   GÃœNLÃœK GÃ–REVLER
    ========================================================= */
 
 .gunluk-gorevler-karti {
@@ -5193,7 +5193,7 @@ span:last-child {
 }
 
 /* =========================================================
-   ANÝMASYON
+   ANÄ°MASYON
    ========================================================= */
 
 @keyframes gunluk-gorev-donme {
@@ -5203,7 +5203,7 @@ span:last-child {
 }
 
 /* =========================================================
-   MOBÝL
+   MOBÄ°L
    ========================================================= */
 
 @media (max-width: 520px) {
@@ -5675,7 +5675,7 @@ span:last-child {
     background: rgba(255, 232, 242, 0.84);
 }
 /* =========================================================
-   MIÇO VE VÝKÝ KARAKTER DAVRANIÞLARI
+   MIÃ‡O VE VÄ°KÄ° KARAKTER DAVRANIÅžLARI
 ========================================================= */
 
 .kk-karakter--surekli-kizgin
@@ -6025,7 +6025,7 @@ span {
         animation: kk-su-pariltisi 1.5s ease-in-out infinite;
     }
 /* =========================================================
-   GÜN SONU KUTLAMASI — UYGULAMA TEMASIYLA UYUMLU
+   GÃœN SONU KUTLAMASI â€” UYGULAMA TEMASIYLA UYUMLU
 ========================================================= */
 
 .gsk-katman {
@@ -6442,7 +6442,7 @@ span {
 }
 
 /* =========================================================
-   ANA SAYFA MIÇO & VÝKÝ MASKOT ASÝSTANI
+   ANA SAYFA MIÃ‡O & VÄ°KÄ° MASKOT ASÄ°STANI
 ========================================================= */
 
 .mva-kart {
@@ -7469,7 +7469,7 @@ strong {
     }
 }
 /* =========================================================
-   MIÇO & VÝKÝ CANLI DÝYALOG SÝSTEMÝ
+   MIÃ‡O & VÄ°KÄ° CANLI DÄ°YALOG SÄ°STEMÄ°
 ========================================================= */
 
 .mva-diyalog-durum {
@@ -7623,7 +7623,7 @@ small {
 }
 
 /* =========================================================
-   GERÇEK MIÇO & VÝKÝ ÖÐÜN / SU KUTLAMASI
+   GERÃ‡EK MIÃ‡O & VÄ°KÄ° Ã–ÄžÃœN / SU KUTLAMASI
 ========================================================= */
 
 .kk-overlay {
@@ -8003,7 +8003,7 @@ small {
     opacity: 0.6;
 }
 /* =========================================================
-   XP ÖZET KARTI
+   XP Ã–ZET KARTI
    ========================================================= */
 
 .xp-ozet-karti {
@@ -8168,7 +8168,7 @@ small {
 }
 
 /* =========================================================
-   MÝÇO & VÝKÝ SEVÝYE KARTLARI
+   MÄ°Ã‡O & VÄ°KÄ° SEVÄ°YE KARTLARI
    ========================================================= */
 
 .karakter-seviye-alani {
@@ -8331,7 +8331,7 @@ small {
 }
 
 /* =========================================================
-   MOBÝL
+   MOBÄ°L
    ========================================================= */
 
 @media (max-width: 620px) {
@@ -8354,7 +8354,7 @@ small {
 }
 
 /* =========================================================
-   MOBÝL
+   MOBÄ°L
    ========================================================= */
 
 @media (max-width: 560px) {

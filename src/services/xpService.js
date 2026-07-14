@@ -1,10 +1,10 @@
 import { supabase } from "../servisler/supabase";
 
 /**
- * XP sistemi kullanılmadan önce aktif Supabase kullanıcısını hazırlar.
+ * XP sistemi kullanÄ±lmadan Ã¶nce aktif Supabase kullanÄ±cÄ±sÄ±nÄ± hazÄ±rlar.
  *
- * Mevcut bir oturum varsa onu kullanır.
- * Oturum yoksa anonim kullanıcı oluşturur.
+ * Mevcut bir oturum varsa onu kullanÄ±r.
+ * Oturum yoksa anonim kullanÄ±cÄ± oluÅŸturur.
  */
 async function xpKullanicisiniHazirla() {
     const {
@@ -14,13 +14,13 @@ async function xpKullanicisiniHazirla() {
 
     if (sessionError) {
         console.error(
-            "XP oturumu okunamadı:",
+            "XP oturumu okunamadÄ±:",
             sessionError,
         );
 
         throw new Error(
             sessionError.message ||
-            "XP oturumu okunamadı.",
+            "XP oturumu okunamadÄ±.",
         );
     }
 
@@ -35,19 +35,19 @@ async function xpKullanicisiniHazirla() {
 
     if (error) {
         console.error(
-            "Anonim oturum açılamadı:",
+            "Anonim oturum aÃ§Ä±lamadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Anonim kullanıcı oturumu açılamadı.",
+            "Anonim kullanÄ±cÄ± oturumu aÃ§Ä±lamadÄ±.",
         );
     }
 
     if (!data?.user) {
         throw new Error(
-            "Anonim kullanıcı oluşturulamadı.",
+            "Anonim kullanÄ±cÄ± oluÅŸturulamadÄ±.",
         );
     }
 
@@ -55,10 +55,10 @@ async function xpKullanicisiniHazirla() {
 }
 
 /**
- * Supabase RPC üzerinden kullanıcıya XP kazandırır.
+ * Supabase RPC Ã¼zerinden kullanÄ±cÄ±ya XP kazandÄ±rÄ±r.
  *
- * XP miktarı frontend tarafından belirlenmez.
- * İşlem türüne göre Supabase fonksiyonu XP miktarını hesaplar.
+ * XP miktarÄ± frontend tarafÄ±ndan belirlenmez.
+ * Ä°ÅŸlem tÃ¼rÃ¼ne gÃ¶re Supabase fonksiyonu XP miktarÄ±nÄ± hesaplar.
  */
 export async function xpKazandir({
     islemTuru,
@@ -70,7 +70,7 @@ export async function xpKazandir({
 }) {
     if (!islemTuru) {
         throw new Error(
-            "XP işlemi için islemTuru zorunludur.",
+            "XP iÅŸlemi iÃ§in islemTuru zorunludur.",
         );
     }
 
@@ -93,13 +93,13 @@ export async function xpKazandir({
 
     if (error) {
         console.error(
-            "XP kazandırma hatası:",
+            "XP kazandÄ±rma hatasÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "XP kazandırılamadı.",
+            "XP kazandÄ±rÄ±lamadÄ±.",
         );
     }
 
@@ -107,7 +107,7 @@ export async function xpKazandir({
 }
 
 /**
- * Kullanıcının güncel XP ve seviye bilgilerini getirir.
+ * KullanÄ±cÄ±nÄ±n gÃ¼ncel XP ve seviye bilgilerini getirir.
  */
 export async function xpOzetiGetir() {
     const user =
@@ -121,20 +121,20 @@ export async function xpOzetiGetir() {
 
     if (error) {
         console.error(
-            "XP özeti alınamadı:",
+            "XP Ã¶zeti alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "XP özeti alınamadı.",
+            "XP Ã¶zeti alÄ±namadÄ±.",
         );
     }
 
     /*
-     * Kullanıcı henüz hiç XP kazanmadıysa
-     * kullanici_xp tablosunda kayıt bulunmayabilir.
-     * Kartın yine de görünmesi için başlangıç verisi döneriz.
+     * KullanÄ±cÄ± henÃ¼z hiÃ§ XP kazanmadÄ±ysa
+     * kullanici_xp tablosunda kayÄ±t bulunmayabilir.
+     * KartÄ±n yine de gÃ¶rÃ¼nmesi iÃ§in baÅŸlangÄ±Ã§ verisi dÃ¶neriz.
      */
     if (!data) {
         return {
@@ -162,7 +162,7 @@ export async function xpOzetiGetir() {
 }
 
 /**
- * Kullanıcının son XP hareketlerini getirir.
+ * KullanÄ±cÄ±nÄ±n son XP hareketlerini getirir.
  */
 export async function xpHareketleriniGetir(
     limit = 10,
@@ -201,13 +201,13 @@ export async function xpHareketleriniGetir(
 
     if (error) {
         console.error(
-            "XP hareketleri alınamadı:",
+            "XP hareketleri alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "XP hareketleri alınamadı.",
+            "XP hareketleri alÄ±namadÄ±.",
         );
     }
 
@@ -215,7 +215,7 @@ export async function xpHareketleriniGetir(
 }
 
 /**
- * Bir öğün tamamlandığında çağrılır.
+ * Bir Ã¶ÄŸÃ¼n tamamlandÄ±ÄŸÄ±nda Ã§aÄŸrÄ±lÄ±r.
  */
 export async function ogunXpKazandir({
     ogunId,
@@ -229,7 +229,7 @@ export async function ogunXpKazandir({
         ogunId === ""
     ) {
         throw new Error(
-            "Öğün XP işlemi için ogunId zorunludur.",
+            "Ã–ÄŸÃ¼n XP iÅŸlemi iÃ§in ogunId zorunludur.",
         );
     }
 
@@ -240,7 +240,7 @@ export async function ogunXpKazandir({
     return xpKazandir({
         islemTuru: "ogun-tamamlandi",
         aciklama:
-            `${ogunAdi || "Öğün"} tamamlandı`,
+            `${ogunAdi || "Ã–ÄŸÃ¼n"} tamamlandÄ±`,
         karakter: "ikisi",
         kaynakId: ogunId,
         benzersizAnahtar:
@@ -258,10 +258,10 @@ export async function ogunXpKazandir({
 }
 
 /**
- * Kullanıcı su eklediğinde çağrılır.
+ * KullanÄ±cÄ± su eklediÄŸinde Ã§aÄŸrÄ±lÄ±r.
  *
- * Her bardak için farklı benzersiz anahtar üretmek amacıyla
- * gün içindeki yeni bardak sayısı kullanılır.
+ * Her bardak iÃ§in farklÄ± benzersiz anahtar Ã¼retmek amacÄ±yla
+ * gÃ¼n iÃ§indeki yeni bardak sayÄ±sÄ± kullanÄ±lÄ±r.
  */
 export async function suXpKazandir({
     bardakSayisi,
@@ -282,14 +282,14 @@ export async function suXpKazandir({
         yeniBardakSayisi <= 0
     ) {
         throw new Error(
-            "Geçerli bir bardak sayısı gönderilmelidir.",
+            "GeÃ§erli bir bardak sayÄ±sÄ± gÃ¶nderilmelidir.",
         );
     }
 
     return xpKazandir({
         islemTuru: "su-icildi",
         aciklama:
-            `${yeniBardakSayisi}. bardak su içildi`,
+            `${yeniBardakSayisi}. bardak su iÃ§ildi`,
         karakter: "viki",
 
         kaynakId:
@@ -311,7 +311,7 @@ export async function suXpKazandir({
 }
 
 /**
- * Günlük su hedefi ilk kez tamamlandığında çağrılır.
+ * GÃ¼nlÃ¼k su hedefi ilk kez tamamlandÄ±ÄŸÄ±nda Ã§aÄŸrÄ±lÄ±r.
  */
 export async function suHedefiXpKazandir({
     bardakSayisi,
@@ -327,7 +327,7 @@ export async function suHedefiXpKazandir({
             "su-hedefi-tamamlandi",
 
         aciklama:
-            "Günlük su hedefi tamamlandı",
+            "GÃ¼nlÃ¼k su hedefi tamamlandÄ±",
 
         karakter: "viki",
         kaynakId: gun,
@@ -348,7 +348,7 @@ export async function suHedefiXpKazandir({
 }
 
 /**
- * Günün bütün öğünleri tamamlandığında çağrılır.
+ * GÃ¼nÃ¼n bÃ¼tÃ¼n Ã¶ÄŸÃ¼nleri tamamlandÄ±ÄŸÄ±nda Ã§aÄŸrÄ±lÄ±r.
  */
 export async function tumOgunlerXpKazandir({
     tamamlananOgunSayisi,
@@ -364,7 +364,7 @@ export async function tumOgunlerXpKazandir({
             "tum-ogunler-tamamlandi",
 
         aciklama:
-            "Bugünkü bütün öğünler tamamlandı",
+            "BugÃ¼nkÃ¼ bÃ¼tÃ¼n Ã¶ÄŸÃ¼nler tamamlandÄ±",
 
         karakter: "ikisi",
         kaynakId: gun,
@@ -389,10 +389,10 @@ export async function tumOgunlerXpKazandir({
 }
 
 /**
- * Yerel tarihe göre YYYY-MM-DD üretir.
+ * Yerel tarihe gÃ¶re YYYY-MM-DD Ã¼retir.
  *
- * UTC dönüşümünden kaynaklanan gün kayması yaşanmaması için
- * Europe/Istanbul saat dilimi kullanılır.
+ * UTC dÃ¶nÃ¼ÅŸÃ¼mÃ¼nden kaynaklanan gÃ¼n kaymasÄ± yaÅŸanmamasÄ± iÃ§in
+ * Europe/Istanbul saat dilimi kullanÄ±lÄ±r.
  */
 export function bugununTarihiniGetir() {
     return new Intl.DateTimeFormat(

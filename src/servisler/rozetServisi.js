@@ -7,7 +7,7 @@ export async function rozetleriKontrolEt() {
 
     if (error) {
         console.error(
-            "Rozet kontrolü baþarýsýz:",
+            "Rozet kontrolÃ¼ baÅŸarÄ±sÄ±z:",
             error,
         );
 
@@ -44,7 +44,7 @@ export async function tumRozetleriGetir() {
     if (error) {
         throw new Error(
             error.message ||
-            "Rozetler alýnamadý.",
+            "Rozetler alÄ±namadÄ±.",
         );
     }
 
@@ -75,7 +75,7 @@ export async function kazanilanRozetleriGetir() {
     if (error) {
         throw new Error(
             error.message ||
-            "Kazanýlan rozetler alýnamadý.",
+            "KazanÄ±lan rozetler alÄ±namadÄ±.",
         );
     }
 

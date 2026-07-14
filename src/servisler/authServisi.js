@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 function supabaseKontrolEt() {
     if (!supabase) {
         throw new Error(
-            "Supabase bağlantısı hazır değil. .env ayarlarını kontrol et.",
+            "Supabase baÄŸlantÄ±sÄ± hazÄ±r deÄŸil. .env ayarlarÄ±nÄ± kontrol et.",
         );
     }
 }
@@ -28,7 +28,7 @@ export async function kayitOl({
 
     if (!sifre || sifre.length < 6) {
         throw new Error(
-            "Şifre en az 6 karakter olmalıdır.",
+            "Åifre en az 6 karakter olmalÄ±dÄ±r.",
         );
     }
 
@@ -46,13 +46,13 @@ export async function kayitOl({
 
     if (error) {
         console.error(
-            "Kayıt olma hatası:",
+            "KayÄ±t olma hatasÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Kullanıcı kaydı oluşturulamadı.",
+            "KullanÄ±cÄ± kaydÄ± oluÅŸturulamadÄ±.",
         );
     }
 
@@ -71,7 +71,7 @@ export async function girisYap({
 
     if (!temizEmail || !sifre) {
         throw new Error(
-            "E-posta ve şifre zorunludur.",
+            "E-posta ve ÅŸifre zorunludur.",
         );
     }
 
@@ -83,7 +83,7 @@ export async function girisYap({
 
     if (error) {
         console.error(
-            "Giriş yapma hatası:",
+            "GiriÅŸ yapma hatasÄ±:",
             error,
         );
 
@@ -93,13 +93,13 @@ export async function girisYap({
                 .includes("invalid login")
         ) {
             throw new Error(
-                "E-posta veya şifre hatalı.",
+                "E-posta veya ÅŸifre hatalÄ±.",
             );
         }
 
         throw new Error(
             error.message ||
-            "Giriş yapılamadı.",
+            "GiriÅŸ yapÄ±lamadÄ±.",
         );
     }
 
@@ -114,13 +114,13 @@ export async function cikisYap() {
 
     if (error) {
         console.error(
-            "Çıkış yapma hatası:",
+            "Ã‡Ä±kÄ±ÅŸ yapma hatasÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Çıkış yapılamadı.",
+            "Ã‡Ä±kÄ±ÅŸ yapÄ±lamadÄ±.",
         );
     }
 }
@@ -135,13 +135,13 @@ export async function aktifOturumuGetir() {
 
     if (error) {
         console.error(
-            "Oturum bilgisi alınamadı:",
+            "Oturum bilgisi alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Oturum bilgisi alınamadı.",
+            "Oturum bilgisi alÄ±namadÄ±.",
         );
     }
 
@@ -204,13 +204,13 @@ export async function profilBilgisiniGetir() {
 
     if (error) {
         console.error(
-            "Profil bilgisi alınamadı:",
+            "Profil bilgisi alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Profil bilgisi alınamadı.",
+            "Profil bilgisi alÄ±namadÄ±.",
         );
     }
 

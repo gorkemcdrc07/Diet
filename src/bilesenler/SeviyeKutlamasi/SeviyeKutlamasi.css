@@ -240,7 +240,7 @@
     background: rgba(255, 255, 255, 0.06);
 }
 
-/* ANÝMASYONLAR */
+/* ANÄ°MASYONLAR */
 
 @keyframes seviye-katman-giris {
     from {
@@ -281,7 +281,7 @@
     }
 }
 
-/* MOBÝL */
+/* MOBÄ°L */
 
 @media (max-width: 520px) {
     .seviye-kutlama-katmani {

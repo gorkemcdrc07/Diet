@@ -33,7 +33,7 @@ export const supabaseHazir =
 
 if (!supabaseHazir) {
     console.error(
-        "Supabase ayarları geçersiz.",
+        "Supabase ayarlarÄ± geÃ§ersiz.",
         {
             urlVarMi: Boolean(
                 supabaseUrlHam,

@@ -23,11 +23,11 @@ export default defineConfig({
             ],
 
             manifest: {
-                name: "GÃ¼zelim Ä°Ã§in Beslenme AsistanÄ±",
+                name: "Güzelim İçin Beslenme Asistanı",
                 short_name: "Beslenme",
 
                 description:
-                    "GÃ¼nlÃ¼k beslenme programÄ±, su takibi ve Ã¶ÄŸÃ¼n hatÄ±rlatÄ±cÄ±larÄ±.",
+                    "Günlük beslenme programı, su takibi ve öğün hatırlatıcıları.",
 
                 lang: "tr",
                 dir: "ltr",
@@ -75,6 +75,8 @@ export default defineConfig({
                 globPatterns: [
                     "**/*.{js,css,html,ico,png,svg,webp,json}",
                 ],
+
+                maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
             },
         }),
     ],
