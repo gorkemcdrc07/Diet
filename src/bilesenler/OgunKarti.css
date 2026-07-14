@@ -1,0 +1,413 @@
+﻿.premium-ogun-karti {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 24px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)), rgba(29, 23, 34, 0.92);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.17);
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+    .premium-ogun-karti::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 4px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .premium-ogun-karti:hover {
+        transform: translateY(-2px);
+        border-color: rgba(238, 112, 151, 0.25);
+        box-shadow: 0 22px 58px rgba(0, 0, 0, 0.23);
+    }
+
+    .premium-ogun-karti.durum-sirada::before {
+        background: #f276a0;
+    }
+
+    .premium-ogun-karti.durum-gecti::before {
+        background: #f3a65a;
+    }
+
+    .premium-ogun-karti.ogun-tamamlandi::before {
+        background: #59c99a;
+    }
+
+    .premium-ogun-karti.ogun-tamamlandi {
+        border-color: rgba(89, 201, 154, 0.25);
+    }
+
+.premium-ogun-ozet {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 18px 18px 20px;
+    border: 0;
+    color: inherit;
+    text-align: left;
+    background: transparent;
+    cursor: pointer;
+}
+
+.premium-ogun-emoji {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 17px;
+    background: linear-gradient(145deg, rgba(242, 118, 160, 0.22), rgba(242, 118, 160, 0.08));
+    font-size: 25px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.ogun-tamamlandi .premium-ogun-emoji {
+    background: linear-gradient(145deg, rgba(89, 201, 154, 0.22), rgba(89, 201, 154, 0.07));
+}
+
+.premium-ogun-ana-bilgi {
+    min-width: 0;
+}
+
+.premium-ogun-baslik-satiri {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+    .premium-ogun-baslik-satiri > strong {
+        overflow: hidden;
+        color: #fff;
+        font-size: 17px;
+        line-height: 1.25;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.premium-ogun-durum {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex: 0 0 auto;
+    padding: 6px 9px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    color: #bdb3c4;
+    background: rgba(255, 255, 255, 0.045);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+    .premium-ogun-durum.sirada {
+        color: #ff9abd;
+        border-color: rgba(242, 118, 160, 0.2);
+        background: rgba(242, 118, 160, 0.11);
+    }
+
+    .premium-ogun-durum.gecti {
+        color: #ffc27b;
+        border-color: rgba(243, 166, 90, 0.2);
+        background: rgba(243, 166, 90, 0.1);
+    }
+
+    .premium-ogun-durum.tamamlandi {
+        color: #7ee0b7;
+        border-color: rgba(89, 201, 154, 0.22);
+        background: rgba(89, 201, 154, 0.1);
+    }
+
+.premium-ogun-alt-bilgi {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-top: 9px;
+}
+
+    .premium-ogun-alt-bilgi span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: #a89eae;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+.premium-ogun-chevron {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    color: #b7acbb;
+    background: rgba(255, 255, 255, 0.045);
+    transition: transform 180ms ease, background 180ms ease;
+}
+
+    .premium-ogun-chevron.acik {
+        transform: rotate(180deg);
+        background: rgba(242, 118, 160, 0.12);
+    }
+
+.premium-ogun-detay {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 260ms ease, opacity 180ms ease;
+}
+
+    .premium-ogun-detay.gorunur {
+        grid-template-rows: 1fr;
+        opacity: 1;
+    }
+
+.premium-ogun-detay-icerik {
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 18px;
+}
+
+.premium-ogun-detay.gorunur .premium-ogun-detay-icerik {
+    padding-bottom: 18px;
+}
+
+.premium-ogun-genel-not {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 13px;
+    padding: 12px 13px;
+    border: 1px solid rgba(242, 118, 160, 0.13);
+    border-radius: 15px;
+    color: #c9bdca;
+    background: rgba(242, 118, 160, 0.06);
+}
+
+    .premium-ogun-genel-not svg {
+        flex: 0 0 auto;
+        margin-top: 2px;
+        color: #f276a0;
+    }
+
+    .premium-ogun-genel-not p {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.65;
+    }
+
+.premium-ogun-besin-listesi {
+    display: grid;
+    gap: 10px;
+}
+
+.premium-ogun-besin-karti {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 11px;
+    padding: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.065);
+    border-radius: 17px;
+    background: rgba(255, 255, 255, 0.028);
+}
+
+.premium-ogun-besin-sira {
+    width: 27px;
+    height: 27px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    color: #ff9cbe;
+    background: rgba(242, 118, 160, 0.12);
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.premium-ogun-besin-icerik {
+    min-width: 0;
+}
+
+.premium-ogun-besin-baslik {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+    .premium-ogun-besin-baslik strong {
+        color: #f8f4f8;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .premium-ogun-besin-baslik span {
+        flex: 0 0 auto;
+        padding: 4px 8px;
+        border-radius: 999px;
+        color: #e9dfe9;
+        background: rgba(255, 255, 255, 0.07);
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+.premium-ogun-besin-icerik > p {
+    margin: 8px 0 0;
+    color: #aaa0ae;
+    font-size: 11px;
+    line-height: 1.65;
+}
+
+.premium-ogun-alternatifler {
+    margin-top: 11px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.premium-ogun-alternatif-baslik {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #d7cad8;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+}
+
+.premium-ogun-alternatif-listesi {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 9px;
+}
+
+    .premium-ogun-alternatif-listesi span {
+        padding: 7px 9px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        color: #bfb3c1;
+        background: rgba(255, 255, 255, 0.035);
+        font-size: 10px;
+        line-height: 1.35;
+    }
+
+.premium-ogun-bos-detay {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 14px;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    border-radius: 15px;
+    color: #a99eac;
+    font-size: 12px;
+}
+
+.premium-ogun-not {
+    display: grid;
+    gap: 4px;
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+    .premium-ogun-not strong {
+        color: #f2dbe5;
+        font-size: 11px;
+    }
+
+    .premium-ogun-not span {
+        color: #aa9fad;
+        font-size: 11px;
+        line-height: 1.55;
+    }
+
+.premium-ogun-tamamla {
+    width: 100%;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+    border: 0;
+    border-radius: 15px;
+    color: #241821;
+    background: linear-gradient(135deg, #ff9abe, #ef729d);
+    box-shadow: 0 12px 28px rgba(239, 114, 157, 0.2);
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform 160ms ease, filter 160ms ease;
+}
+
+    .premium-ogun-tamamla:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.04);
+    }
+
+    .premium-ogun-tamamla.geri-al {
+        color: #b9e9d3;
+        border: 1px solid rgba(89, 201, 154, 0.2);
+        background: rgba(89, 201, 154, 0.1);
+        box-shadow: none;
+    }
+
+@media (max-width: 560px) {
+    .premium-ogun-ozet {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 11px;
+        padding: 15px 14px 15px 16px;
+    }
+
+    .premium-ogun-emoji {
+        width: 46px;
+        height: 46px;
+        border-radius: 15px;
+        font-size: 22px;
+    }
+
+    .premium-ogun-baslik-satiri {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .premium-ogun-baslik-satiri > strong {
+            max-width: 100%;
+            font-size: 15px;
+        }
+
+    .premium-ogun-durum {
+        padding: 4px 7px;
+        font-size: 9px;
+    }
+
+    .premium-ogun-alt-bilgi {
+        gap: 6px 10px;
+        margin-top: 7px;
+    }
+
+        .premium-ogun-alt-bilgi span {
+            font-size: 10px;
+        }
+
+    .premium-ogun-chevron {
+        width: 31px;
+        height: 31px;
+    }
+
+    .premium-ogun-besin-baslik {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .premium-ogun-besin-baslik span {
+            align-self: flex-start;
+        }
+}

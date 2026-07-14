@@ -1,130 +1,93 @@
-﻿.xp-ozet-karti {
-    position: relative;
-    overflow: hidden;
-    margin-top: 18px;
-    padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 24px;
-    background: radial-gradient( circle at top right, rgba(173, 128, 255, 0.22), transparent 38% ), linear-gradient( 135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05) );
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-}
-
-    .xp-ozet-karti::before {
-        content: "";
-        position: absolute;
-        width: 180px;
-        height: 180px;
-        top: -95px;
-        right: -70px;
-        border-radius: 50%;
-        background: rgba(152, 111, 255, 0.16);
-        filter: blur(8px);
-        pointer-events: none;
-    }
-
-.xp-ozet-ust {
-    position: relative;
-    z-index: 1;
+﻿.ana-sayfa {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
+    flex-direction: column;
+    gap: 20px;
 }
 
-    .xp-ozet-ust h2 {
-        margin: 5px 0 0;
-        font-size: 24px;
-        line-height: 1.1;
+    .ana-sayfa > .premium-ust-alan {
+        order: 1;
     }
 
-.xp-toplam-deger {
-    display: flex;
-    align-items: baseline;
-    gap: 5px;
-    padding: 10px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-    .xp-toplam-deger strong {
-        font-size: 24px;
-        line-height: 1;
+    .ana-sayfa > .bolum {
+        order: 2;
     }
 
-    .xp-toplam-deger span {
-        font-size: 12px;
-        font-weight: 700;
-        opacity: 0.72;
-    }
-
-.xp-ilerleme-bilgisi {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 20px;
-    margin-bottom: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    opacity: 0.72;
-}
-
-.xp-ilerleme-cubugu {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: 12px;
-    overflow: hidden;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.xp-ilerleme-dolgu {
-    height: 100%;
-    border-radius: inherit;
-    background: linear-gradient( 90deg, #8e63f4, #bc86ff );
-    box-shadow: 0 0 18px rgba(158, 105, 255, 0.45);
-    transition: width 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.xp-ozet-alt {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    opacity: 0.82;
-}
-
-@media (max-width: 560px) {
-    .xp-ozet-karti {
-        padding: 17px;
-        border-radius: 21px;
-    }
-
-    .xp-ozet-ust h2 {
-        font-size: 21px;
-    }
-
-    .xp-toplam-deger {
-        padding: 9px 12px;
-    }
-
-        .xp-toplam-deger strong {
-            font-size: 21px;
+        .ana-sayfa > .bolum .bolum-baslik {
+            align-items: flex-end;
+            margin-bottom: 14px;
         }
 
-    .xp-ozet-alt {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 5px;
+        .ana-sayfa > .bolum .mini-baslik {
+            color: #d693ab;
+            letter-spacing: 0.08em;
+        }
+
+        .ana-sayfa > .bolum .ogun-sayisi {
+            padding: 7px 11px;
+            border: 1px solid rgba(242, 118, 160, 0.16);
+            border-radius: 999px;
+            color: #ff91b7;
+            background: rgba(242, 118, 160, 0.09);
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .ana-sayfa > .bolum .ogun-listesi {
+            display: grid;
+            gap: 12px;
+        }
+
+    .ana-sayfa > .su-takibi,
+    .ana-sayfa > [class*="su-takibi"] {
+        order: 3;
     }
+
+    .ana-sayfa > .gunluk-gorevler-karti {
+        order: 4;
+    }
+
+    .ana-sayfa > [class*="mico-viki"],
+    .ana-sayfa > [class*="asistan"] {
+        order: 5;
+    }
+
+    .ana-sayfa > [class*="gunluk-not"] {
+        order: 6;
+    }
+
+    .ana-sayfa > [class*="haftalik"] {
+        order: 7;
+    }
+
+    .ana-sayfa > .bildirim-karti,
+    .ana-sayfa > .bildirim-uyari {
+        order: 8;
+    }
+
+    .ana-sayfa > .tebrik-bildirimi {
+        order: 0;
+    }
+
+    /* Ana sayfayı sadeleştirmek için detay özetleri ilgili sayfalara bırakıyoruz. */
+    .ana-sayfa > .xp-ozet-karti,
+    .ana-sayfa > .coin-ozet-karti,
+    .ana-sayfa > .karakter-seviye-alani {
+        display: none;
+    }
+
+    .ana-sayfa > .gunluk-gorevler-karti {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018)), rgba(29, 23, 34, 0.88);
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.15);
+    }
+
+@media (max-width: 720px) {
+    .ana-sayfa {
+        gap: 16px;
+    }
+
+        .ana-sayfa > .bolum .bolum-baslik h2 {
+            font-size: 23px;
+        }
 }

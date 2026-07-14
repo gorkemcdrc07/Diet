@@ -3,10 +3,15 @@ import {
     Check,
     CheckCircle2,
     ChevronDown,
-    Clock3,
     Circle,
+    Clock3,
+    Info,
+    ListChecks,
+    RefreshCw,
     Sparkles,
 } from "lucide-react";
+
+import "./OgunKarti.css";
 
 function saatDakikayaCevir(saat) {
     if (!saat || typeof saat !== "string") {
@@ -18,8 +23,7 @@ function saatDakikayaCevir(saat) {
         .map(Number);
 
     return (
-        (Number.isFinite(saatDegeri) ? saatDegeri : 0) *
-        60 +
+        (Number.isFinite(saatDegeri) ? saatDegeri : 0) * 60 +
         (Number.isFinite(dakikaDegeri) ? dakikaDegeri : 0)
     );
 }
@@ -33,15 +37,11 @@ function istanbulDakikasiniGetir() {
     }).formatToParts(new Date());
 
     const saat = Number(
-        parcalar.find(
-            (parca) => parca.type === "hour",
-        )?.value || 0,
+        parcalar.find((parca) => parca.type === "hour")?.value || 0,
     );
 
     const dakika = Number(
-        parcalar.find(
-            (parca) => parca.type === "minute",
-        )?.value || 0,
+        parcalar.find((parca) => parca.type === "minute")?.value || 0,
     );
 
     return saat * 60 + dakika;
@@ -54,26 +54,7 @@ function metniListeyeCevir(deger) {
 
     if (Array.isArray(deger)) {
         return deger
-            .map((eleman) => {
-                if (typeof eleman === "string") {
-                    return eleman.trim();
-                }
-
-                if (
-                    eleman &&
-                    typeof eleman === "object"
-                ) {
-                    return (
-                        eleman.metin ||
-                        eleman.baslik ||
-                        eleman.ad ||
-                        eleman.aciklama ||
-                        ""
-                    ).trim();
-                }
-
-                return "";
-            })
+            .map((eleman) => String(eleman || "").trim())
             .filter(Boolean);
     }
 
@@ -87,11 +68,67 @@ function metniListeyeCevir(deger) {
     return [];
 }
 
+function detayNesnesiniDuzenle(detay, index) {
+    if (typeof detay === "string") {
+        return {
+            id: `detay-${index}`,
+            baslik: detay.trim(),
+            miktar: "",
+            aciklama: "",
+            alternatifler: [],
+        };
+    }
+
+    if (!detay || typeof detay !== "object") {
+        return null;
+    }
+
+    const baslik = String(
+        detay.baslik ||
+        detay.ad ||
+        detay.metin ||
+        detay.besin ||
+        "",
+    ).trim();
+
+    const miktar = String(
+        detay.miktar ||
+        detay.olcu ||
+        detay.porsiyon ||
+        "",
+    ).trim();
+
+    const aciklama = String(
+        detay.aciklama ||
+        detay.not ||
+        detay.detay ||
+        "",
+    ).trim();
+
+    const alternatifler = metniListeyeCevir(
+        detay.alternatifler ||
+        detay.alternatif ||
+        detay.secenekler,
+    );
+
+    if (!baslik && !miktar && !aciklama && alternatifler.length === 0) {
+        return null;
+    }
+
+    return {
+        id: detay.id || `detay-${index}`,
+        baslik: baslik || "Besin",
+        miktar,
+        aciklama,
+        alternatifler,
+    };
+}
+
 function ogunDetaylariniGetir(ogun) {
     const adaylar = [
+        ogun.detaylar,
         ogun.icerik,
         ogun.icerikler,
-        ogun.detaylar,
         ogun.besinler,
         ogun.secimler,
         ogun.secenekler,
@@ -99,15 +136,17 @@ function ogunDetaylariniGetir(ogun) {
     ];
 
     for (const aday of adaylar) {
-        const liste = metniListeyeCevir(aday);
-
-        if (liste.length > 0) {
-            return liste;
+        if (Array.isArray(aday) && aday.length > 0) {
+            return aday
+                .map(detayNesnesiniDuzenle)
+                .filter(Boolean);
         }
-    }
 
-    if (ogun.aciklama) {
-        return metniListeyeCevir(ogun.aciklama);
+        if (typeof aday === "string" && aday.trim()) {
+            return metniListeyeCevir(aday)
+                .map(detayNesnesiniDuzenle)
+                .filter(Boolean);
+        }
     }
 
     return [];
@@ -125,8 +164,7 @@ function ogunDurumunuGetir({
         };
     }
 
-    const fark =
-        ogunSaati - simdikiDakika;
+    const fark = ogunSaati - simdikiDakika;
 
     if (fark > 30) {
         return {
@@ -138,9 +176,7 @@ function ogunDurumunuGetir({
     if (fark >= -30) {
         return {
             anahtar: "sirada",
-            metin: fark > 0
-                ? `${fark} dk kaldı`
-                : "Şimdi",
+            metin: fark > 0 ? `${fark} dk kaldı` : "Şimdi",
         };
     }
 
@@ -156,14 +192,11 @@ export default function OgunKarti({
     onToggle,
 }) {
     const [acik, setAcik] = useState(false);
-    const [zamanGuncelleme, setZamanGuncelleme] =
-        useState(0);
+    const [zamanGuncelleme, setZamanGuncelleme] = useState(0);
 
     useEffect(() => {
         const zamanlayici = window.setInterval(() => {
-            setZamanGuncelleme(
-                (mevcut) => mevcut + 1,
-            );
+            setZamanGuncelleme((mevcut) => mevcut + 1);
         }, 60_000);
 
         return () => {
@@ -177,34 +210,30 @@ export default function OgunKarti({
     );
 
     const durum = useMemo(() => {
-        const simdikiDakika =
-            istanbulDakikasiniGetir();
+        const simdikiDakika = istanbulDakikasiniGetir();
 
         return ogunDurumunuGetir({
             tamamlandi,
-            ogunSaati:
-                saatDakikayaCevir(ogun.saat),
+            ogunSaati: saatDakikayaCevir(ogun.saat),
             simdikiDakika,
         });
-    }, [
-        tamamlandi,
-        ogun.saat,
-        zamanGuncelleme,
-    ]);
+    }, [tamamlandi, ogun.saat, zamanGuncelleme]);
 
     const baslik =
         ogun.kisaBaslik ||
         ogun.baslik ||
+        ogun.ad ||
+        ogun.ogunAdi ||
         "Öğün";
 
-    function kartiAcKapat() {
-        setAcik((mevcut) => !mevcut);
-    }
+    const toplamAlternatif = detaylar.reduce(
+        (toplam, detay) => toplam + detay.alternatifler.length,
+        0,
+    );
 
     function tamamlaButonunaBas(event) {
         event.stopPropagation();
-
-        onToggle(ogun.id);
+        onToggle?.(ogun.id);
     }
 
     return (
@@ -212,12 +241,8 @@ export default function OgunKarti({
             className={[
                 "premium-ogun-karti",
                 `durum-${durum.anahtar}`,
-                tamamlandi
-                    ? "ogun-tamamlandi"
-                    : "",
-                acik
-                    ? "ogun-acik"
-                    : "",
+                tamamlandi ? "ogun-tamamlandi" : "",
+                acik ? "ogun-acik" : "",
             ]
                 .filter(Boolean)
                 .join(" ")}
@@ -225,11 +250,11 @@ export default function OgunKarti({
             <button
                 type="button"
                 className="premium-ogun-ozet"
-                onClick={kartiAcKapat}
+                onClick={() => setAcik((mevcut) => !mevcut)}
                 aria-expanded={acik}
             >
                 <div className="premium-ogun-emoji">
-                    {ogun.emoji || "🥗"}
+                    {ogun.ikon || ogun.emoji || "🥗"}
                 </div>
 
                 <div className="premium-ogun-ana-bilgi">
@@ -240,9 +265,9 @@ export default function OgunKarti({
                             className={`premium-ogun-durum ${durum.anahtar}`}
                         >
                             {tamamlandi ? (
-                                <CheckCircle2 size={12} />
+                                <CheckCircle2 size={13} />
                             ) : (
-                                <Circle size={11} />
+                                <Circle size={12} />
                             )}
 
                             {durum.metin}
@@ -251,65 +276,97 @@ export default function OgunKarti({
 
                     <div className="premium-ogun-alt-bilgi">
                         <span>
-                            <Clock3 size={13} />
+                            <Clock3 size={14} />
                             {ogun.saat}
                         </span>
 
-                        {ogun.altBaslik && (
-                            <small>
-                                {ogun.altBaslik}
-                            </small>
+                        <span>
+                            <ListChecks size={14} />
+                            {detaylar.length} besin
+                        </span>
+
+                        {toplamAlternatif > 0 && (
+                            <span>
+                                <RefreshCw size={13} />
+                                {toplamAlternatif} alternatif
+                            </span>
                         )}
                     </div>
                 </div>
 
                 <div
-                    className={`premium-ogun-chevron ${acik ? "acik" : ""
-                        }`}
+                    className={`premium-ogun-chevron ${acik ? "acik" : ""}`}
                 >
-                    <ChevronDown size={19} />
+                    <ChevronDown size={20} />
                 </div>
             </button>
 
             <div
-                className={`premium-ogun-detay ${acik ? "gorunur" : ""
-                    }`}
+                className={`premium-ogun-detay ${acik ? "gorunur" : ""}`}
             >
                 <div className="premium-ogun-detay-icerik">
                     {ogun.aciklama && (
-                        <p className="premium-ogun-aciklama">
-                            {ogun.aciklama}
-                        </p>
+                        <div className="premium-ogun-genel-not">
+                            <Info size={16} />
+
+                            <p>{ogun.aciklama}</p>
+                        </div>
                     )}
 
                     {detaylar.length > 0 ? (
-                        <div className="premium-ogun-liste">
-                            {detaylar.map(
-                                (detay, index) => (
-                                    <div
-                                        key={`${ogun.id}-${index}`}
-                                        className="premium-ogun-liste-satiri"
-                                    >
-                                        <div className="premium-ogun-liste-ikon">
-                                            <Sparkles
-                                                size={13}
-                                            />
+                        <div className="premium-ogun-besin-listesi">
+                            {detaylar.map((detay, index) => (
+                                <article
+                                    key={detay.id || `${ogun.id}-${index}`}
+                                    className="premium-ogun-besin-karti"
+                                >
+                                    <div className="premium-ogun-besin-sira">
+                                        {index + 1}
+                                    </div>
+
+                                    <div className="premium-ogun-besin-icerik">
+                                        <div className="premium-ogun-besin-baslik">
+                                            <strong>{detay.baslik}</strong>
+
+                                            {detay.miktar && (
+                                                <span>{detay.miktar}</span>
+                                            )}
                                         </div>
 
-                                        <span>
-                                            {detay}
-                                        </span>
+                                        {detay.aciklama && (
+                                            <p>{detay.aciklama}</p>
+                                        )}
+
+                                        {detay.alternatifler.length > 0 && (
+                                            <div className="premium-ogun-alternatifler">
+                                                <div className="premium-ogun-alternatif-baslik">
+                                                    <RefreshCw size={13} />
+                                                    Alternatifler
+                                                </div>
+
+                                                <div className="premium-ogun-alternatif-listesi">
+                                                    {detay.alternatifler.map(
+                                                        (alternatif, alternatifIndex) => (
+                                                            <span
+                                                                key={`${detay.id}-alternatif-${alternatifIndex}`}
+                                                            >
+                                                                {alternatif}
+                                                            </span>
+                                                        ),
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                ),
-                            )}
+                                </article>
+                            ))}
                         </div>
                     ) : (
                         <div className="premium-ogun-bos-detay">
-                            <Sparkles size={16} />
+                            <Sparkles size={17} />
 
                             <span>
-                                Programındaki uygun
-                                seçeneği uygulayabilirsin.
+                                Bu öğün için henüz ayrıntılı besin bilgisi bulunmuyor.
                             </span>
                         </div>
                     )}
@@ -325,9 +382,7 @@ export default function OgunKarti({
                         type="button"
                         className={[
                             "premium-ogun-tamamla",
-                            tamamlandi
-                                ? "geri-al"
-                                : "",
+                            tamamlandi ? "geri-al" : "",
                         ]
                             .filter(Boolean)
                             .join(" ")}
@@ -335,10 +390,8 @@ export default function OgunKarti({
                     >
                         {tamamlandi ? (
                             <>
-                                <CheckCircle2
-                                    size={18}
-                                />
-                                Tamamlandı
+                                <CheckCircle2 size={18} />
+                                Tamamlandı — Geri Al
                             </>
                         ) : (
                             <>

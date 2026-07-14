@@ -11,9 +11,7 @@ import {
     suHedefi,
 } from "../veriler/gunlukProgram";
 
-import {
-    aktifBeslenmePlaniniGetir,
-} from "../servisler/beslenmePlaniServisi";
+import sabitBeslenmePlani from "../veriler/aktifBeslenmePlani";
 
 import {
     rastgeleMotivasyonMesaji,
@@ -513,6 +511,9 @@ export default function AnaSayfa() {
         setBekleyenSeviyeKutlamasi,
     ] = useState(null);
 
+    // Not: Günlük görevlerin kendisi artık ana sayfada gösterilmiyor.
+    // Ödül/coin/xp mantığı burada çalışmaya devam ediyor, listenin
+    // görsel dökümü Başarılar sekmesine taşındı.
     const [gorevOzeti, setGorevOzeti] = useState(null);
 
     const [
@@ -529,13 +530,6 @@ export default function AnaSayfa() {
         beslenmePlaniHatasi,
         setBeslenmePlaniHatasi,
     ] = useState("");
-
-
-    const [gorevlerYukleniyor, setGorevlerYukleniyor] =
-        useState(true);
-
-    const [gorevHatasi, setGorevHatasi] =
-        useState("");
 
     const sonOgunTimer = useRef(null);
 
@@ -631,11 +625,8 @@ export default function AnaSayfa() {
         setBeslenmePlaniHatasi("");
 
         try {
-            const plan =
-                await aktifBeslenmePlaniniGetir();
-
             setAktifBeslenmePlani(
-                plan,
+                sabitBeslenmePlani,
             );
         } catch (error) {
             console.error(
@@ -653,7 +644,6 @@ export default function AnaSayfa() {
             );
         }
     }
-
 
     useEffect(() => {
         aktifPlaniYukle();
@@ -706,9 +696,7 @@ export default function AnaSayfa() {
     }, []);
 
     useEffect(() => {
-        gorevOzetiniYenile({
-            yukleniyorGoster: true,
-        });
+        gorevOzetiniYenile();
     }, []);
 
     useEffect(() => {
@@ -718,7 +706,6 @@ export default function AnaSayfa() {
                     tebrikZamanlayiciRef.current,
                 );
             }
-
 
             if (sonOgunTimer.current) {
                 window.clearTimeout(
@@ -894,7 +881,6 @@ export default function AnaSayfa() {
         gunlukProgram.length,
     ]);
 
-
     function tebrikMesajiGoster(
         mesaj,
     ) {
@@ -996,15 +982,7 @@ export default function AnaSayfa() {
         }
     }
 
-    async function gorevOzetiniYenile({
-        yukleniyorGoster = false,
-    } = {}) {
-        if (yukleniyorGoster) {
-            setGorevlerYukleniyor(true);
-        }
-
-        setGorevHatasi("");
-
+    async function gorevOzetiniYenile() {
         try {
             const veri =
                 await gorevOzetiniGetir();
@@ -1018,16 +996,7 @@ export default function AnaSayfa() {
                 error,
             );
 
-            setGorevHatasi(
-                error?.message ||
-                "Günlük görevler yüklenemedi.",
-            );
-
             return null;
-        } finally {
-            if (yukleniyorGoster) {
-                setGorevlerYukleniyor(false);
-            }
         }
     }
 
@@ -1397,7 +1366,6 @@ export default function AnaSayfa() {
                     tamamlananOgun?.adi ||
                     "Öğün";
 
-
                 if (sonOgunTimer.current) {
                     window.clearTimeout(
                         sonOgunTimer.current,
@@ -1672,7 +1640,6 @@ export default function AnaSayfa() {
             await gorevOdulleriniKontrolEt();
             await rozetleriYenidenKontrolEt();
 
-
             if (seviyeAtlamaSonucu) {
                 setSeviyeKutlamasi({
                     gorunur: true,
@@ -1838,6 +1805,12 @@ export default function AnaSayfa() {
                     }
                 }}
             />
+            {/*
+              Üst alan artık coin bakiyesini de taşıyor (coinBakiyesi prop'u).
+              PremiumUstAlan bileşeninde bu değeri küçük bir rozet olarak
+              (örn. kalp ikonunun yanında "🪙 10") göstermen yeterli;
+              ayrı büyük bir coin kartına gerek kalmadı.
+            */}
             <PremiumUstAlan
                 tarih={
                     bugununTarihiniGetir()
@@ -1866,6 +1839,9 @@ export default function AnaSayfa() {
                             sonrakiOgun.saat,
                         )
                         : ""
+                }
+                coinBakiyesi={
+                    coinOzeti?.mevcut_coin || 0
                 }
             />
 
@@ -1931,298 +1907,10 @@ export default function AnaSayfa() {
                 </section>
             )}
 
-            <section className="coin-ozet-karti">
-                <div className="coin-ozet-ust">
-                    <div className="coin-ozet-sol">
-                        <div className="coin-ozet-ikon">
-                            🪙
-                        </div>
-
-                        <div>
-                            <span className="mini-baslik">
-                                Mağaza bakiyesi
-                            </span>
-
-                            <h2>Coin Cüzdanı</h2>
-                        </div>
-                    </div>
-
-                    <div className="coin-ozet-deger">
-                        <strong>
-                            {coinOzeti?.mevcut_coin || 0}
-                        </strong>
-
-                        <span>Coin</span>
-                    </div>
-                </div>
-
-                <div className="coin-ozet-alt">
-                    <span>
-                        Bugün +{coinOzeti?.bugunku_coin || 0}
-                    </span>
-
-                    <span>
-                        Toplam kazanılan{" "}
-                        {coinOzeti?.toplam_coin || 0}
-                    </span>
-                </div>
-
-                {coinHatasi && (
-                    <div className="coin-ozet-hata">
-                        {coinHatasi}
-                    </div>
-                )}
-            </section>
-
-            {xpOzeti && (
-                <section className="karakter-seviye-alani">
-                    <article className="karakter-seviye-karti karakter-seviye-karti--mico">
-                        <div className="karakter-seviye-gorsel">
-                            <img
-                                src="/karakterler/mico-kizgin.png"
-                                alt="Miço"
-                            />
-                        </div>
-
-                        <div className="karakter-seviye-icerik">
-                            <span>Miço</span>
-
-                            <h3>
-                                Seviye {xpOzeti.mico_seviye}
-                            </h3>
-
-                            <p>
-                                {micoUnvaniniGetir(
-                                    xpOzeti.mico_seviye,
-                                )}
-                            </p>
-
-                            <strong>
-                                {xpOzeti.mico_xp} XP
-                            </strong>
-                        </div>
-                    </article>
-
-                    <article className="karakter-seviye-karti karakter-seviye-karti--viki">
-                        <div className="karakter-seviye-gorsel">
-                            <img
-                                src="/karakterler/viki-mama.png"
-                                alt="Viki"
-                            />
-                        </div>
-
-                        <div className="karakter-seviye-icerik">
-                            <span>Viki</span>
-
-                            <h3>
-                                Seviye {xpOzeti.viki_seviye}
-                            </h3>
-
-                            <p>
-                                {vikiUnvaniniGetir(
-                                    xpOzeti.viki_seviye,
-                                )}
-                            </p>
-
-                            <strong>
-                                {xpOzeti.viki_xp} XP
-                            </strong>
-                        </div>
-                    </article>
-                </section>
-            )}
-
-            <section className="gunluk-gorevler-karti">
-                <div className="gunluk-gorevler-ust">
-                    <div>
-                        <span className="mini-baslik">
-                            Bugünün hedefleri
-                        </span>
-
-                        <h2>Günlük Görevler</h2>
-                    </div>
-
-                    <div className="gunluk-gorevler-yuzde">
-                        %{gorevOzeti?.tamamlanmaYuzdesi || 0}
-                    </div>
-                </div>
-
-                {gorevlerYukleniyor ? (
-                    <div className="gunluk-gorevler-yukleniyor">
-                        <span />
-
-                        <strong>
-                            Görevler hazırlanıyor...
-                        </strong>
-                    </div>
-                ) : gorevHatasi ? (
-                    <div className="gunluk-gorevler-hata">
-                        <strong>
-                            Görevler yüklenemedi
-                        </strong>
-
-                        <span>
-                            {gorevHatasi}
-                        </span>
-
-                        <button
-                            type="button"
-                            onClick={() =>
-                                gorevOzetiniYenile({
-                                    yukleniyorGoster: true,
-                                })
-                            }
-                        >
-                            Tekrar dene
-                        </button>
-                    </div>
-                ) : (
-                    <>
-                        <div className="gunluk-gorevler-ilerleme">
-                            <span
-                                style={{
-                                    width: `${Math.min(
-                                        Math.max(
-                                            Number(
-                                                gorevOzeti?.tamamlanmaYuzdesi,
-                                            ) || 0,
-                                            0,
-                                        ),
-                                        100,
-                                    )}%`,
-                                }}
-                            />
-                        </div>
-
-                        <div className="gunluk-gorevler-ozet">
-                            <span>
-                                {gorevOzeti?.tamamlananSayisi || 0}
-                                {" / "}
-                                {gorevOzeti?.toplamGorevSayisi || 0}
-                                {" görev tamamlandı"}
-                            </span>
-
-                            <strong>
-                                +
-                                {gorevOzeti?.kazanilabilirXp || 0}
-                                {" XP"}
-                            </strong>
-                        </div>
-
-                        <div className="gunluk-gorevler-listesi">
-                            {(gorevOzeti?.gorevler || []).map(
-                                (gorev) => {
-                                    const mevcutDeger = Math.min(
-                                        Number(
-                                            gorev.mevcut_deger,
-                                        ) || 0,
-                                        Number(
-                                            gorev.hedef_degeri,
-                                        ) || 1,
-                                    );
-
-                                    return (
-                                        <article
-                                            key={gorev.gorev_id}
-                                            className={[
-                                                "gunluk-gorev-satiri",
-                                                gorev.tamamlandi
-                                                    ? "gunluk-gorev-satiri--tamamlandi"
-                                                    : "",
-                                            ]
-                                                .filter(Boolean)
-                                                .join(" ")}
-                                        >
-                                            <div className="gunluk-gorev-ikon">
-                                                {gorev.tamamlandi
-                                                    ? "✓"
-                                                    : gorev.ikon || "✅"}
-                                            </div>
-
-                                            <div className="gunluk-gorev-metin">
-                                                <strong>
-                                                    {gorev.ad}
-                                                </strong>
-
-                                                <span>
-                                                    {gorev.aciklama}
-                                                </span>
-
-                                                <small>
-                                                    {mevcutDeger}
-                                                    {" / "}
-                                                    {gorev.hedef_degeri}
-                                                </small>
-                                            </div>
-
-                                            <div className="gunluk-gorev-odul">
-                                                +
-                                                {gorev.xp_odulu}
-                                                {" XP"}
-                                            </div>
-                                        </article>
-                                    );
-                                },
-                            )}
-                        </div>
-                    </>
-                )}
-            </section>
-
-            <MicoVikiAsistan
-                tamamlananOgun={tamamlananSayisi}
-                toplamOgun={toplamOgunSayisi}
-                suMiktari={suMiktari}
-                suHedefi={suHedefi}
-                gunlukSeri={gunlukSeri}
-                sonrakiOgun={sonrakiOgun}
-                kalanSure={
-                    sonrakiOgun
-                        ? kalanSureMetni(
-                            sonrakiOgun.saat,
-                        )
-                        : ""
-                }
-                sonTamamlananOgun={
-                    sonTamamlananOgun
-                }
-            />
-            <GununOzeti
-                tamamlananOgun={tamamlananSayisi}
-                toplamOgun={toplamOgunSayisi}
-                suMiktari={suMiktari}
-                suHedefi={suHedefi}
-                gunlukSeri={gunlukSeri}
-            />
-
-            <GunlukNotKarti
-                not={gunlukNot}
-            />
-
-            <HaftalikIlerleme
-                ozet={haftalikOzet}
-            />
-
-            {tebrikMesaji && (
-                <section className="tebrik-bildirimi">
-                    <div className="tebrik-ikon">
-                        <Trophy
-                            size={21}
-                        />
-                    </div>
-
-                    <div>
-                        <strong>
-                            Harika gidiyorsun
-                        </strong>
-
-                        <span>
-                            {tebrikMesaji}
-                        </span>
-                    </div>
-                </section>
-            )}
-
+            {/*
+              Beslenme planı ve su takibi artık ana sayfanın en görünür
+              bölümü: üst alan ve seviye kartından hemen sonra geliyor.
+            */}
             <section className="bolum">
                 <div className="bolum-baslik">
                     <div>
@@ -2324,13 +2012,124 @@ export default function AnaSayfa() {
                 </div>
             </section>
 
-
             <SuTakibi
                 miktar={suMiktari}
                 hedef={suHedefi}
                 onArtir={suArtir}
                 onAzalt={suAzalt}
             />
+
+            {xpOzeti && (
+                <section className="karakter-seviye-alani">
+                    <article className="karakter-seviye-karti karakter-seviye-karti--mico">
+                        <div className="karakter-seviye-gorsel">
+                            <img
+                                src="/karakterler/mico-kizgin.png"
+                                alt="Miço"
+                            />
+                        </div>
+
+                        <div className="karakter-seviye-icerik">
+                            <span>Miço</span>
+
+                            <h3>
+                                Seviye {xpOzeti.mico_seviye}
+                            </h3>
+
+                            <p>
+                                {micoUnvaniniGetir(
+                                    xpOzeti.mico_seviye,
+                                )}
+                            </p>
+
+                            <strong>
+                                {xpOzeti.mico_xp} XP
+                            </strong>
+                        </div>
+                    </article>
+
+                    <article className="karakter-seviye-karti karakter-seviye-karti--viki">
+                        <div className="karakter-seviye-gorsel">
+                            <img
+                                src="/karakterler/viki-mama.png"
+                                alt="Viki"
+                            />
+                        </div>
+
+                        <div className="karakter-seviye-icerik">
+                            <span>Viki</span>
+
+                            <h3>
+                                Seviye {xpOzeti.viki_seviye}
+                            </h3>
+
+                            <p>
+                                {vikiUnvaniniGetir(
+                                    xpOzeti.viki_seviye,
+                                )}
+                            </p>
+
+                            <strong>
+                                {xpOzeti.viki_xp} XP
+                            </strong>
+                        </div>
+                    </article>
+                </section>
+            )}
+
+            <MicoVikiAsistan
+                tamamlananOgun={tamamlananSayisi}
+                toplamOgun={toplamOgunSayisi}
+                suMiktari={suMiktari}
+                suHedefi={suHedefi}
+                gunlukSeri={gunlukSeri}
+                sonrakiOgun={sonrakiOgun}
+                kalanSure={
+                    sonrakiOgun
+                        ? kalanSureMetni(
+                            sonrakiOgun.saat,
+                        )
+                        : ""
+                }
+                sonTamamlananOgun={
+                    sonTamamlananOgun
+                }
+            />
+            <GununOzeti
+                tamamlananOgun={tamamlananSayisi}
+                toplamOgun={toplamOgunSayisi}
+                suMiktari={suMiktari}
+                suHedefi={suHedefi}
+                gunlukSeri={gunlukSeri}
+            />
+
+            <GunlukNotKarti
+                not={gunlukNot}
+            />
+
+            <HaftalikIlerleme
+                ozet={haftalikOzet}
+            />
+
+            {tebrikMesaji && (
+                <section className="tebrik-bildirimi">
+                    <div className="tebrik-ikon">
+                        <Trophy
+                            size={21}
+                        />
+                    </div>
+
+                    <div>
+                        <strong>
+                            Harika gidiyorsun
+                        </strong>
+
+                        <span>
+                            {tebrikMesaji}
+                        </span>
+                    </div>
+                </section>
+            )}
 
             <section className="bildirim-karti">
                 <div className="bildirim-ikon">
@@ -2404,8 +2203,6 @@ export default function AnaSayfa() {
                     </div>
                 </section>
             )}
-
-
         </div>
     );
 }
