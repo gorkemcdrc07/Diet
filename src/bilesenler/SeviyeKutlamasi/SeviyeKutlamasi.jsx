@@ -12,7 +12,7 @@ function micoUnvaniniGetir(seviye) {
         Number(seviye) || 1;
 
     if (guvenliSeviye >= 20) {
-        return "Büyük Patron";
+        return "BÃ¼yÃ¼k Patron";
     }
 
     if (guvenliSeviye >= 10) {
@@ -20,10 +20,10 @@ function micoUnvaniniGetir(seviye) {
     }
 
     if (guvenliSeviye >= 5) {
-        return "Baþ Denetçi";
+        return "BaÅŸ DenetÃ§i";
     }
 
-    return "Huysuz Denetçi";
+    return "Huysuz DenetÃ§i";
 }
 
 function vikiUnvaniniGetir(seviye) {
@@ -31,18 +31,18 @@ function vikiUnvaniniGetir(seviye) {
         Number(seviye) || 1;
 
     if (guvenliSeviye >= 20) {
-        return "Mama Kraliçesi";
+        return "Mama KraliÃ§esi";
     }
 
     if (guvenliSeviye >= 10) {
-        return "Tavuk Uzmaný";
+        return "Tavuk UzmanÄ±";
     }
 
     if (guvenliSeviye >= 5) {
-        return "Mama Avcýsý";
+        return "Mama AvcÄ±sÄ±";
     }
 
-    return "Mama Meraklýsý";
+    return "Mama MeraklÄ±sÄ±";
 }
 
 export default function SeviyeKutlamasi({
@@ -85,13 +85,13 @@ export default function SeviyeKutlamasi({
             className="seviye-kutlama-katmani"
             role="dialog"
             aria-modal="true"
-            aria-label="Seviye atlama kutlamasý"
+            aria-label="Seviye atlama kutlamasÄ±"
         >
             <button
                 type="button"
                 className="seviye-kutlama-kapat"
                 onClick={onKapat}
-                aria-label="Kutlamayý kapat"
+                aria-label="KutlamayÄ± kapat"
             >
                 <X size={19} />
             </button>
@@ -110,10 +110,10 @@ export default function SeviyeKutlamasi({
                 </div>
 
                 <span className="seviye-kutlama-mini">
-                    Yeni baþarý
+                    Yeni baÅŸarÄ±
                 </span>
 
-                <h2>Seviye atladýn!</h2>
+                <h2>Seviye atladÄ±n!</h2>
 
                 <div className="seviye-kutlama-seviye">
                     <span>Seviye</span>
@@ -125,11 +125,11 @@ export default function SeviyeKutlamasi({
                         <article>
                             <img
                                 src="/karakterler/mico-kizgin.png"
-                                alt="Miço"
+                                alt="MiÃ§o"
                             />
 
                             <div>
-                                <span>Miço</span>
+                                <span>MiÃ§o</span>
 
                                 <strong>
                                     {micoUnvaniniGetir(
@@ -161,8 +161,8 @@ export default function SeviyeKutlamasi({
                 </div>
 
                 <p>
-                    Yeni seviyen açýldý. Miço biraz
-                    gururlu, Viki ise kutlama mamasý
+                    Yeni seviyen aÃ§Ä±ldÄ±. MiÃ§o biraz
+                    gururlu, Viki ise kutlama mamasÄ±
                     bekliyor.
                 </p>
 

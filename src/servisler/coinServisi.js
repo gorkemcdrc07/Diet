@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 function supabaseKontrolEt() {
     if (!supabase) {
         throw new Error(
-            "Supabase bağlantısı hazır değil.",
+            "Supabase baÄŸlantÄ±sÄ± hazÄ±r deÄŸil.",
         );
     }
 }
@@ -19,7 +19,7 @@ export async function coinKazandir({
 
     if (!islemTuru) {
         throw new Error(
-            "Coin işlemi için islemTuru zorunludur.",
+            "Coin iÅŸlemi iÃ§in islemTuru zorunludur.",
         );
     }
 
@@ -51,13 +51,13 @@ export async function coinKazandir({
 
     if (error) {
         console.error(
-            "Coin kazandırma hatası:",
+            "Coin kazandÄ±rma hatasÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Coin kazandırılamadı.",
+            "Coin kazandÄ±rÄ±lamadÄ±.",
         );
     }
 
@@ -84,13 +84,13 @@ export async function coinHarca({
         guvenliMiktar <= 0
     ) {
         throw new Error(
-            "Harcanacak coin miktarı geçersiz.",
+            "Harcanacak coin miktarÄ± geÃ§ersiz.",
         );
     }
 
     if (!islemTuru) {
         throw new Error(
-            "Coin harcama işlem türü zorunludur.",
+            "Coin harcama iÅŸlem tÃ¼rÃ¼ zorunludur.",
         );
     }
 
@@ -127,13 +127,13 @@ export async function coinHarca({
 
     if (error) {
         console.error(
-            "Coin harcama hatası:",
+            "Coin harcama hatasÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Coin harcanamadı.",
+            "Coin harcanamadÄ±.",
         );
     }
 
@@ -150,13 +150,13 @@ export async function coinOzetiniGetir() {
 
     if (userError) {
         console.error(
-            "Coin kullanıcısı alınamadı:",
+            "Coin kullanÄ±cÄ±sÄ± alÄ±namadÄ±:",
             userError,
         );
 
         throw new Error(
             userError.message ||
-            "Kullanıcı bilgisi alınamadı.",
+            "KullanÄ±cÄ± bilgisi alÄ±namadÄ±.",
         );
     }
 
@@ -183,13 +183,13 @@ export async function coinOzetiniGetir() {
 
     if (error) {
         console.error(
-            "Coin özeti alınamadı:",
+            "Coin Ã¶zeti alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Coin özeti alınamadı.",
+            "Coin Ã¶zeti alÄ±namadÄ±.",
         );
     }
 
@@ -236,13 +236,13 @@ export async function coinHareketleriniGetir(
 
     if (error) {
         console.error(
-            "Coin hareketleri alınamadı:",
+            "Coin hareketleri alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Coin hareketleri alınamadı.",
+            "Coin hareketleri alÄ±namadÄ±.",
         );
     }
 
@@ -258,7 +258,7 @@ export async function ogunCoinKazandir({
 }) {
     if (!ogunId) {
         throw new Error(
-            "Öğün coin işlemi için ogunId zorunludur.",
+            "Ã–ÄŸÃ¼n coin iÅŸlemi iÃ§in ogunId zorunludur.",
         );
     }
 
@@ -271,7 +271,7 @@ export async function ogunCoinKazandir({
             "ogun-tamamlandi",
 
         aciklama:
-            `${ogunAdi || "Öğün"} tamamlandı`,
+            `${ogunAdi || "Ã–ÄŸÃ¼n"} tamamlandÄ±`,
 
         kaynakId:
             ogunId,
@@ -313,7 +313,7 @@ export async function suCoinKazandir({
         yeniBardakSayisi <= 0
     ) {
         throw new Error(
-            "Geçerli bir bardak sayısı gönderilmelidir.",
+            "GeÃ§erli bir bardak sayÄ±sÄ± gÃ¶nderilmelidir.",
         );
     }
 
@@ -322,7 +322,7 @@ export async function suCoinKazandir({
             "su-icildi",
 
         aciklama:
-            `${yeniBardakSayisi}. bardak su içildi`,
+            `${yeniBardakSayisi}. bardak su iÃ§ildi`,
 
         kaynakId:
             `${gun}-${yeniBardakSayisi}`,
@@ -357,7 +357,7 @@ export async function suHedefiCoinKazandir({
             "su-hedefi-tamamlandi",
 
         aciklama:
-            "Günlük su hedefi tamamlandı",
+            "GÃ¼nlÃ¼k su hedefi tamamlandÄ±",
 
         kaynakId:
             gun,
@@ -394,7 +394,7 @@ export async function tumOgunlerCoinKazandir({
             "tum-ogunler-tamamlandi",
 
         aciklama:
-            "Bugünkü bütün öğünler tamamlandı",
+            "BugÃ¼nkÃ¼ bÃ¼tÃ¼n Ã¶ÄŸÃ¼nler tamamlandÄ±",
 
         kaynakId:
             gun,

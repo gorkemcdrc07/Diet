@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 function supabaseKontrolEt() {
     if (!supabase) {
         throw new Error(
-            "Supabase bağlantısı hazır değil.",
+            "Supabase baÄŸlantÄ±sÄ± hazÄ±r deÄŸil.",
         );
     }
 }
@@ -18,13 +18,13 @@ export async function gunlukGorevleriHazirla() {
 
     if (error) {
         console.error(
-            "Günlük görevler hazırlanamadı:",
+            "GÃ¼nlÃ¼k gÃ¶revler hazÄ±rlanamadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Günlük görevler hazırlanamadı.",
+            "GÃ¼nlÃ¼k gÃ¶revler hazÄ±rlanamadÄ±.",
         );
     }
 
@@ -48,13 +48,13 @@ export async function gunlukGorevOdulleriniVer() {
 
     if (error) {
         console.error(
-            "Günlük görev ödülleri verilemedi:",
+            "GÃ¼nlÃ¼k gÃ¶rev Ã¶dÃ¼lleri verilemedi:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Günlük görev ödülleri verilemedi.",
+            "GÃ¼nlÃ¼k gÃ¶rev Ã¶dÃ¼lleri verilemedi.",
         );
     }
 
@@ -84,13 +84,13 @@ export async function bugununGorevleriniGetir() {
 
     if (userError) {
         console.error(
-            "Görev kullanıcısı alınamadı:",
+            "GÃ¶rev kullanÄ±cÄ±sÄ± alÄ±namadÄ±:",
             userError,
         );
 
         throw new Error(
             userError.message ||
-            "Kullanıcı bilgisi alınamadı.",
+            "KullanÄ±cÄ± bilgisi alÄ±namadÄ±.",
         );
     }
 
@@ -137,13 +137,13 @@ export async function bugununGorevleriniGetir() {
 
     if (error) {
         console.error(
-            "Günlük görevler alınamadı:",
+            "GÃ¼nlÃ¼k gÃ¶revler alÄ±namadÄ±:",
             error,
         );
 
         throw new Error(
             error.message ||
-            "Günlük görevler alınamadı.",
+            "GÃ¼nlÃ¼k gÃ¶revler alÄ±namadÄ±.",
         );
     }
 
