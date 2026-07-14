@@ -1,0 +1,285 @@
+.giris-sayfasi {
+    position: relative;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 24px;
+    background: linear-gradient( 145deg, #fff8fb 0%, #f8f3ff 52%, #fff9f1 100% );
+}
+
+[data-theme="koyu"] .giris-sayfasi {
+    background: linear-gradient( 145deg, #17131d 0%, #211a29 52%, #17151c 100% );
+}
+
+.giris-arka-plan,
+.giris-isik {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.giris-isik {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    filter: blur(12px);
+    opacity: 0.46;
+}
+
+.giris-isik--bir {
+    inset: -110px auto auto -90px;
+    background: rgba(255, 150, 190, 0.38);
+}
+
+.giris-isik--iki {
+    inset: auto -110px -100px auto;
+    background: rgba(159, 119, 255, 0.35);
+}
+
+.giris-isik--uc {
+    inset: 28% auto auto 60%;
+    width: 170px;
+    height: 170px;
+    background: rgba(255, 202, 113, 0.25);
+}
+
+.giris-karti {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 440px);
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 32px;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 28px 70px rgba(80, 50, 100, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+[data-theme="koyu"] .giris-karti {
+    border-color: rgba(255, 255, 255, 0.09);
+    background: rgba(31, 25, 38, 0.82);
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.giris-logo {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 66px;
+    height: 66px;
+    margin: 0 auto 20px;
+    border-radius: 22px;
+    color: #b45a87;
+    background: linear-gradient( 145deg, #ffe4ef, #f4ddff );
+    box-shadow: 0 14px 32px rgba(177, 91, 137, 0.19);
+}
+
+.giris-logo-parilti {
+    position: absolute;
+    top: -5px;
+    right: -6px;
+    color: #8b65d3;
+}
+
+.giris-baslik {
+    text-align: center;
+}
+
+    .giris-baslik > span {
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.58;
+    }
+
+    .giris-baslik h1 {
+        margin: 8px 0 10px;
+        font-size: clamp(27px, 7vw, 36px);
+        line-height: 1.05;
+    }
+
+    .giris-baslik p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.65;
+        opacity: 0.68;
+    }
+
+.giris-sekmeler {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    margin: 25px 0 20px;
+    padding: 5px;
+    border-radius: 16px;
+    background: rgba(118, 89, 142, 0.08);
+}
+
+    .giris-sekmeler button {
+        min-height: 42px;
+        border: 0;
+        border-radius: 12px;
+        color: inherit;
+        background: transparent;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 750;
+        cursor: pointer;
+        opacity: 0.62;
+    }
+
+        .giris-sekmeler button.aktif {
+            background: rgba(255, 255, 255, 0.84);
+            box-shadow: 0 7px 18px rgba(65, 38, 80, 0.1);
+            opacity: 1;
+        }
+
+[data-theme="koyu"] .giris-sekmeler button.aktif {
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.giris-formu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.giris-alani {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+    .giris-alani > span {
+        padding-left: 3px;
+        font-size: 12px;
+        font-weight: 750;
+        opacity: 0.72;
+    }
+
+    .giris-alani > div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 54px;
+        padding: 0 15px;
+        border: 1px solid rgba(90, 65, 105, 0.12);
+        border-radius: 17px;
+        background: rgba(255, 255, 255, 0.58);
+        transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+        .giris-alani > div:focus-within {
+            border-color: rgba(145, 90, 199, 0.55);
+            box-shadow: 0 0 0 4px rgba(145, 90, 199, 0.1);
+            background: rgba(255, 255, 255, 0.84);
+        }
+
+[data-theme="koyu"] .giris-alani > div {
+    border-color: rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.giris-alani svg {
+    flex: 0 0 auto;
+    opacity: 0.48;
+}
+
+.giris-alani input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    color: inherit;
+    background: transparent;
+    font: inherit;
+    font-size: 14px;
+}
+
+.sifre-goster-butonu {
+    display: grid;
+    place-items: center;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 10px;
+    color: inherit;
+    background: transparent;
+    cursor: pointer;
+}
+
+.giris-ana-butonu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 54px;
+    margin-top: 4px;
+    border: 0;
+    border-radius: 17px;
+    color: white;
+    background: linear-gradient( 135deg, #a85d91, #8764cf );
+    box-shadow: 0 14px 30px rgba(135, 100, 207, 0.28);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+    .giris-ana-butonu:disabled {
+        cursor: wait;
+        opacity: 0.68;
+    }
+
+.giris-bildirimi {
+    padding: 12px 14px;
+    border-radius: 13px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.giris-bildirimi--hata {
+    color: #a02d48;
+    background: rgba(221, 68, 105, 0.1);
+}
+
+.giris-bildirimi--basarili {
+    color: #287052;
+    background: rgba(50, 173, 117, 0.11);
+}
+
+.giris-alt-yazi {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin: 20px 0 0;
+    font-size: 11px;
+    opacity: 0.48;
+}
+
+.giris-donuyor {
+    animation: giris-donme 800ms linear infinite;
+}
+
+@keyframes giris-donme {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 520px) {
+    .giris-sayfasi {
+        align-items: center;
+        padding: 16px;
+    }
+
+    .giris-karti {
+        padding: 24px 19px;
+        border-radius: 27px;
+    }
+}

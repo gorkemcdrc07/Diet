@@ -1,8 +1,10 @@
 import {
-    Bell,
+    Award,
     CalendarDays,
     Home,
-    Smartphone,
+    PawPrint,
+    ShoppingBag,
+    UserRound,
 } from "lucide-react";
 
 const menuElemanlari = [
@@ -13,18 +15,28 @@ const menuElemanlari = [
     },
     {
         id: "program",
-        etiket: "Programım",
+        etiket: "Program",
         ikon: CalendarDays,
     },
     {
-        id: "bildirimler",
-        etiket: "Bildirimler",
-        ikon: Bell,
+        id: "magaza",
+        etiket: "Mağaza",
+        ikon: ShoppingBag,
     },
     {
-        id: "kurulum",
-        etiket: "Kurulum",
-        ikon: Smartphone,
+        id: "basarilar",
+        etiket: "Başarılar",
+        ikon: Award,
+    },
+    {
+        id: "karakterler",
+        etiket: "Karakterler",
+        ikon: PawPrint,
+    },
+    {
+        id: "profil",
+        etiket: "Profil",
+        ikon: UserRound,
     },
 ];
 
@@ -33,26 +45,53 @@ export default function AltMenu({
     onSayfaDegistir,
 }) {
     return (
-        <nav className="alt-menu">
+        <nav
+            className="alt-menu"
+            aria-label="Alt navigasyon"
+        >
             {menuElemanlari.map((menu) => {
                 const Icon = menu.ikon;
-                const aktif = aktifSayfa === menu.id;
+
+                const aktif =
+                    aktifSayfa === menu.id;
 
                 return (
                     <button
                         key={menu.id}
                         type="button"
-                        className={aktif ? "aktif" : ""}
-                        onClick={() => onSayfaDegistir(menu.id)}
+                        className={
+                            aktif
+                                ? "aktif"
+                                : ""
+                        }
+                        onClick={() =>
+                            onSayfaDegistir(
+                                menu.id,
+                            )
+                        }
+                        aria-current={
+                            aktif
+                                ? "page"
+                                : undefined
+                        }
+                        aria-label={
+                            menu.etiket
+                        }
                     >
                         <span className="alt-menu-ikon">
                             <Icon
                                 size={21}
-                                strokeWidth={aktif ? 2.5 : 2}
+                                strokeWidth={
+                                    aktif
+                                        ? 2.5
+                                        : 2
+                                }
                             />
                         </span>
 
-                        <small>{menu.etiket}</small>
+                        <small>
+                            {menu.etiket}
+                        </small>
                     </button>
                 );
             })}

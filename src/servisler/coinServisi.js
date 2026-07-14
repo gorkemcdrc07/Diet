@@ -1,0 +1,441 @@
+import { supabase } from "./supabase";
+
+function supabaseKontrolEt() {
+    if (!supabase) {
+        throw new Error(
+            "Supabase baðlantýsý hazýr deðil.",
+        );
+    }
+}
+
+export async function coinKazandir({
+    islemTuru,
+    aciklama = null,
+    kaynakId = null,
+    benzersizAnahtar = null,
+    ekVeri = {},
+}) {
+    supabaseKontrolEt();
+
+    if (!islemTuru) {
+        throw new Error(
+            "Coin iþlemi için islemTuru zorunludur.",
+        );
+    }
+
+    const { data, error } =
+        await supabase.rpc(
+            "coin_kazandir",
+            {
+                p_islem_turu:
+                    islemTuru,
+
+                p_aciklama:
+                    aciklama,
+
+                p_kaynak_id:
+                    kaynakId === null ||
+                        kaynakId === undefined
+                        ? null
+                        : String(
+                            kaynakId,
+                        ),
+
+                p_benzersiz_anahtar:
+                    benzersizAnahtar,
+
+                p_ek_veri:
+                    ekVeri || {},
+            },
+        );
+
+    if (error) {
+        console.error(
+            "Coin kazandýrma hatasý:",
+            error,
+        );
+
+        throw new Error(
+            error.message ||
+            "Coin kazandýrýlamadý.",
+        );
+    }
+
+    return data;
+}
+
+export async function coinHarca({
+    miktar,
+    islemTuru,
+    aciklama = null,
+    kaynakId = null,
+    benzersizAnahtar = null,
+    ekVeri = {},
+}) {
+    supabaseKontrolEt();
+
+    const guvenliMiktar =
+        Number(miktar);
+
+    if (
+        !Number.isFinite(
+            guvenliMiktar,
+        ) ||
+        guvenliMiktar <= 0
+    ) {
+        throw new Error(
+            "Harcanacak coin miktarý geçersiz.",
+        );
+    }
+
+    if (!islemTuru) {
+        throw new Error(
+            "Coin harcama iþlem türü zorunludur.",
+        );
+    }
+
+    const { data, error } =
+        await supabase.rpc(
+            "coin_harca",
+            {
+                p_miktar:
+                    Math.floor(
+                        guvenliMiktar,
+                    ),
+
+                p_islem_turu:
+                    islemTuru,
+
+                p_aciklama:
+                    aciklama,
+
+                p_kaynak_id:
+                    kaynakId === null ||
+                        kaynakId === undefined
+                        ? null
+                        : String(
+                            kaynakId,
+                        ),
+
+                p_benzersiz_anahtar:
+                    benzersizAnahtar,
+
+                p_ek_veri:
+                    ekVeri || {},
+            },
+        );
+
+    if (error) {
+        console.error(
+            "Coin harcama hatasý:",
+            error,
+        );
+
+        throw new Error(
+            error.message ||
+            "Coin harcanamadý.",
+        );
+    }
+
+    return data;
+}
+
+export async function coinOzetiniGetir() {
+    supabaseKontrolEt();
+
+    const {
+        data: { user },
+        error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) {
+        console.error(
+            "Coin kullanýcýsý alýnamadý:",
+            userError,
+        );
+
+        throw new Error(
+            userError.message ||
+            "Kullanýcý bilgisi alýnamadý.",
+        );
+    }
+
+    if (!user) {
+        return null;
+    }
+
+    const { data, error } =
+        await supabase
+            .from("kullanici_coin")
+            .select(
+                `
+                user_id,
+                toplam_coin,
+                harcanan_coin,
+                mevcut_coin,
+                bugunku_coin,
+                coin_tarihi,
+                guncellenme_tarihi
+                `,
+            )
+            .eq("user_id", user.id)
+            .maybeSingle();
+
+    if (error) {
+        console.error(
+            "Coin özeti alýnamadý:",
+            error,
+        );
+
+        throw new Error(
+            error.message ||
+            "Coin özeti alýnamadý.",
+        );
+    }
+
+    return data;
+}
+
+export async function coinHareketleriniGetir(
+    limit = 20,
+) {
+    supabaseKontrolEt();
+
+    const guvenliLimit =
+        Math.min(
+            Math.max(
+                Number(limit) || 20,
+                1,
+            ),
+            100,
+        );
+
+    const { data, error } =
+        await supabase
+            .from("coin_hareketleri")
+            .select(
+                `
+                id,
+                islem_turu,
+                aciklama,
+                kazanilan_coin,
+                kaynak_id,
+                ek_veri,
+                olusturulma_tarihi
+                `,
+            )
+            .order(
+                "olusturulma_tarihi",
+                {
+                    ascending: false,
+                },
+            )
+            .limit(
+                guvenliLimit,
+            );
+
+    if (error) {
+        console.error(
+            "Coin hareketleri alýnamadý:",
+            error,
+        );
+
+        throw new Error(
+            error.message ||
+            "Coin hareketleri alýnamadý.",
+        );
+    }
+
+    return Array.isArray(data)
+        ? data
+        : [];
+}
+
+export async function ogunCoinKazandir({
+    ogunId,
+    ogunAdi,
+    tarih,
+}) {
+    if (!ogunId) {
+        throw new Error(
+            "Öðün coin iþlemi için ogunId zorunludur.",
+        );
+    }
+
+    const gun =
+        tarih ||
+        bugununTarihiniGetir();
+
+    return coinKazandir({
+        islemTuru:
+            "ogun-tamamlandi",
+
+        aciklama:
+            `${ogunAdi || "Öðün"} tamamlandý`,
+
+        kaynakId:
+            ogunId,
+
+        benzersizAnahtar:
+            `coin-ogun-${gun}-${ogunId}`,
+
+        ekVeri: {
+            ogun_id:
+                ogunId,
+
+            ogun_adi:
+                ogunAdi || null,
+
+            tarih:
+                gun,
+        },
+    });
+}
+
+export async function suCoinKazandir({
+    bardakSayisi,
+    hedef,
+    tarih,
+}) {
+    const gun =
+        tarih ||
+        bugununTarihiniGetir();
+
+    const yeniBardakSayisi =
+        Number(
+            bardakSayisi,
+        );
+
+    if (
+        !Number.isFinite(
+            yeniBardakSayisi,
+        ) ||
+        yeniBardakSayisi <= 0
+    ) {
+        throw new Error(
+            "Geçerli bir bardak sayýsý gönderilmelidir.",
+        );
+    }
+
+    return coinKazandir({
+        islemTuru:
+            "su-icildi",
+
+        aciklama:
+            `${yeniBardakSayisi}. bardak su içildi`,
+
+        kaynakId:
+            `${gun}-${yeniBardakSayisi}`,
+
+        benzersizAnahtar:
+            `coin-su-${gun}-${yeniBardakSayisi}`,
+
+        ekVeri: {
+            bardak_sayisi:
+                yeniBardakSayisi,
+
+            hedef:
+                Number(hedef) || null,
+
+            tarih:
+                gun,
+        },
+    });
+}
+
+export async function suHedefiCoinKazandir({
+    bardakSayisi,
+    hedef,
+    tarih,
+}) {
+    const gun =
+        tarih ||
+        bugununTarihiniGetir();
+
+    return coinKazandir({
+        islemTuru:
+            "su-hedefi-tamamlandi",
+
+        aciklama:
+            "Günlük su hedefi tamamlandý",
+
+        kaynakId:
+            gun,
+
+        benzersizAnahtar:
+            `coin-su-hedefi-${gun}`,
+
+        ekVeri: {
+            bardak_sayisi:
+                Number(
+                    bardakSayisi,
+                ) || 0,
+
+            hedef:
+                Number(hedef) || 0,
+
+            tarih:
+                gun,
+        },
+    });
+}
+
+export async function tumOgunlerCoinKazandir({
+    tamamlananOgunSayisi,
+    toplamOgunSayisi,
+    tarih,
+}) {
+    const gun =
+        tarih ||
+        bugununTarihiniGetir();
+
+    return coinKazandir({
+        islemTuru:
+            "tum-ogunler-tamamlandi",
+
+        aciklama:
+            "Bugünkü bütün öðünler tamamlandý",
+
+        kaynakId:
+            gun,
+
+        benzersizAnahtar:
+            `coin-tum-ogunler-${gun}`,
+
+        ekVeri: {
+            tamamlanan_ogun_sayisi:
+                Number(
+                    tamamlananOgunSayisi,
+                ) || 0,
+
+            toplam_ogun_sayisi:
+                Number(
+                    toplamOgunSayisi,
+                ) || 0,
+
+            tarih:
+                gun,
+        },
+    });
+}
+
+export function bugununTarihiniGetir() {
+    return new Intl.DateTimeFormat(
+        "en-CA",
+        {
+            timeZone:
+                "Europe/Istanbul",
+
+            year:
+                "numeric",
+
+            month:
+                "2-digit",
+
+            day:
+                "2-digit",
+        },
+    ).format(
+        new Date(),
+    );
+}

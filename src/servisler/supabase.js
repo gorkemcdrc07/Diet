@@ -32,19 +32,40 @@ export const supabaseHazir =
     Boolean(supabaseAnonKey);
 
 if (!supabaseHazir) {
-    console.error("Supabase ayarlari gecersiz.", {
-        urlVarMi: Boolean(supabaseUrlHam),
-        urlGecerliMi: supabaseUrlGecerliMi(supabaseUrl),
-        anonKeyVarMi: Boolean(supabaseAnonKey),
-    });
+    console.error(
+        "Supabase ayarlarý geçersiz.",
+        {
+            urlVarMi: Boolean(
+                supabaseUrlHam,
+            ),
+
+            urlGecerliMi:
+                supabaseUrlGecerliMi(
+                    supabaseUrl,
+                ),
+
+            anonKeyVarMi:
+                Boolean(
+                    supabaseAnonKey,
+                ),
+        },
+    );
 }
 
 export const supabase = supabaseHazir
-    ? createClient(supabaseUrl, supabaseAnonKey, {
-          auth: {
-              persistSession: false,
-              autoRefreshToken: false,
-              detectSessionInUrl: false,
-          },
-      })
+    ? createClient(
+        supabaseUrl,
+        supabaseAnonKey,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true,
+                storage:
+                    window.localStorage,
+                storageKey:
+                    "diyet-uygulamasi-auth",
+            },
+        },
+    )
     : null;

@@ -160,13 +160,13 @@ Türkiye saatleri için GitHub cron eşleşmeleri:
 21:00 -> 18:00
 */
 const CRON_OGUN_ESLESMESI = {
-    "0 7 * * *": "uyandiginda",
-    "0 9 * * *": "sabah",
-    "0 11 * * *": "ara-ogun-1",
-    "0 12 * * *": "ogle",
-    "0 13 * * *": "ara-ogun-2",
-    "30 15 * * *": "aksam",
-    "0 18 * * *": "yatmadan-once",
+    "3 7 * * *": "uyandiginda",
+    "3 9 * * *": "sabah",
+    "3 11 * * *": "ara-ogun-1",
+    "3 12 * * *": "ogle",
+    "3 13 * * *": "ara-ogun-2",
+    "33 15 * * *": "aksam",
+    "3 18 * * *": "yatmadan-once",
 };
 
 function rastgeleElemanGetir(liste) {

@@ -1,0 +1,303 @@
+.seviye-kutlama-katmani {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    padding: 22px;
+    background: rgba(26, 18, 31, 0.48);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: seviye-katman-giris 220ms ease forwards;
+}
+
+.seviye-kutlama-karti {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 430px);
+    padding: 28px 24px 24px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 30px;
+    background: radial-gradient( circle at 50% 0%, rgba(226, 179, 255, 0.5), transparent 38% ), linear-gradient( 145deg, rgba(255, 255, 255, 0.96), rgba(247, 236, 255, 0.94) );
+    box-shadow: 0 28px 80px rgba(36, 22, 45, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.94);
+    text-align: center;
+    animation: seviye-kart-giris 520ms cubic-bezier(0.2, 0.9, 0.25, 1.15) forwards;
+}
+
+.seviye-kutlama-kapat {
+    position: fixed;
+    top: calc(18px + env(safe-area-inset-top));
+    right: 18px;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 15px;
+    color: #ffffff;
+    background: rgba(30, 22, 35, 0.42);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    cursor: pointer;
+}
+
+.seviye-kutlama-ikon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 18px;
+    border-radius: 24px;
+    color: #8b56b0;
+    background: linear-gradient( 145deg, #ffe8b7, #efdcff );
+    box-shadow: 0 16px 34px rgba(125, 82, 157, 0.2);
+}
+
+.seviye-kutlama-ikon-parilti {
+    position: absolute;
+    top: -7px;
+    right: -8px;
+    color: #d69a4d;
+    animation: seviye-parilti 1000ms ease-in-out infinite;
+}
+
+.seviye-kutlama-mini {
+    display: block;
+    margin-bottom: 7px;
+    color: #a06fac;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.seviye-kutlama-karti h2 {
+    margin: 0;
+    color: #47344f;
+    font-size: clamp(28px, 7vw, 38px);
+    line-height: 1;
+}
+
+.seviye-kutlama-seviye {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 18px 0 22px;
+    padding: 10px 16px;
+    border: 1px solid rgba(136, 85, 168, 0.13);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.58);
+}
+
+    .seviye-kutlama-seviye span {
+        color: #8d7196;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .seviye-kutlama-seviye strong {
+        color: #8e58ae;
+        font-size: 28px;
+        line-height: 1;
+    }
+
+.seviye-kutlama-karakterler {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 19px;
+}
+
+    .seviye-kutlama-karakterler article {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 0;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.62);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.52);
+        box-shadow: 0 10px 24px rgba(66, 40, 82, 0.08);
+    }
+
+    .seviye-kutlama-karakterler img {
+        flex: 0 0 56px;
+        width: 56px;
+        height: 56px;
+        object-fit: contain;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.62);
+    }
+
+    .seviye-kutlama-karakterler article div {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .seviye-kutlama-karakterler span {
+        color: #9d7aa6;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+    .seviye-kutlama-karakterler strong {
+        overflow: hidden;
+        max-width: 100%;
+        color: #4f3b55;
+        font-size: 13px;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.seviye-kutlama-karti > p {
+    margin: 0 0 20px;
+    color: #75647c;
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.seviye-kutlama-devam {
+    width: 100%;
+    min-height: 52px;
+    border: 0;
+    border-radius: 17px;
+    color: white;
+    background: linear-gradient( 135deg, #b0629c, #8664d2 );
+    box-shadow: 0 14px 30px rgba(134, 100, 210, 0.3);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.seviye-kutlama-parilti {
+    position: absolute;
+    z-index: 1;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    filter: blur(9px);
+    pointer-events: none;
+}
+
+.seviye-kutlama-parilti--bir {
+    top: 10%;
+    left: 8%;
+    background: rgba(255, 181, 220, 0.22);
+}
+
+.seviye-kutlama-parilti--iki {
+    right: 7%;
+    bottom: 9%;
+    background: rgba(160, 119, 255, 0.24);
+}
+
+/* KOYU TEMA */
+
+[data-theme="koyu"] .seviye-kutlama-karti {
+    border-color: rgba(255, 255, 255, 0.09);
+    background: radial-gradient( circle at 50% 0%, rgba(170, 108, 214, 0.23), transparent 40% ), linear-gradient( 145deg, rgba(47, 37, 54, 0.98), rgba(35, 28, 41, 0.97) );
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+    [data-theme="koyu"] .seviye-kutlama-karti h2 {
+        color: #f7edfa;
+    }
+
+[data-theme="koyu"] .seviye-kutlama-mini {
+    color: #d7a9e1;
+}
+
+[data-theme="koyu"] .seviye-kutlama-seviye,
+[data-theme="koyu"] .seviye-kutlama-karakterler article {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.055);
+}
+
+    [data-theme="koyu"] .seviye-kutlama-seviye span,
+    [data-theme="koyu"] .seviye-kutlama-karti > p,
+    [data-theme="koyu"] .seviye-kutlama-karakterler span {
+        color: #c4b2ca;
+    }
+
+    [data-theme="koyu"] .seviye-kutlama-seviye strong {
+        color: #e0b1f2;
+    }
+
+[data-theme="koyu"] .seviye-kutlama-karakterler strong {
+    color: #f2e9f5;
+}
+
+[data-theme="koyu"] .seviye-kutlama-karakterler img {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* ANÝMASYONLAR */
+
+@keyframes seviye-katman-giris {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes seviye-kart-giris {
+    0% {
+        opacity: 0;
+        transform: translateY(35px) scale(0.86);
+    }
+
+    65% {
+        opacity: 1;
+        transform: translateY(-7px) scale(1.025);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes seviye-parilti {
+    0%, 100% {
+        opacity: 0.45;
+        transform: rotate(-8deg) scale(0.92);
+    }
+
+    50% {
+        opacity: 1;
+        transform: rotate(10deg) scale(1.08);
+    }
+}
+
+/* MOBÝL */
+
+@media (max-width: 520px) {
+    .seviye-kutlama-katmani {
+        padding: 16px;
+    }
+
+    .seviye-kutlama-karti {
+        padding: 24px 18px 19px;
+        border-radius: 26px;
+    }
+
+    .seviye-kutlama-karakterler {
+        grid-template-columns: 1fr;
+    }
+
+        .seviye-kutlama-karakterler article {
+            padding: 10px 12px;
+        }
+}

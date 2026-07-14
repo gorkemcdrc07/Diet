@@ -1,0 +1,408 @@
+import { supabase } from "../servisler/supabase";
+
+/**
+ * XP sistemi kullanýlmadan önce aktif Supabase kullanýcýsýný hazýrlar.
+ *
+ * Mevcut bir oturum varsa onu kullanýr.
+ * Oturum yoksa anonim kullanýcý oluþturur.
+ */
+async function xpKullanicisiniHazirla() {
+    const {
+        data: { session },
+        error: sessionError,
+    } = await supabase.auth.getSession();
+
+    if (sessionError) {
+        console.error(
+            "XP oturumu okunamadý:",
+            sessionError,
+        );
+
+        throw new Error(
+            sessionError.message ||
+            "XP oturumu okunamadý.",
+        );
+    }
+
+    if (session?.user) {
+        return session.user;
+    }
+
+    const {
+        data,
+        error,
+    } = await supabase.auth.signInAnonymously();
+
+    if (error) {
+        console.error(
+            "Anonim oturum açýlamadý:",
+            error,
+        );
+
+        throw new Error(
+            error.message ||
+            "Anonim kullanýcý oturumu açýlamadý.",
+        );
+    }
+
+    if (!data?.user) {
+        throw new Error(
+            "Anonim kullanýcý oluþturulamadý.",
+        );
+    }
+
+    return data.user;
+}
+
+/**
+ * Supabase RPC üzerinden kullanýcýya XP kazandýrýr.
+ *
+ * XP miktarý frontend tarafýndan belirlenmez.
+ * Ýþlem türüne göre Supabase fonksiyonu XP miktarýný hesaplar.
+ */
+export async function xpKazandir({
+    islemTuru,
+    aciklama = null,
+    karakter = "ikisi",
+    kaynakId = null,
+    benzersizAnahtar = null,
+    ekVeri = {},
+}) {
+    if (!islemTuru) {
+        throw new Error(
+            "XP iþlemi için islemTuru zorunludur.",
+        );
+    }
+
+    await xpKullanicisiniHazirla();
+
+    const { data, error } =
+        await supabase.rpc("xp_kazandir", {
+            p_islem_turu: islemTuru,
+            p_aciklama: aciklama,
+            p_karakter: karakter,
+            p_kaynak_id:
+                kaynakId === null ||
+                    kaynakId === undefined
+                    ? null
+                    : String(kaynakId),
+            p_benzersiz_anahtar:
+                benzersizAnahtar,
+            p_ek_veri: ekVeri,
+        });
+
+    if (error) {
+        console.error(
+            "XP kazandýrma hatasý:",
+            error,
+        );
+
+        throw new Error(
+            error.message ||
+            "XP kazandýrýlamadý.",
+        );
+    }
+
+    return data;
+}
+
+/**
+ * Kullanýcýnýn güncel XP ve seviye bilgilerini getirir.
+ */
+export async function xpOzetiGetir() {
+    const user =
+        await xpKullanicisiniHazirla();
+
+    const { data, error } = await supabase
+        .from("kullanici_xp_ozeti")
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+    if (error) {
+        console.error(
+            "XP özeti alýnamadý:",
+            error,
+        );
+
+        throw new Error(
+            error.message ||
+            "XP özeti alýnamadý.",
+        );
+    }
+
+    /*
+     * Kullanýcý henüz hiç XP kazanmadýysa
+     * kullanici_xp tablosunda kayýt bulunmayabilir.
+     * Kartýn yine de görünmesi için baþlangýç verisi döneriz.
+     */
+    if (!data) {
+        return {
+            user_id: user.id,
+            toplam_xp: 0,
+            bugunku_xp: 0,
+            seviye: 1,
+
+            mevcut_seviye_baslangic_xp: 0,
+            sonraki_seviye_xp: 250,
+            sonraki_seviyeye_kalan_xp: 250,
+            seviye_ilerleme_yuzdesi: 0,
+
+            mico_xp: 0,
+            mico_seviye: 1,
+
+            viki_xp: 0,
+            viki_seviye: 1,
+
+            pati_puani: 0,
+        };
+    }
+
+    return data;
+}
+
+/**
+ * Kullanýcýnýn son XP hareketlerini getirir.
+ */
+export async function xpHareketleriniGetir(
+    limit = 10,
+) {
+    await xpKullanicisiniHazirla();
+
+    const guvenliLimit = Math.min(
+        Math.max(
+            Number(limit) || 10,
+            1,
+        ),
+        100,
+    );
+
+    const { data, error } = await supabase
+        .from("xp_hareketleri")
+        .select(
+            `
+            id,
+            islem_turu,
+            aciklama,
+            kazanilan_xp,
+            karakter,
+            kaynak_id,
+            ek_veri,
+            olusturulma_tarihi
+            `,
+        )
+        .order(
+            "olusturulma_tarihi",
+            {
+                ascending: false,
+            },
+        )
+        .limit(guvenliLimit);
+
+    if (error) {
+        console.error(
+            "XP hareketleri alýnamadý:",
+            error,
+        );
+
+        throw new Error(
+            error.message ||
+            "XP hareketleri alýnamadý.",
+        );
+    }
+
+    return data || [];
+}
+
+/**
+ * Bir öðün tamamlandýðýnda çaðrýlýr.
+ */
+export async function ogunXpKazandir({
+    ogunId,
+    ogunAdi,
+    ogunSaati,
+    tarih,
+}) {
+    if (
+        ogunId === null ||
+        ogunId === undefined ||
+        ogunId === ""
+    ) {
+        throw new Error(
+            "Öðün XP iþlemi için ogunId zorunludur.",
+        );
+    }
+
+    const gun =
+        tarih ||
+        bugununTarihiniGetir();
+
+    return xpKazandir({
+        islemTuru: "ogun-tamamlandi",
+        aciklama:
+            `${ogunAdi || "Öðün"} tamamlandý`,
+        karakter: "ikisi",
+        kaynakId: ogunId,
+        benzersizAnahtar:
+            `ogun-${gun}-${ogunId}`,
+
+        ekVeri: {
+            ogun_id: ogunId,
+            ogun_adi:
+                ogunAdi || null,
+            ogun_saati:
+                ogunSaati || null,
+            tarih: gun,
+        },
+    });
+}
+
+/**
+ * Kullanýcý su eklediðinde çaðrýlýr.
+ *
+ * Her bardak için farklý benzersiz anahtar üretmek amacýyla
+ * gün içindeki yeni bardak sayýsý kullanýlýr.
+ */
+export async function suXpKazandir({
+    bardakSayisi,
+    hedef,
+    tarih,
+}) {
+    const gun =
+        tarih ||
+        bugununTarihiniGetir();
+
+    const yeniBardakSayisi =
+        Number(bardakSayisi);
+
+    if (
+        !Number.isFinite(
+            yeniBardakSayisi,
+        ) ||
+        yeniBardakSayisi <= 0
+    ) {
+        throw new Error(
+            "Geçerli bir bardak sayýsý gönderilmelidir.",
+        );
+    }
+
+    return xpKazandir({
+        islemTuru: "su-icildi",
+        aciklama:
+            `${yeniBardakSayisi}. bardak su içildi`,
+        karakter: "viki",
+
+        kaynakId:
+            `${gun}-${yeniBardakSayisi}`,
+
+        benzersizAnahtar:
+            `su-${gun}-${yeniBardakSayisi}`,
+
+        ekVeri: {
+            bardak_sayisi:
+                yeniBardakSayisi,
+
+            hedef:
+                Number(hedef) || null,
+
+            tarih: gun,
+        },
+    });
+}
+
+/**
+ * Günlük su hedefi ilk kez tamamlandýðýnda çaðrýlýr.
+ */
+export async function suHedefiXpKazandir({
+    bardakSayisi,
+    hedef,
+    tarih,
+}) {
+    const gun =
+        tarih ||
+        bugununTarihiniGetir();
+
+    return xpKazandir({
+        islemTuru:
+            "su-hedefi-tamamlandi",
+
+        aciklama:
+            "Günlük su hedefi tamamlandý",
+
+        karakter: "viki",
+        kaynakId: gun,
+
+        benzersizAnahtar:
+            `su-hedefi-${gun}`,
+
+        ekVeri: {
+            bardak_sayisi:
+                Number(bardakSayisi) || 0,
+
+            hedef:
+                Number(hedef) || 0,
+
+            tarih: gun,
+        },
+    });
+}
+
+/**
+ * Günün bütün öðünleri tamamlandýðýnda çaðrýlýr.
+ */
+export async function tumOgunlerXpKazandir({
+    tamamlananOgunSayisi,
+    toplamOgunSayisi,
+    tarih,
+}) {
+    const gun =
+        tarih ||
+        bugununTarihiniGetir();
+
+    return xpKazandir({
+        islemTuru:
+            "tum-ogunler-tamamlandi",
+
+        aciklama:
+            "Bugünkü bütün öðünler tamamlandý",
+
+        karakter: "ikisi",
+        kaynakId: gun,
+
+        benzersizAnahtar:
+            `tum-ogunler-${gun}`,
+
+        ekVeri: {
+            tamamlanan_ogun_sayisi:
+                Number(
+                    tamamlananOgunSayisi,
+                ) || 0,
+
+            toplam_ogun_sayisi:
+                Number(
+                    toplamOgunSayisi,
+                ) || 0,
+
+            tarih: gun,
+        },
+    });
+}
+
+/**
+ * Yerel tarihe göre YYYY-MM-DD üretir.
+ *
+ * UTC dönüþümünden kaynaklanan gün kaymasý yaþanmamasý için
+ * Europe/Istanbul saat dilimi kullanýlýr.
+ */
+export function bugununTarihiniGetir() {
+    return new Intl.DateTimeFormat(
+        "en-CA",
+        {
+            timeZone:
+                "Europe/Istanbul",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+        },
+    ).format(new Date());
+}
