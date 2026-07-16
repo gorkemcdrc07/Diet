@@ -72,18 +72,43 @@ const upload =
             },
     });
 
+const izinliOriginler = [
+    "http://localhost:5173",
+    "https://diet-psi-blush.vercel.app",
+];
+
 app.use(
     cors({
-        origin:
-            FRONTEND_URL,
+        origin(origin, callback) {
+            if (!origin) {
+                return callback(null, true);
+            }
+
+            if (
+                izinliOriginler.includes(origin)
+            ) {
+                return callback(null, true);
+            }
+
+            callback(
+                new Error(
+                    `CORS engellendi: ${origin}`,
+                ),
+            );
+        },
 
         methods: [
             "GET",
             "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS",
         ],
+
+        credentials: true,
     }),
 );
-
 app.use(
     express.json({
         limit:
