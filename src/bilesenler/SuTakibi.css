@@ -1,0 +1,185 @@
+﻿.su-karti {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(160px, 220px) auto;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 17px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 21px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.018)), rgba(29, 23, 34, 0.92);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14);
+    color: #fff;
+}
+
+.su-karti--tamamlandi {
+    border-color: rgba(89, 201, 154, 0.22);
+}
+
+.su-karti-sol {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.su-karti-ikon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 43px;
+    height: 43px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #9ad7ff;
+    background: rgba(77, 163, 220, 0.12);
+}
+
+.su-karti--tamamlandi .su-karti-ikon {
+    color: #7fe0b8;
+    background: rgba(89, 201, 154, 0.12);
+}
+
+.su-karti-sol > div {
+    min-width: 0;
+}
+
+.su-mini-baslik {
+    display: block;
+    color: #a99cae;
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.su-karti-sol h2 {
+    margin: 4px 0 0;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.su-karti-sol p {
+    margin: 5px 0 0;
+    color: #9e94a2;
+    font-size: 9px;
+    line-height: 1.45;
+}
+
+.su-karti-orta {
+    min-width: 0;
+}
+
+.su-deger {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+    .su-deger strong {
+        color: #fff;
+        font-size: 24px;
+        line-height: 1;
+    }
+
+    .su-deger span {
+        color: #9e94a2;
+        font-size: 10px;
+        font-weight: 750;
+    }
+
+.su-ilerleme {
+    overflow: hidden;
+    height: 7px;
+    margin-top: 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+    .su-ilerleme > span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #65b7eb, #8bd7ff);
+        box-shadow: 0 0 14px rgba(101, 183, 235, 0.22);
+        transition: width 260ms ease;
+    }
+
+.su-karti--tamamlandi .su-ilerleme > span {
+    background: linear-gradient(90deg, #59c99a, #88e2bd);
+}
+
+.su-karti-orta small {
+    display: block;
+    margin-top: 6px;
+    color: #948a98;
+    font-size: 8px;
+    font-weight: 750;
+}
+
+.su-karti-kontroller {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .su-karti-kontroller button {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        color: #b7acbb;
+        background: rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+    }
+
+    .su-karti-kontroller .su-artir-butonu {
+        width: 42px;
+        height: 42px;
+        border: 0;
+        color: #16202a;
+        background: linear-gradient(135deg, #9edcff, #66b9eb);
+        box-shadow: 0 9px 20px rgba(83, 166, 217, 0.2);
+    }
+
+.su-karti--tamamlandi .su-karti-kontroller .su-artir-butonu {
+    color: #163025;
+    background: linear-gradient(135deg, #91e4c2, #5acb9b);
+}
+
+.su-karti-kontroller button:disabled {
+    cursor: default;
+    opacity: 0.4;
+    box-shadow: none;
+}
+
+@media (max-width: 720px) {
+    .su-karti {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .su-karti-orta {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .su-karti-kontroller {
+        grid-column: 2;
+        grid-row: 1;
+    }
+}
+
+@media (max-width: 460px) {
+    .su-karti {
+        gap: 13px;
+        padding: 15px;
+        border-radius: 19px;
+    }
+
+    .su-karti-sol p {
+        display: none;
+    }
+}

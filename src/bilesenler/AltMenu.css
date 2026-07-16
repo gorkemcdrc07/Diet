@@ -1,0 +1,210 @@
+﻿.alt-menu {
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    bottom: max( 14px, env(safe-area-inset-bottom) );
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 5px;
+    width: min( calc(100% - 64px), 552px );
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012) ), rgba(27, 21, 31, 0.97);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transform: translateX(-50%);
+}
+
+    .alt-menu button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        min-width: 0;
+        min-height: 67px;
+        padding: 8px 4px;
+        border: 0;
+        border-radius: 18px;
+        color: #95899a;
+        background: transparent;
+        font: inherit;
+        cursor: pointer;
+        transition: color 180ms ease, background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    }
+
+        .alt-menu button:hover {
+            color: #d8c9d9;
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .alt-menu button:active {
+            transform: scale(0.94);
+        }
+
+        .alt-menu button.aktif {
+            color: #ff91b7;
+            background: linear-gradient( 145deg, rgba(242, 118, 160, 0.2), rgba(160, 99, 195, 0.13) );
+            box-shadow: inset 0 0 0 1px rgba(242, 118, 160, 0.12);
+        }
+
+.alt-menu-ikon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 11px;
+    transition: transform 220ms cubic-bezier( 0.2, 0.8, 0.2, 1.2 );
+}
+
+.alt-menu button.aktif
+.alt-menu-ikon {
+    transform: translateY(-2px) scale(1.08);
+}
+
+.alt-menu button.tiklandi
+.alt-menu-ikon {
+    animation: alt-menu-ikon-ziplama 550ms ease;
+}
+
+.alt-menu small {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    color: inherit;
+    font-size: 7px;
+    font-weight: 850;
+    line-height: 1.2;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.alt-menu-pati {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 15px;
+    transform: translateX(-50%) translateY(6px) scale(0.4) rotate(-18deg);
+}
+
+.alt-menu button.tiklandi
+.alt-menu-pati {
+    animation: alt-menu-pati-cikis 650ms ease forwards;
+}
+
+.alt-menu button.aktif::after {
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    width: 18px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient( 90deg, #f276a0, #d99bea );
+    transform: translateX(-50%);
+    animation: alt-menu-cizgi-giris 220ms ease;
+}
+
+@keyframes alt-menu-pati-cikis {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px) scale(0.35) rotate(-18deg);
+    }
+
+    35% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-7px) scale(1) rotate(8deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-21px) scale(0.75) rotate(16deg);
+    }
+}
+
+@keyframes alt-menu-ikon-ziplama {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    35% {
+        transform: translateY(-5px) scale(1.14);
+    }
+
+    65% {
+        transform: translateY(1px) scale(0.96);
+    }
+
+    100% {
+        transform: translateY(-2px) scale(1.08);
+    }
+}
+
+@keyframes alt-menu-cizgi-giris {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scaleX(0.3);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scaleX(1);
+    }
+}
+
+@media (max-width: 620px) {
+    .alt-menu {
+        width: calc(100% - 32px);
+        gap: 3px;
+        padding: 7px;
+        border-radius: 21px;
+    }
+
+        .alt-menu button {
+            min-height: 63px;
+            gap: 4px;
+            padding: 7px 2px;
+            border-radius: 16px;
+        }
+
+    .alt-menu-ikon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .alt-menu small {
+        font-size: 6px;
+    }
+}
+
+@media (max-width: 380px) {
+    .alt-menu {
+        gap: 1px;
+        padding: 6px 5px;
+    }
+
+        .alt-menu button {
+            min-height: 59px;
+            padding: 6px 1px;
+        }
+
+        .alt-menu small {
+            font-size: 5.5px;
+        }
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+    .alt-menu *,
+    .alt-menu *::before,
+    .alt-menu *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

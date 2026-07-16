@@ -8,6 +8,37 @@ function supabaseKontrolEt() {
     }
 }
 
+async function aktifKullaniciyiGetir() {
+    supabaseKontrolEt();
+
+    const {
+        data: { user },
+        error,
+    } = await supabase.auth.getUser();
+
+    if (error) {
+        console.error(
+            "Aktif kullanıcı alınamadı:",
+            error,
+        );
+
+        throw new Error(
+            error.message ||
+            "Kullanıcı bilgisi alınamadı.",
+        );
+    }
+
+    if (!user) {
+        console.warn(
+            "Aktif Supabase kullanıcısı bulunamadı.",
+        );
+
+        return null;
+    }
+
+    return user;
+}
+
 export async function coinKazandir({
     islemTuru,
     aciklama = null,
@@ -143,26 +174,20 @@ export async function coinHarca({
 export async function coinOzetiniGetir() {
     supabaseKontrolEt();
 
-    const {
-        data: { user },
-        error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError) {
-        console.error(
-            "Coin kullanıcısı alınamadı:",
-            userError,
-        );
-
-        throw new Error(
-            userError.message ||
-            "Kullanıcı bilgisi alınamadı.",
-        );
-    }
+    const user =
+        await aktifKullaniciyiGetir();
 
     if (!user) {
         return null;
     }
+
+    console.log(
+        "Coin özeti sorgulanan kullanıcı:",
+        {
+            id: user.id,
+            email: user.email,
+        },
+    );
 
     const { data, error } =
         await supabase
@@ -174,11 +199,13 @@ export async function coinOzetiniGetir() {
                 harcanan_coin,
                 mevcut_coin,
                 bugunku_coin,
-                coin_tarihi,
-                guncellenme_tarihi
+                coin_tarihi
                 `,
             )
-            .eq("user_id", user.id)
+            .eq(
+                "user_id",
+                user.id,
+            )
             .maybeSingle();
 
     if (error) {
@@ -193,13 +220,76 @@ export async function coinOzetiniGetir() {
         );
     }
 
-    return data;
+    if (!data) {
+        console.warn(
+            "Bu kullanıcı için kullanici_coin kaydı bulunamadı:",
+            user.id,
+        );
+
+        return {
+            user_id:
+                user.id,
+
+            toplam_coin:
+                0,
+
+            harcanan_coin:
+                0,
+
+            mevcut_coin:
+                0,
+
+            bugunku_coin:
+                0,
+
+            coin_tarihi:
+                bugununTarihiniGetir(),
+        };
+    }
+
+    const guvenliCoinOzeti = {
+        ...data,
+
+        toplam_coin:
+            Number(
+                data.toplam_coin,
+            ) || 0,
+
+        harcanan_coin:
+            Number(
+                data.harcanan_coin,
+            ) || 0,
+
+        mevcut_coin:
+            Number(
+                data.mevcut_coin,
+            ) || 0,
+
+        bugunku_coin:
+            Number(
+                data.bugunku_coin,
+            ) || 0,
+    };
+
+    console.log(
+        "Coin özeti:",
+        guvenliCoinOzeti,
+    );
+
+    return guvenliCoinOzeti;
 }
 
 export async function coinHareketleriniGetir(
     limit = 20,
 ) {
     supabaseKontrolEt();
+
+    const user =
+        await aktifKullaniciyiGetir();
+
+    if (!user) {
+        return [];
+    }
 
     const guvenliLimit =
         Math.min(
@@ -216,6 +306,7 @@ export async function coinHareketleriniGetir(
             .select(
                 `
                 id,
+                user_id,
                 islem_turu,
                 aciklama,
                 kazanilan_coin,
@@ -223,6 +314,10 @@ export async function coinHareketleriniGetir(
                 ek_veri,
                 olusturulma_tarihi
                 `,
+            )
+            .eq(
+                "user_id",
+                user.id,
             )
             .order(
                 "olusturulma_tarihi",
@@ -372,7 +467,9 @@ export async function suHedefiCoinKazandir({
                 ) || 0,
 
             hedef:
-                Number(hedef) || 0,
+                Number(
+                    hedef,
+                ) || 0,
 
             tarih:
                 gun,

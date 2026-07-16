@@ -1,0 +1,594 @@
+﻿.yemek-fotograf-paneli {
+    position: relative;
+    overflow: hidden;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 22px;
+    background: radial-gradient( circle at 100% 0, rgba(243, 166, 90, 0.12), transparent 37% ), linear-gradient( 145deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.016) ), rgba(29, 23, 34, 0.92);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.15);
+}
+
+.yemek-fotograf-baslik {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.yemek-fotograf-baslik-sol {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 11px;
+}
+
+.yemek-fotograf-ikon {
+    display: grid;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    border-radius: 14px;
+    color: #ffc27b;
+    background: rgba(243, 166, 90, 0.12);
+}
+
+.yemek-fotograf-baslik-sol > div > span {
+    color: #a89ba9;
+    font-size: 8px;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.yemek-fotograf-baslik-sol h2 {
+    margin: 4px 0 0;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.yemek-fotograf-baslik-sol p {
+    margin: 6px 0 0;
+    color: #9e939f;
+    font-size: 9px;
+    line-height: 1.55;
+}
+
+.yemek-fotograf-temizle {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 11px;
+    color: #a99eac;
+    background: rgba(255, 255, 255, 0.035);
+    cursor: pointer;
+}
+
+.yemek-fotograf-form {
+    display: grid;
+    grid-template-columns: minmax(135px, 0.55fr) minmax(0, 1.45fr);
+    gap: 9px;
+    margin-top: 15px;
+}
+
+    .yemek-fotograf-form label,
+    .yemek-analiz-kart-detay label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .yemek-fotograf-form label > span,
+        .yemek-analiz-kart-detay label > span {
+            color: #978b99;
+            font-size: 8px;
+            font-weight: 850;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+    .yemek-fotograf-form input,
+    .yemek-fotograf-form select,
+    .yemek-analiz-kart-detay input {
+        width: 100%;
+        min-height: 42px;
+        padding: 0 11px;
+        border: 1px solid rgba(255, 255, 255, 0.075);
+        border-radius: 12px;
+        outline: none;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.035);
+        font: inherit;
+        font-size: 10px;
+        font-weight: 750;
+    }
+
+        .yemek-fotograf-form select option {
+            color: #222222;
+        }
+
+.yemek-fotograf-secim-alani {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 13px;
+    padding: 24px 16px;
+    border: 1px dashed rgba(243, 166, 90, 0.24);
+    border-radius: 18px;
+    text-align: center;
+    background: rgba(243, 166, 90, 0.04);
+}
+
+.yemek-fotograf-secim-gorsel {
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    border-radius: 20px;
+    color: #ffc27b;
+    background: rgba(243, 166, 90, 0.11);
+}
+
+.yemek-fotograf-secim-alani > strong {
+    margin-top: 12px;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.yemek-fotograf-secim-alani > p {
+    max-width: 330px;
+    margin: 6px 0 0;
+    color: #9c919e;
+    font-size: 9px;
+    line-height: 1.55;
+}
+
+.yemek-fotograf-butonlari {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    max-width: 390px;
+    margin-top: 15px;
+}
+
+    .yemek-fotograf-butonlari button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 43px;
+        border-radius: 13px;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+.kamera-butonu {
+    border: 0;
+    color: #241821;
+    background: linear-gradient( 135deg, #ffc27b, #f3a65a );
+}
+
+.galeri-butonu {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #eadfea;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.yemek-gizli-input {
+    display: none;
+}
+
+.yemek-fotograf-onizleme {
+    overflow: hidden;
+    margin-top: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+    .yemek-fotograf-onizleme img {
+        display: block;
+        width: 100%;
+        max-height: 310px;
+        object-fit: cover;
+    }
+
+.yemek-fotograf-onizleme-alt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 12px;
+}
+
+    .yemek-fotograf-onizleme-alt > div {
+        min-width: 0;
+    }
+
+    .yemek-fotograf-onizleme-alt strong {
+        display: block;
+        overflow: hidden;
+        color: #ffffff;
+        font-size: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .yemek-fotograf-onizleme-alt span {
+        display: block;
+        margin-top: 3px;
+        color: #958a97;
+        font-size: 8px;
+    }
+
+    .yemek-fotograf-onizleme-alt button {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        flex: 0 0 auto;
+        min-height: 34px;
+        padding: 0 9px;
+        border: 1px solid rgba(255, 255, 255, 0.075);
+        border-radius: 10px;
+        color: #d5cad7;
+        background: rgba(255, 255, 255, 0.04);
+        font: inherit;
+        font-size: 8px;
+        font-weight: 850;
+        cursor: pointer;
+    }
+
+.yemek-analiz-butonu,
+.yemek-kaydet-butonu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 47px;
+    margin-top: 11px;
+    border: 0;
+    border-radius: 14px;
+    color: #241821;
+    background: linear-gradient( 135deg, #ffc27b, #ef8f50 );
+    box-shadow: 0 12px 27px rgba(243, 166, 90, 0.18);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+    .yemek-analiz-butonu:disabled,
+    .yemek-kaydet-butonu:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+
+.yemek-analiz-yukleniyor {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 11px;
+    align-items: center;
+    margin-top: 11px;
+    padding: 13px;
+    border: 1px solid rgba(160, 99, 195, 0.11);
+    border-radius: 15px;
+    background: rgba(160, 99, 195, 0.055);
+}
+
+.yemek-analiz-parilti {
+    display: grid;
+    place-items: center;
+    width: 41px;
+    height: 41px;
+    border-radius: 13px;
+    background: rgba(160, 99, 195, 0.12);
+    font-size: 22px;
+    animation: yemek-parilti 1.1s ease-in-out infinite alternate;
+}
+
+.yemek-analiz-yukleniyor strong {
+    color: #ffffff;
+    font-size: 11px;
+}
+
+.yemek-analiz-yukleniyor span {
+    display: block;
+    margin-top: 4px;
+    color: #9d929f;
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+.yemek-analiz-sonucu {
+    margin-top: 14px;
+}
+
+.yemek-analiz-sonuc-baslik {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+    .yemek-analiz-sonuc-baslik span {
+        color: #a89ca9;
+        font-size: 8px;
+        font-weight: 850;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+    .yemek-analiz-sonuc-baslik h3 {
+        margin: 4px 0 0;
+        color: #ffffff;
+        font-size: 16px;
+    }
+
+    .yemek-analiz-sonuc-baslik > strong {
+        padding: 6px 9px;
+        border-radius: 999px;
+        color: #ffc27b;
+        background: rgba(243, 166, 90, 0.1);
+        font-size: 8px;
+    }
+
+.yemek-analiz-liste {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.yemek-analiz-karti {
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.065);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.yemek-analiz-kart-ozet {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 11px;
+    border: 0;
+    color: inherit;
+    text-align: left;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+}
+
+.yemek-analiz-sira {
+    display: grid;
+    place-items: center;
+    width: 29px;
+    height: 29px;
+    border-radius: 9px;
+    color: #ffc27b;
+    background: rgba(243, 166, 90, 0.11);
+    font-size: 10px;
+    font-weight: 900;
+}
+
+.yemek-analiz-kart-ozet > div {
+    min-width: 0;
+}
+
+.yemek-analiz-kart-ozet strong {
+    display: block;
+    overflow: hidden;
+    color: #ffffff;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.yemek-analiz-kart-ozet > div > span {
+    display: block;
+    margin-top: 4px;
+    color: #978c99;
+    font-size: 8px;
+}
+
+.yemek-guven {
+    padding: 5px 7px;
+    border-radius: 999px;
+    color: #8ee0bd;
+    background: rgba(89, 201, 154, 0.1);
+    font-size: 8px;
+    font-weight: 850;
+}
+
+.yemek-analiz-kart-ozet > svg {
+    color: #918694;
+}
+
+.yemek-analiz-kart-detay {
+    padding: 0 11px 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.yemek-tam-genislik {
+    margin-top: 11px;
+}
+
+.yemek-analiz-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 9px;
+}
+
+.yemek-sil-butonu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 37px;
+    margin-top: 9px;
+    border: 1px solid rgba(229, 90, 118, 0.13);
+    border-radius: 11px;
+    color: #ff9eae;
+    background: rgba(229, 90, 118, 0.06);
+    font: inherit;
+    font-size: 8px;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.yemek-toplam-karti {
+    display: grid;
+    grid-template-columns: minmax(125px, 0.65fr) minmax(0, 1.35fr);
+    gap: 10px;
+    margin-top: 10px;
+    padding: 13px;
+    border: 1px solid rgba(243, 166, 90, 0.14);
+    border-radius: 16px;
+    background: rgba(243, 166, 90, 0.055);
+}
+
+.yemek-toplam-ana {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+    .yemek-toplam-ana > span {
+        width: 100%;
+        color: #aa9daa;
+        font-size: 8px;
+        font-weight: 850;
+        text-transform: uppercase;
+    }
+
+    .yemek-toplam-ana strong {
+        color: #ffffff;
+        font-size: 29px;
+        line-height: 1;
+    }
+
+    .yemek-toplam-ana small {
+        color: #b9acb9;
+        font-size: 9px;
+        font-weight: 750;
+    }
+
+.yemek-toplam-makrolar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+}
+
+    .yemek-toplam-makrolar > span {
+        padding: 8px;
+        border-radius: 11px;
+        color: #978c99;
+        background: rgba(255, 255, 255, 0.035);
+        font-size: 7px;
+    }
+
+    .yemek-toplam-makrolar strong {
+        display: block;
+        margin-top: 4px;
+        color: #ffffff;
+        font-size: 10px;
+    }
+
+.yemek-analiz-uyari {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px;
+    align-items: flex-start;
+    margin-top: 9px;
+    padding: 10px;
+    border-radius: 12px;
+    color: #ffc27b;
+    background: rgba(243, 166, 90, 0.06);
+}
+
+    .yemek-analiz-uyari p {
+        margin: 0;
+        color: #a79ba7;
+        font-size: 8px;
+        line-height: 1.55;
+    }
+
+.yemek-kaydet-butonu {
+    color: #20171d;
+    background: linear-gradient( 135deg, #8ae0bc, #59c99a );
+    box-shadow: 0 12px 27px rgba(89, 201, 154, 0.15);
+}
+
+.yemek-panel-mesaj {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 10px;
+    padding: 10px 11px;
+    border-radius: 12px;
+    font-size: 9px;
+    line-height: 1.45;
+}
+
+.yemek-panel-mesaj--basarili {
+    color: #8ae0bc;
+    background: rgba(89, 201, 154, 0.09);
+}
+
+.yemek-panel-mesaj--hata {
+    color: #ff9eae;
+    background: rgba(229, 90, 118, 0.09);
+}
+
+@keyframes yemek-parilti {
+    from {
+        transform: scale(0.96);
+    }
+
+    to {
+        transform: scale(1.05);
+    }
+}
+
+@media (max-width: 560px) {
+    .yemek-fotograf-paneli {
+        padding: 15px;
+        border-radius: 19px;
+    }
+
+    .yemek-fotograf-form {
+        grid-template-columns: 1fr;
+    }
+
+    .yemek-fotograf-butonlari {
+        grid-template-columns: 1fr;
+    }
+
+    .yemek-toplam-karti {
+        grid-template-columns: 1fr;
+    }
+
+    .yemek-toplam-makrolar {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 380px) {
+    .yemek-analiz-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .yemek-toplam-makrolar {
+        grid-template-columns: 1fr;
+    }
+}

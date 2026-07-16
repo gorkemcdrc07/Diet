@@ -1,0 +1,460 @@
+﻿.ana-sayfa {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+    /* =====================================================
+   ANA SAYFA SIRALAMASI
+===================================================== */
+
+    .ana-sayfa > .tebrik-bildirimi {
+        order: 0;
+    }
+
+    .ana-sayfa > .premium-ust-alan {
+        order: 1;
+    }
+
+    .ana-sayfa > .bugun-ozet-seridi {
+        order: 2;
+    }
+
+    .ana-sayfa > .bugunun-onceligi-alani {
+        order: 3;
+    }
+
+    .ana-sayfa > .bolum {
+        order: 4;
+    }
+
+    .ana-sayfa > .gunluk-saglik-grid {
+        order: 5;
+    }
+
+    /* Yeni kilo takip kartı */
+    .ana-sayfa > .kilo-karti {
+        order: 6;
+    }
+
+    .ana-sayfa > .gunluk-gorevler-karti {
+        order: 7;
+    }
+
+    .ana-sayfa > [class*="mico-viki"],
+    .ana-sayfa > [class*="asistan"] {
+        order: 8;
+    }
+
+    .ana-sayfa > [class*="gunun-ozeti"] {
+        order: 9;
+    }
+
+    .ana-sayfa > [class*="gunluk-not"] {
+        order: 10;
+    }
+
+    .ana-sayfa > [class*="haftalik"] {
+        order: 11;
+    }
+
+    .ana-sayfa > .bildirim-karti,
+    .ana-sayfa > .bildirim-uyari {
+        order: 12;
+    }
+
+    /* Geçici Android bildirim test kartı */
+    .ana-sayfa > .native-bildirim-test-karti {
+        order: 13;
+    }
+
+/* =====================================================
+   BUGÜN ÖZET ŞERİDİ
+===================================================== */
+
+.bugun-ozet-seridi {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+    width: 100%;
+}
+
+.bugun-ozet-elemani {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    min-height: 66px;
+    padding: 11px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.065);
+    border-radius: 17px;
+    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.014) ), rgba(29, 23, 34, 0.88);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.bugun-ozet-ikon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 35px;
+    height: 35px;
+    border-radius: 11px;
+}
+
+.bugun-ozet-elemani > div {
+    min-width: 0;
+}
+
+    .bugun-ozet-elemani > div > span {
+        display: block;
+        color: #958a99;
+        font-size: 8px;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .bugun-ozet-elemani > div > strong {
+        display: block;
+        overflow: hidden;
+        margin-top: 4px;
+        color: #ffffff;
+        font-size: 14px;
+        line-height: 1.1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.bugun-ozet-elemani--ogun
+.bugun-ozet-ikon {
+    color: #ff9abd;
+    background: rgba(242, 118, 160, 0.12);
+}
+
+.bugun-ozet-elemani--su
+.bugun-ozet-ikon {
+    color: #93d8ff;
+    background: rgba(90, 181, 231, 0.12);
+}
+
+.bugun-ozet-elemani--coin
+.bugun-ozet-ikon {
+    color: #ffd37c;
+    background: rgba(226, 175, 66, 0.12);
+}
+
+.bugun-ozet-elemani--siradaki
+.bugun-ozet-ikon {
+    color: #d9a8ee;
+    background: rgba(160, 99, 195, 0.12);
+}
+
+/* =====================================================
+   ÖĞÜNLER
+===================================================== */
+
+.ana-sayfa > .bolum
+.bolum-baslik {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.ana-sayfa > .bolum
+.mini-baslik {
+    color: #d693ab;
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.ana-sayfa > .bolum
+.bolum-baslik h2 {
+    margin: 4px 0 0;
+    color: #ffffff;
+    font-size: 22px;
+    line-height: 1.15;
+}
+
+.ana-sayfa > .bolum
+.ogun-sayisi {
+    flex: 0 0 auto;
+    padding: 6px 10px;
+    border: 1px solid rgba(242, 118, 160, 0.15);
+    border-radius: 999px;
+    color: #ff91b7;
+    background: rgba(242, 118, 160, 0.08);
+    font-size: 10px;
+    font-weight: 900;
+}
+
+.ana-sayfa > .bolum
+.ogun-listesi {
+    display: grid;
+    gap: 10px;
+}
+
+/* =====================================================
+   SU + İLAÇ
+===================================================== */
+
+.gunluk-saglik-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: 100%;
+}
+
+    .gunluk-saglik-grid > * {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+    }
+
+    /* Su kartı */
+
+    .gunluk-saglik-grid
+    .su-karti {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .gunluk-saglik-grid
+    .su-karti-sol {
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+    }
+
+    .gunluk-saglik-grid
+    .su-karti-kontroller {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: center;
+    }
+
+    .gunluk-saglik-grid
+    .su-karti-orta {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* İlaç kartı */
+
+    .gunluk-saglik-grid
+    .ilac-karti {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+    }
+
+    .gunluk-saglik-grid
+    .ilac-ana-alan {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+    }
+
+/* =====================================================
+   KİLO TAKİP KARTI
+===================================================== */
+
+.ana-sayfa > .kilo-karti {
+    width: 100%;
+    min-width: 0;
+}
+
+/*
+Kilo kartının kendi detay tasarımı
+KiloTakipKarti.css dosyasında bulunuyor.
+Burada yalnızca ana sayfa yerleşimi düzenleniyor.
+*/
+
+/* =====================================================
+   ANA SAYFADA GİZLENECEK DETAYLAR
+===================================================== */
+
+.ana-sayfa > .xp-ozet-karti,
+.ana-sayfa > .coin-ozet-karti,
+.ana-sayfa > .karakter-seviye-alani {
+    display: none !important;
+}
+
+/* =====================================================
+   GÜNLÜK GÖREV KARTI
+===================================================== */
+
+.ana-sayfa >
+.gunluk-gorevler-karti {
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015) ), rgba(29, 23, 34, 0.88);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.13);
+}
+
+/* =====================================================
+   GEÇİCİ ANDROID BİLDİRİM TEST KARTI
+===================================================== */
+
+.native-bildirim-test-karti {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 15px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    background: rgba(29, 23, 34, 0.92);
+}
+
+    .native-bildirim-test-karti > div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .native-bildirim-test-karti strong {
+        color: #ffffff;
+        font-size: 13px;
+    }
+
+    .native-bildirim-test-karti span,
+    .native-bildirim-test-karti small {
+        color: #a99eac;
+        font-size: 9px;
+        line-height: 1.5;
+    }
+
+    .native-bildirim-test-karti button {
+        min-height: 40px;
+        padding: 0 13px;
+        border: 0;
+        border-radius: 12px;
+        color: #241821;
+        background: linear-gradient( 135deg, #f6a0bd, #ed739e );
+        font: inherit;
+        font-size: 10px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .native-bildirim-test-karti button:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+        }
+
+    .native-bildirim-test-karti > small {
+        grid-column: 1 / -1;
+    }
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 850px) {
+    .bugun-ozet-seridi {
+        grid-template-columns: repeat( 2, minmax(0, 1fr) );
+    }
+}
+
+/* =====================================================
+   MOBİL
+===================================================== */
+
+@media (max-width: 560px) {
+    .ana-sayfa {
+        gap: 13px;
+    }
+
+    .bugun-ozet-seridi {
+        grid-template-columns: repeat( 2, minmax(0, 1fr) );
+        gap: 7px;
+    }
+
+    .bugun-ozet-elemani {
+        min-height: 59px;
+        padding: 9px 10px;
+        border-radius: 15px;
+    }
+
+    .bugun-ozet-ikon {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+    }
+
+    .bugun-ozet-elemani >
+    div > strong {
+        font-size: 13px;
+    }
+
+    .ana-sayfa > .bolum
+    .bolum-baslik h2 {
+        font-size: 20px;
+    }
+
+    .gunluk-saglik-grid
+    .su-karti {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+    }
+
+    .gunluk-saglik-grid
+    .ilac-ana-alan {
+        grid-template-columns: 1fr;
+    }
+
+    .gunluk-saglik-grid
+    .ilac-kisa-bilgiler {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .native-bildirim-test-karti {
+        grid-template-columns: 1fr;
+    }
+
+        .native-bildirim-test-karti button {
+            width: 100%;
+        }
+}
+
+/* =====================================================
+   ÇOK KÜÇÜK EKRAN
+===================================================== */
+
+@media (max-width: 380px) {
+    .bugun-ozet-seridi {
+        grid-template-columns: 1fr;
+    }
+
+    .bugun-ozet-elemani {
+        min-height: 56px;
+    }
+
+    .gunluk-saglik-grid
+    .su-karti {
+        grid-template-columns: 1fr;
+    }
+
+    .gunluk-saglik-grid
+    .su-karti-kontroller {
+        grid-column: 1;
+        grid-row: 2;
+        justify-self: flex-start;
+    }
+
+    .gunluk-saglik-grid
+    .su-karti-orta {
+        grid-column: 1;
+        grid-row: 3;
+    }
+}

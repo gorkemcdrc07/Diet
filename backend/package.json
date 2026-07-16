@@ -1,0 +1,34 @@
+{
+  "name": "mico-vicky-backend",
+  "version": "1.0.0",
+  "description": "Miço & Vicky yemek fotoğrafı ve kalori analiz servisi",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "check": "node --check server.js"
+  },
+  "keywords": [
+    "express",
+    "openai",
+    "food-analysis",
+    "calorie-tracking",
+    "mico-vicky"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "multer": "^2.2.0",
+    "openai": "^6.47.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

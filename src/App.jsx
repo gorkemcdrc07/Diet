@@ -10,6 +10,7 @@ import {
 
 import AnaSayfa from "./sayfalar/AnaSayfa";
 import ProgramSayfasi from "./sayfalar/ProgramSayfasi";
+import TakipSayfasi from "./sayfalar/TakipSayfasi";
 import IstatistiklerSayfasi from "./sayfalar/IstatistiklerSayfasi";
 import BildirimAyarlari from "./sayfalar/BildirimAyarlari";
 import KurulumRehberi from "./sayfalar/KurulumRehberi";
@@ -43,13 +44,13 @@ const TEMA_KEY =
 const GECERLI_SAYFALAR = [
     "ana-sayfa",
     "program",
+    "takip",
     "basarilar",
     "karakterler",
     "profil",
     "magaza",
     "beslenme-planlari",
 
-    // Bunlar artık gizli sayfalar.
     "istatistikler",
     "bildirimler",
     "kurulum",
@@ -417,6 +418,9 @@ export default function App() {
         switch (aktifSayfa) {
             case "program":
                 return <ProgramSayfasi />;
+
+            case "takip":
+                return <TakipSayfasi />;
 
             case "magaza":
                 return <MagazaSayfasi />;

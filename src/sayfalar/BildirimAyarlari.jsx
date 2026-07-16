@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import {
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
+
 import {
     BellOff,
     BellRing,
@@ -12,18 +17,17 @@ import {
 } from "lucide-react";
 
 import {
-    aboneligiKapat,
-    bildirimDestekleniyorMu,
-    bildirimIzniGetir,
-    mevcutAboneligiGetir,
-    pushAboneligiOlustur,
-    yerelTestBildirimiGoster,
-} from "../servisler/bildirimServisi";
+    Capacitor,
+} from "@capacitor/core";
 
 import {
-    telefonuKaydet,
-    telefonuPasifYap,
-} from "../servisler/telefonBildirimServisi";
+    LocalNotifications,
+} from "@capacitor/local-notifications";
+
+import {
+    bildirimIzniIste,
+    testBildirimiGonder as nativeTestBildirimiGonder,
+} from "../servisler/androidBildirim";
 
 function izinMetniGetir(izin) {
     switch (izin) {
@@ -33,65 +37,123 @@ function izinMetniGetir(izin) {
         case "denied":
             return "İzin reddedildi";
 
-        case "default":
-            return "Henüz izin verilmedi";
+        case "prompt":
+        case "prompt-with-rationale":
+            return "İzin bekleniyor";
 
         default:
-            return "Desteklenmiyor";
+            return "Kontrol ediliyor";
     }
 }
 
+function platformMetniGetir() {
+    const platform =
+        Capacitor.getPlatform();
+
+    if (platform === "android") {
+        return "Android uygulaması";
+    }
+
+    if (platform === "ios") {
+        return "iOS uygulaması";
+    }
+
+    return "Web uygulaması";
+}
+
 export default function BildirimAyarlari() {
-    const [destekleniyor] = useState(
-        bildirimDestekleniyorMu(),
-    );
+    const nativeUygulama =
+        Capacitor.isNativePlatform();
 
-    const [izin, setIzin] = useState(
-        bildirimIzniGetir(),
-    );
+    const [
+        izin,
+        setIzin,
+    ] = useState("prompt");
 
-    const [bildirimlerAcik, setBildirimlerAcik] =
-        useState(false);
+    const [
+        bildirimlerAcik,
+        setBildirimlerAcik,
+    ] = useState(false);
 
-    const [yukleniyor, setYukleniyor] =
-        useState(true);
+    const [
+        yukleniyor,
+        setYukleniyor,
+    ] = useState(true);
 
-    const [islem, setIslem] = useState("");
-    const [mesaj, setMesaj] = useState("");
-    const [hata, setHata] = useState("");
+    const [
+        islem,
+        setIslem,
+    ] = useState("");
 
-    useEffect(() => {
-        async function bildirimDurumunuKontrolEt() {
-            if (!destekleniyor) {
-                setYukleniyor(false);
-                return;
-            }
+    const [
+        mesaj,
+        setMesaj,
+    ] = useState("");
+
+    const [
+        hata,
+        setHata,
+    ] = useState("");
+
+    const bildirimDurumunuKontrolEt =
+        useCallback(async () => {
+            setYukleniyor(true);
+            setHata("");
 
             try {
-                const mevcutBildirimKaydi =
-                    await mevcutAboneligiGetir();
+                if (!nativeUygulama) {
+                    setIzin("unsupported");
+                    setBildirimlerAcik(false);
 
+                    setHata(
+                        "Native bildirimler yalnızca Android veya iOS uygulamasında kullanılabilir.",
+                    );
+
+                    return;
+                }
+
+                const izinSonucu =
+                    await LocalNotifications
+                        .checkPermissions();
+
+                const aktiflikSonucu =
+                    await LocalNotifications
+                        .areEnabled();
+
+                const yeniIzin =
+                    izinSonucu?.display ||
+                    "prompt";
+
+                const aktifMi =
+                    yeniIzin === "granted" &&
+                    Boolean(
+                        aktiflikSonucu?.value,
+                    );
+
+                setIzin(yeniIzin);
                 setBildirimlerAcik(
-                    Boolean(mevcutBildirimKaydi),
-                );
-
-                setIzin(
-                    bildirimIzniGetir(),
+                    aktifMi,
                 );
             } catch (error) {
-                console.error(error);
+                console.error(
+                    "Native bildirim durumu kontrol edilemedi:",
+                    error,
+                );
 
                 setHata(
                     error?.message ||
                     "Bildirim durumu kontrol edilemedi.",
                 );
+
+                setBildirimlerAcik(false);
             } finally {
                 setYukleniyor(false);
             }
-        }
+        }, [nativeUygulama]);
 
+    useEffect(() => {
         bildirimDurumunuKontrolEt();
-    }, [destekleniyor]);
+    }, [bildirimDurumunuKontrolEt]);
 
     async function bildirimleriAc() {
         setIslem("aciliyor");
@@ -99,31 +161,61 @@ export default function BildirimAyarlari() {
         setHata("");
 
         try {
-            const pushAboneligi =
-                await pushAboneligiOlustur();
+            if (!nativeUygulama) {
+                throw new Error(
+                    "Bu işlem yalnızca mobil uygulamada kullanılabilir.",
+                );
+            }
 
-            await telefonuKaydet(
-                pushAboneligi,
+            const sonuc =
+                await bildirimIzniIste();
+
+            const yeniIzin =
+                sonuc?.izin ||
+                "prompt";
+
+            setIzin(yeniIzin);
+
+            if (
+                yeniIzin !==
+                "granted"
+            ) {
+                throw new Error(
+                    "Bildirim izni verilmedi.",
+                );
+            }
+
+            const aktiflik =
+                await LocalNotifications
+                    .areEnabled();
+
+            const aktifMi =
+                Boolean(
+                    aktiflik?.value,
+                );
+
+            setBildirimlerAcik(
+                aktifMi,
             );
 
-            setBildirimlerAcik(true);
-            setIzin(
-                bildirimIzniGetir(),
-            );
+            if (!aktifMi) {
+                throw new Error(
+                    "Android sistem ayarlarında bildirimler kapalı görünüyor.",
+                );
+            }
 
             setMesaj(
-                "Bildirimler hazır. Öğün saatlerinde bu telefona hatırlatma gelecek.",
+                "Android bildirimleri başarıyla açıldı.",
             );
         } catch (error) {
-            console.error(error);
+            console.error(
+                "Bildirimler açılamadı:",
+                error,
+            );
 
             setHata(
                 error?.message ||
                 "Bildirimler açılamadı.",
-            );
-
-            setIzin(
-                bildirimIzniGetir(),
             );
         } finally {
             setIslem("");
@@ -136,16 +228,26 @@ export default function BildirimAyarlari() {
         setHata("");
 
         try {
-            await telefonuPasifYap();
-            await aboneligiKapat();
+            await LocalNotifications
+                .cancel({
+                    notifications: [],
+                })
+                .catch(() => { });
 
-            setBildirimlerAcik(false);
+            await LocalNotifications
+                .removeAllDeliveredNotifications()
+                .catch(() => { });
 
             setMesaj(
-                "Bu telefondaki öğün bildirimleri kapatıldı.",
+                "Planlanmış bildirimler temizlendi. Sistem iznini tamamen kapatmak için Android Ayarlar > Uygulamalar > Miço&Vicky > Bildirimler bölümünü kullan.",
             );
+
+            await bildirimDurumunuKontrolEt();
         } catch (error) {
-            console.error(error);
+            console.error(
+                "Bildirimler temizlenemedi:",
+                error,
+            );
 
             setHata(
                 error?.message ||
@@ -156,32 +258,38 @@ export default function BildirimAyarlari() {
         }
     }
 
-    async function testBildirimiGonder() {
+    async function testBildirimiCalistir() {
         setIslem("test");
         setMesaj("");
         setHata("");
 
         try {
-            await yerelTestBildirimiGoster();
+            if (!nativeUygulama) {
+                throw new Error(
+                    "Test bildirimi yalnızca mobil uygulamada gönderilebilir.",
+                );
+            }
 
-            setIzin(
-                bildirimIzniGetir(),
-            );
+            await nativeTestBildirimiGonder();
+
+            setIzin("granted");
+            setBildirimlerAcik(true);
 
             setMesaj(
-                "Test bildirimi başarıyla gönderildi.",
+                "Test bildirimi planlandı. Uygulamayı arka plana al; yaklaşık 5 saniye içinde gelecek.",
             );
         } catch (error) {
-            console.error(error);
+            console.error(
+                "Test bildirimi gönderilemedi:",
+                error,
+            );
 
             setHata(
                 error?.message ||
                 "Test bildirimi gönderilemedi.",
             );
 
-            setIzin(
-                bildirimIzniGetir(),
-            );
+            await bildirimDurumunuKontrolEt();
         } finally {
             setIslem("");
         }
@@ -196,25 +304,28 @@ export default function BildirimAyarlari() {
 
                 <div>
                     <span>
-                        Öğün hatırlatıcıları
+                        Native hatırlatıcılar
                     </span>
 
-                    <h1>Bildirimler</h1>
+                    <h1>
+                        Bildirimler
+                    </h1>
                 </div>
             </header>
 
-            {!destekleniyor && (
+            {!nativeUygulama && (
                 <section className="bildirim-uyari hata">
                     <TriangleAlert size={21} />
 
                     <div>
                         <strong>
-                            Bildirim desteği bulunamadı
+                            Mobil uygulama gerekli
                         </strong>
 
                         <span>
-                            Uygulamayı güncel bir tarayıcıdan
-                            veya telefona yükledikten sonra aç.
+                            Native bildirimleri kullanmak
+                            için uygulamayı Android veya
+                            iOS uygulaması olarak aç.
                         </span>
                     </div>
                 </section>
@@ -222,10 +333,12 @@ export default function BildirimAyarlari() {
 
             <section className="bildirim-durum-karti">
                 <div
-                    className={`buyuk-bildirim-ikon ${bildirimlerAcik
+                    className={[
+                        "buyuk-bildirim-ikon",
+                        bildirimlerAcik
                             ? "aktif"
-                            : ""
-                        }`}
+                            : "",
+                    ].join(" ")}
                 >
                     {bildirimlerAcik ? (
                         <BellRing size={32} />
@@ -235,19 +348,25 @@ export default function BildirimAyarlari() {
                 </div>
 
                 <div className="bildirim-durum-metin">
-                    <span>Bildirim durumu</span>
+                    <span>
+                        Bildirim durumu
+                    </span>
 
                     <strong>
                         {yukleniyor
                             ? "Kontrol ediliyor"
                             : bildirimlerAcik
-                                ? "Bildirimler hazır"
+                                ? "Bildirimler açık"
                                 : "Bildirimler kapalı"}
                     </strong>
 
                     <small>
-                        Tarayıcı izni:{" "}
-                        {izinMetniGetir(izin)}
+                        {platformMetniGetir()}
+                        {" · "}
+                        Android izni:{" "}
+                        {izinMetniGetir(
+                            izin,
+                        )}
                     </small>
                 </div>
             </section>
@@ -261,7 +380,9 @@ export default function BildirimAyarlari() {
                             İşlem başarısız
                         </strong>
 
-                        <span>{hata}</span>
+                        <span>
+                            {hata}
+                        </span>
                     </div>
                 </section>
             )}
@@ -275,7 +396,9 @@ export default function BildirimAyarlari() {
                             İşlem başarılı
                         </strong>
 
-                        <span>{mesaj}</span>
+                        <span>
+                            {mesaj}
+                        </span>
                     </div>
                 </section>
             )}
@@ -286,19 +409,24 @@ export default function BildirimAyarlari() {
                         type="button"
                         className="ana-bildirim-butonu"
                         disabled={
-                            !destekleniyor ||
+                            !nativeUygulama ||
                             Boolean(islem) ||
                             yukleniyor
                         }
-                        onClick={bildirimleriAc}
+                        onClick={
+                            bildirimleriAc
+                        }
                     >
-                        {islem === "aciliyor" ? (
+                        {islem ===
+                            "aciliyor" ? (
                             <LoaderCircle
                                 className="donen-ikon"
                                 size={20}
                             />
                         ) : (
-                            <BellRing size={20} />
+                            <BellRing
+                                size={20}
+                            />
                         )}
 
                         Bildirimleri Aç
@@ -307,8 +435,12 @@ export default function BildirimAyarlari() {
                     <button
                         type="button"
                         className="bildirim-kapat-butonu"
-                        disabled={Boolean(islem)}
-                        onClick={bildirimleriKapat}
+                        disabled={
+                            Boolean(islem)
+                        }
+                        onClick={
+                            bildirimleriKapat
+                        }
                     >
                         {islem ===
                             "kapatiliyor" ? (
@@ -317,10 +449,12 @@ export default function BildirimAyarlari() {
                                 size={20}
                             />
                         ) : (
-                            <BellOff size={20} />
+                            <BellOff
+                                size={20}
+                            />
                         )}
 
-                        Bildirimleri Kapat
+                        Bildirimleri Yönet
                     </button>
                 )}
 
@@ -328,10 +462,13 @@ export default function BildirimAyarlari() {
                     type="button"
                     className="test-bildirimi-butonu"
                     disabled={
-                        !destekleniyor ||
-                        Boolean(islem)
+                        !nativeUygulama ||
+                        Boolean(islem) ||
+                        yukleniyor
                     }
-                    onClick={testBildirimiGonder}
+                    onClick={
+                        testBildirimiCalistir
+                    }
                 >
                     {islem === "test" ? (
                         <LoaderCircle
@@ -343,6 +480,22 @@ export default function BildirimAyarlari() {
                     )}
 
                     Test Bildirimi Gönder
+                </button>
+
+                <button
+                    type="button"
+                    className="test-bildirimi-butonu"
+                    disabled={
+                        Boolean(islem) ||
+                        yukleniyor
+                    }
+                    onClick={
+                        bildirimDurumunuKontrolEt
+                    }
+                >
+                    <Smartphone size={19} />
+
+                    Durumu Yenile
                 </button>
             </section>
 
@@ -358,48 +511,54 @@ export default function BildirimAyarlari() {
                         </strong>
 
                         <span>
-                            Programdaki yedi öğün
-                            saatinde
+                            Beslenme programındaki
+                            öğün saatlerinde
                         </span>
                     </div>
 
                     <span
-                        className={`durum-etiketi ${bildirimlerAcik
+                        className={[
+                            "durum-etiketi",
+                            bildirimlerAcik
                                 ? ""
-                                : "kapali"
-                            }`}
+                                : "kapali",
+                        ].join(" ")}
                     >
                         {bildirimlerAcik
-                            ? "Açık"
+                            ? "Hazır"
                             : "Kapalı"}
                     </span>
                 </div>
 
                 <div className="ayar-satiri">
                     <div className="ayar-ikon kucuk">
-                        <Smartphone size={20} />
+                        <Smartphone
+                            size={20}
+                        />
                     </div>
 
                     <div className="ayar-metin">
                         <strong>
-                            Sevgilimin telefonu
+                            Bu cihaz
                         </strong>
 
                         <span>
-                            Bu telefonun bildirim
-                            durumu
+                            Miço&Vicky uygulamasının
+                            Android bildirim durumu
                         </span>
                     </div>
 
                     <span
-                        className={`durum-etiketi ${bildirimlerAcik
+                        className={[
+                            "durum-etiketi",
+                            bildirimlerAcik
                                 ? ""
-                                : "kapali"
-                            }`}
+                                : "kapali",
+                        ].join(" ")}
                     >
                         {bildirimlerAcik
-                            ? "Hazır"
-                            : "Kayıtlı değil"}
+                            ? "İzinli"
+                            : "İzinsiz"}
                     </span>
                 </div>
             </section>
@@ -409,13 +568,16 @@ export default function BildirimAyarlari() {
 
                 <div>
                     <strong>
-                        Yalnızca öğün hatırlatmaları
+                        Cihaz üzerinde çalışır
                     </strong>
 
                     <span>
-                        Bu uygulama sadece beslenme
-                        programındaki saatlerde bildirim
-                        gönderecek.
+                        Yerel Android bildirimleri
+                        internet bağlantısı olmasa bile
+                        planlanan saatte gösterilebilir.
+                        Bir sonraki adımda ilaç ve öğün
+                        saatlerini bu sisteme
+                        bağlayacağız.
                     </span>
                 </div>
             </section>

@@ -1,0 +1,463 @@
+﻿.ilac-karti {
+    position: relative;
+    overflow: hidden;
+    padding: 17px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 21px;
+    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.018) ), rgba(29, 23, 34, 0.92);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14);
+    color: #fff;
+}
+
+    .ilac-karti::after {
+        content: "";
+        position: absolute;
+        right: -62px;
+        top: -78px;
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        background: rgba(163, 102, 202, 0.09);
+        pointer-events: none;
+    }
+
+.ilac-karti--aktif {
+    border-color: rgba(240, 157, 73, 0.32);
+    animation: ilac-nabiz 2.4s ease-in-out infinite;
+}
+
+.ilac-karti--icildi {
+    border-color: rgba(89, 201, 154, 0.22);
+}
+
+.ilac-karti-ust {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.ilac-karti-kimlik {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.ilac-karti-ikon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 43px;
+    height: 43px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #e4b1f4;
+    background: rgba(158, 95, 194, 0.12);
+}
+
+.ilac-karti--icildi .ilac-karti-ikon {
+    color: #7fe0b8;
+    background: rgba(89, 201, 154, 0.12);
+}
+
+.ilac-karti-kimlik > div {
+    min-width: 0;
+}
+
+.ilac-mini-baslik {
+    display: block;
+    color: #a99cae;
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.ilac-karti-kimlik h2 {
+    overflow: hidden;
+    margin: 4px 0 0;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ilac-ayar-butonu {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 11px;
+    color: #b6aab9;
+    background: rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+}
+
+.ilac-ana-alan {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: end;
+    margin-top: 17px;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.ilac-zaman-bilgisi > span {
+    display: block;
+    color: #aaa0ae;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+.ilac-zaman-bilgisi > strong {
+    display: block;
+    margin-top: 4px;
+    color: #fff;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+.ilac-karti--aktif .ilac-zaman-bilgisi > strong {
+    color: #ffc17c;
+}
+
+.ilac-karti--icildi .ilac-zaman-bilgisi > strong {
+    color: #7fe0b8;
+}
+
+.ilac-zaman-bilgisi > small {
+    display: block;
+    margin-top: 7px;
+    color: #968c9a;
+    font-size: 9px;
+    line-height: 1.4;
+}
+
+.ilac-kisa-bilgiler {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+    .ilac-kisa-bilgiler > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 29px;
+        padding: 0 9px;
+        border-radius: 9px;
+        color: #b9aebe;
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 9px;
+        font-weight: 750;
+        white-space: nowrap;
+    }
+
+.ilac-bos-durum {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-top: 16px;
+    padding: 14px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    color: #b7acbb;
+}
+
+    .ilac-bos-durum > div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .ilac-bos-durum strong {
+        color: #f5eff6;
+        font-size: 12px;
+    }
+
+    .ilac-bos-durum span {
+        font-size: 10px;
+        line-height: 1.45;
+    }
+
+.ilac-ictim-butonu,
+.ilac-kaydet-butonu {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 46px;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 14px;
+    color: #241821;
+    background: linear-gradient(135deg, #f6a0bd, #ed739e);
+    box-shadow: 0 10px 24px rgba(237, 115, 158, 0.18);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+    .ilac-ictim-butonu:disabled,
+    .ilac-kaydet-butonu:disabled {
+        cursor: default;
+        opacity: 0.6;
+    }
+
+.ilac-bildirim-satiri {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 38px;
+    margin-top: 9px;
+    padding: 0 11px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    color: #b9aebe;
+    background: rgba(255, 255, 255, 0.025);
+    font: inherit;
+    cursor: pointer;
+}
+
+    .ilac-bildirim-satiri > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 10px;
+        font-weight: 750;
+    }
+
+    .ilac-bildirim-satiri > strong {
+        color: #f09abc;
+        font-size: 10px;
+    }
+
+.ilac-mesaj {
+    position: relative;
+    z-index: 1;
+    margin-top: 9px;
+    padding: 9px 10px;
+    border-radius: 11px;
+    font-size: 9px;
+    line-height: 1.45;
+}
+
+.ilac-mesaj--hata {
+    color: #ffb2c4;
+    background: rgba(214, 73, 107, 0.1);
+}
+
+.ilac-mesaj--basarili {
+    color: #8ce4bd;
+    background: rgba(59, 177, 128, 0.09);
+}
+
+.ilac-karti--yukleniyor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 130px;
+    color: #aaa0ae;
+}
+
+    .ilac-karti--yukleniyor > span {
+        width: 23px;
+        height: 23px;
+        border: 3px solid rgba(255, 255, 255, 0.08);
+        border-top-color: #e68eb0;
+        border-radius: 50%;
+        animation: ilac-donme 800ms linear infinite;
+    }
+
+    .ilac-karti--yukleniyor strong {
+        font-size: 10px;
+    }
+
+.ilac-sheet-katmani {
+    position: fixed;
+    inset: 0;
+    z-index: 10020;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 10px;
+    background: rgba(8, 6, 10, 0.66);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.ilac-sheet {
+    width: min(100%, 520px);
+    padding: 14px 17px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 25px 25px 18px 18px;
+    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018) ), #211a25;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
+    animation: ilac-sheet-giris 280ms ease;
+}
+
+.ilac-sheet-tutamac {
+    width: 42px;
+    height: 4px;
+    margin: 0 auto 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.ilac-sheet-baslik {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+    .ilac-sheet-baslik span {
+        color: #a99cae;
+        font-size: 9px;
+        font-weight: 850;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .ilac-sheet-baslik h2 {
+        margin: 4px 0 0;
+        color: #fff;
+        font-size: 20px;
+    }
+
+    .ilac-sheet-baslik button {
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 11px;
+        color: #b8acbb;
+        background: rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+    }
+
+.ilac-sheet-form {
+    display: grid;
+    gap: 11px;
+    margin-top: 17px;
+}
+
+    .ilac-sheet-form label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .ilac-sheet-form label > span {
+            color: #a99da9;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+    .ilac-sheet-form input,
+    .ilac-sheet-form select {
+        width: 100%;
+        min-height: 43px;
+        padding: 0 11px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        outline: none;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.04);
+        font: inherit;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+        .ilac-sheet-form select option {
+            color: #111;
+        }
+
+.ilac-sheet-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+@keyframes ilac-donme {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ilac-sheet-giris {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes ilac-nabiz {
+    0%, 100% {
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(240, 157, 73, 0);
+    }
+
+    50% {
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14), 0 0 0 5px rgba(240, 157, 73, 0.05);
+    }
+}
+
+@media (max-width: 560px) {
+    .ilac-karti {
+        padding: 15px;
+        border-radius: 19px;
+    }
+
+    .ilac-ana-alan {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .ilac-kisa-bilgiler {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .ilac-sheet-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ilac-karti--aktif,
+    .ilac-sheet {
+        animation: none;
+    }
+}

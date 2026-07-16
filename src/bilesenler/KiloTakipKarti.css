@@ -1,0 +1,389 @@
+﻿body {
+}
+.kilo-karti {
+    position: relative;
+    overflow: hidden;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 22px;
+    background: radial-gradient( circle at 100% 0, rgba(242, 118, 160, 0.11), transparent 36% ), linear-gradient( 145deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.018) ), rgba(29, 23, 34, 0.92);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.16);
+}
+
+    .kilo-karti::after {
+        content: "";
+        position: absolute;
+        right: -70px;
+        bottom: -90px;
+        width: 210px;
+        height: 210px;
+        border-radius: 50%;
+        background: rgba(242, 118, 160, 0.055);
+        pointer-events: none;
+    }
+
+.kilo-karti-ust {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.kilo-baslik-alani {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.kilo-ikon {
+    display: grid;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    border-radius: 14px;
+    color: #ff9abd;
+    background: rgba(242, 118, 160, 0.12);
+}
+
+.kilo-baslik-alani h2 {
+    margin: 4px 0 0;
+    color: #fff;
+    font-size: 18px;
+}
+
+.kilo-baslik-alani
+.mini-baslik {
+    color: #b8a8bb;
+    font-size: 8px;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.kilo-ayar-butonu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-height: 37px;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 11px;
+    color: #d9ccd9;
+    background: rgba(255, 255, 255, 0.04);
+    font: inherit;
+    font-size: 9px;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.kilo-ana-alan {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(145px, 0.65fr) minmax(0, 1.35fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.kilo-mevcut-deger {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 15px;
+    border: 1px solid rgba(242, 118, 160, 0.13);
+    border-radius: 17px;
+    background: rgba(242, 118, 160, 0.06);
+}
+
+    .kilo-mevcut-deger > span {
+        width: 100%;
+        color: #aa9daf;
+        font-size: 8px;
+        font-weight: 850;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+    .kilo-mevcut-deger strong {
+        color: #fff;
+        font-size: 34px;
+        line-height: 1;
+    }
+
+    .kilo-mevcut-deger small {
+        color: #c3b4c5;
+        font-size: 11px;
+        font-weight: 750;
+    }
+
+.kilo-ozet-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+    .kilo-ozet-grid > div {
+        min-width: 0;
+        padding: 11px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.028);
+    }
+
+    .kilo-ozet-grid span {
+        display: block;
+        color: #938795;
+        font-size: 8px;
+        font-weight: 800;
+    }
+
+    .kilo-ozet-grid strong {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        overflow: hidden;
+        margin-top: 5px;
+        color: #f5eff5;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.kilo-degisim svg {
+    color: #ff9abd;
+}
+
+.kilo-giris-alani {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+    .kilo-giris-alani label,
+    .kilo-hedef-formu label {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+        .kilo-giris-alani label > span,
+        .kilo-hedef-formu label > span {
+            color: #9f92a3;
+            font-size: 8px;
+            font-weight: 850;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+.kilo-input-sarmalayici {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+    .kilo-input-sarmalayici input {
+        flex: 1;
+        min-width: 0;
+        border: 0;
+        outline: none;
+        color: #fff;
+        background: transparent;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .kilo-input-sarmalayici > span {
+        color: #988c9b;
+        font-size: 10px;
+        font-weight: 750;
+    }
+
+.kilo-giris-alani > button,
+.kilo-hedef-formu > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 13px;
+    color: #241821;
+    background: linear-gradient( 135deg, #ff9abe, #ef729d );
+    font: inherit;
+    font-size: 10px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+    .kilo-giris-alani > button:disabled,
+    .kilo-hedef-formu > button:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+
+.kilo-karakter-mesajlari {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    margin-top: 12px;
+}
+
+    .kilo-karakter-mesajlari article {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 9px;
+        padding: 11px;
+        border: 1px solid rgba(255, 255, 255, 0.055);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.025);
+    }
+
+.kilo-karakter-avatar {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    background: rgba(242, 118, 160, 0.09);
+    font-size: 18px;
+}
+
+.kilo-karakter-mesajlari strong {
+    color: #f5eef5;
+    font-size: 10px;
+}
+
+.kilo-karakter-mesajlari p {
+    margin: 4px 0 0;
+    color: #9e92a1;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.kilo-hedef-formu {
+    position: relative;
+    z-index: 1;
+    margin-top: 12px;
+    padding: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.065);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.kilo-hedef-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.kilo-hedef-formu input,
+.kilo-hedef-formu select {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 11px;
+    outline: none;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.04);
+    font: inherit;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+    .kilo-hedef-formu select option {
+        color: #222;
+    }
+
+.kilo-hedef-formu > button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.kilo-mesaj {
+    position: relative;
+    z-index: 1;
+    margin-top: 10px;
+    padding: 10px 11px;
+    border-radius: 12px;
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+.kilo-mesaj--basarili {
+    color: #84dbb6;
+    background: rgba(89, 201, 154, 0.09);
+}
+
+.kilo-mesaj--hata {
+    color: #ff9eae;
+    background: rgba(226, 75, 106, 0.09);
+}
+
+.kilo-karti--yukleniyor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 150px;
+    color: #a99eac;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+@media (max-width: 700px) {
+    .kilo-ana-alan {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .kilo-karti {
+        padding: 15px;
+        border-radius: 19px;
+    }
+
+    .kilo-karti-ust {
+        align-items: flex-start;
+    }
+
+    .kilo-ayar-butonu span {
+        display: none;
+    }
+
+    .kilo-ozet-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kilo-giris-alani {
+        grid-template-columns: 1fr;
+    }
+
+        .kilo-giris-alani > button {
+            width: 100%;
+        }
+
+    .kilo-karakter-mesajlari {
+        grid-template-columns: 1fr;
+    }
+
+    .kilo-hedef-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -688,23 +688,24 @@ article {
 
 .alt-menu {
     position: fixed;
-    right: 50%;
-    bottom: max(14px, env(safe-area-inset-bottom));
-    z-index: 50;
+    z-index: 1000;
+    left: 50%;
+    right: auto;
+    bottom: max( 14px, env(safe-area-inset-bottom) );
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     align-items: stretch;
-    width: min(calc(100% - 28px), 532px);
+    gap: 4px;
+    width: min( calc(100% - 36px), 524px );
     padding: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
-    background: rgba(31, 26, 34, 0.94);
+    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012) ), rgba(31, 26, 34, 0.97);
     box-shadow: 0 20px 55px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    transform: translateX(50%);
+    transform: translateX(-50%);
 }
-
     .alt-menu button {
         display: flex;
         align-items: center;
@@ -7289,28 +7290,24 @@ strong {
     }
 }
 
-@media (max-width: 370px) {
+@media (max-width: 560px) {
     .alt-menu {
-        width: calc(100% - 18px);
-        padding: 8px 3px;
+        width: calc(100% - 36px);
+        gap: 2px;
+        padding: 7px;
         border-radius: 22px;
     }
 
         .alt-menu button {
-            gap: 3px;
-            padding-inline: 0;
+            min-height: 60px;
+            padding: 6px 1px;
+            border-radius: 15px;
         }
 
-    .alt-menu-ikon {
-        width: 31px;
-        height: 30px;
-    }
-
-    .alt-menu small {
-        font-size: 7px;
-    }
+        .alt-menu small {
+            font-size: 7px;
+        }
 }
-
 @media (max-width: 370px) {
     .premium-ogun-ozet {
         gap: 10px;

@@ -1,23 +1,21 @@
 .magaza-sayfasi {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
     width: min(100%, 980px);
     margin: 0 auto;
     padding: 18px 16px 120px;
 }
 
+/* ---------- Hero ---------- */
+
 .magaza-hero {
     position: relative;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    padding: 24px;
+    padding: 22px 24px;
     border: 1px solid rgba(255, 255, 255, 0.72);
-    border-radius: 28px;
-    background: radial-gradient( circle at 88% 10%, rgba(255, 206, 107, 0.32), transparent 36% ), linear-gradient( 145deg, rgba(255, 255, 255, 0.96), rgba(255, 242, 218, 0.9) );
+    border-radius: 26px;
+    background: radial-gradient(circle at 88% 10%, rgba(255, 206, 107, 0.32), transparent 36%), linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 242, 218, 0.9));
     box-shadow: 0 22px 50px rgba(88, 58, 18, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
@@ -33,7 +31,7 @@
         pointer-events: none;
     }
 
-    .magaza-hero > div:first-child {
+    .magaza-hero > div {
         position: relative;
         z-index: 1;
     }
@@ -50,50 +48,313 @@
 .magaza-hero h1 {
     margin: 7px 0 0;
     color: var(--metin);
-    font-size: clamp(28px, 6vw, 42px);
+    font-size: clamp(26px, 6vw, 38px);
     line-height: 1;
 }
 
 .magaza-hero p {
     max-width: 470px;
-    margin: 12px 0 0;
+    margin: 10px 0 0;
     color: var(--ikincil-metin);
     font-size: 13px;
-    line-height: 1.65;
+    line-height: 1.6;
 }
 
-.magaza-coin-karti {
-    position: relative;
-    z-index: 1;
+/* ---------- Cüzdan ---------- */
+
+.magaza-cuzdan {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 232, 176, 0.6));
+    box-shadow: 0 14px 32px rgba(139, 95, 16, 0.12);
+}
+
+.magaza-cuzdan-ust {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
-    flex: 0 0 auto;
-    min-width: 130px;
-    padding: 13px 15px;
-    border: 1px solid rgba(255, 255, 255, 0.68);
-    border-radius: 18px;
-    color: #a36f10;
-    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.82), rgba(255, 230, 155, 0.86) );
-    box-shadow: 0 12px 28px rgba(139, 95, 16, 0.14);
 }
 
-    .magaza-coin-karti > div {
-        display: flex;
-        flex-direction: column;
+.magaza-cuzdan-coin {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #a36f10;
+}
+
+.magaza-altin-coin {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    perspective: 200px;
+}
+
+.magaza-altin-coin-yuz {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #8a5c07;
+    background: radial-gradient(circle at 32% 28%, #fff6d6, #ffd875 45%, #d49a2f 82%, #b6791a);
+    box-shadow: 0 4px 10px rgba(179, 111, 28, 0.35), inset 0 0 0 2px rgba(255, 245, 214, 0.8);
+    font-size: 15px;
+    font-weight: 900;
+    backface-visibility: hidden;
+    animation: magaza-altin-coin-donme 3200ms linear infinite;
+}
+
+.magaza-altin-coin-arka {
+    transform: rotateY(180deg);
+    animation: magaza-altin-coin-donme-arka 3200ms linear infinite;
+}
+
+.magaza-cuzdan-coin > div {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.magaza-cuzdan-coin strong {
+    font-size: 22px;
+}
+
+.magaza-cuzdan-coin span {
+    margin-top: 2px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--ikincil-metin);
+}
+
+.magaza-cuzdan-bugun {
+    padding: 7px 11px;
+    border-radius: 12px;
+    color: #4f8c5d;
+    background: rgba(79, 170, 108, 0.12);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+    .magaza-cuzdan-bugun strong {
+        font-weight: 900;
     }
 
-    .magaza-coin-karti strong {
-        font-size: 22px;
-        line-height: 1;
+.magaza-cuzdan-ilerleme {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+    .magaza-cuzdan-ilerleme span {
+        font-size: 11px;
+        color: var(--ikincil-metin);
     }
 
-    .magaza-coin-karti span {
-        margin-top: 4px;
+    .magaza-cuzdan-ilerleme strong {
+        color: #a36f10;
+    }
+
+.magaza-cuzdan-ilerleme-yolu {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(163, 111, 16, 0.12);
+    overflow: hidden;
+}
+
+.magaza-cuzdan-ilerleme-dolu {
+    position: relative;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ffcf6b, #d49a2f);
+    transition: width 420ms ease;
+    overflow: hidden;
+}
+
+    .magaza-cuzdan-ilerleme-dolu::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+        transform: translateX(-100%);
+        animation: magaza-ilerleme-parlama 2400ms ease-in-out infinite;
+    }
+
+/* ---------- Günün fırsatı ---------- */
+
+.magaza-firsat-karti {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 18px;
+    border: 1px solid rgba(233, 105, 74, 0.22);
+    border-radius: 22px;
+    background: radial-gradient(circle at 92% 0, rgba(255, 145, 100, 0.18), transparent 40%), linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 235, 224, 0.85));
+    box-shadow: 0 16px 34px rgba(203, 84, 53, 0.14);
+    cursor: pointer;
+    transition: transform 160ms ease;
+}
+
+    .magaza-firsat-karti:hover {
+        transform: translateY(-2px);
+    }
+
+.magaza-firsat-etiket {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 999px;
+    color: #fff;
+    background: linear-gradient(135deg, #ff8a5c, #e85f3a);
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.magaza-firsat-govde {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.magaza-firsat-metin {
+    flex: 1;
+    min-width: 0;
+}
+
+    .magaza-firsat-metin h3 {
+        margin: 0;
+        color: var(--metin);
+        font-size: 16px;
+    }
+
+    .magaza-firsat-metin p {
+        margin: 4px 0 0;
+        color: var(--ikincil-metin);
+        font-size: 11px;
+        line-height: 1.5;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+.magaza-firsat-sag {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+
+    .magaza-firsat-sag button {
+        min-height: 36px;
+        padding: 0 13px;
+        border: 0;
+        border-radius: 11px;
+        color: #fff;
+        background: linear-gradient(135deg, #ff8a5c, #e85f3a);
+        font: inherit;
+        font-size: 11px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .magaza-firsat-sag button:disabled {
+            opacity: 0.55;
+            cursor: default;
+        }
+
+/* ---------- Sana özel ---------- */
+
+.magaza-oneri-bolumu h3 {
+    margin: 0 0 10px;
+    color: var(--metin);
+    font-size: 14px;
+}
+
+.magaza-oneri-satiri {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+}
+
+    .magaza-oneri-satiri::-webkit-scrollbar {
+        display: none;
+    }
+
+.magaza-oneri-karti {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    width: 110px;
+    padding: 14px 10px;
+    border: 1px solid rgba(125, 92, 140, 0.1);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 160ms ease;
+}
+
+    .magaza-oneri-karti:hover {
+        transform: translateY(-2px);
+    }
+
+    .magaza-oneri-karti > span:first-child {
+        font-size: 26px;
+    }
+
+    .magaza-oneri-karti strong {
+        font-size: 11px;
+        color: var(--metin);
+        line-height: 1.3;
+    }
+
+    .magaza-oneri-karti .magaza-fiyat {
         font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
+        color: #9f6c10;
     }
+
+/* ---------- Arama ---------- */
+
+.magaza-arama {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0 14px;
+    min-height: 44px;
+    border: 1px solid rgba(125, 92, 140, 0.12);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--ikincil-metin);
+}
+
+    .magaza-arama input {
+        flex: 1;
+        border: 0;
+        background: transparent;
+        color: var(--metin);
+        font: inherit;
+        font-size: 13px;
+        outline: none;
+    }
+
+/* ---------- Kategoriler ---------- */
 
 .magaza-kategoriler {
     display: flex;
@@ -132,7 +393,7 @@
         .magaza-kategoriler button.aktif {
             border-color: rgba(186, 121, 34, 0.18);
             color: #9e690f;
-            background: linear-gradient( 145deg, rgba(255, 244, 210, 0.96), rgba(255, 228, 153, 0.9) );
+            background: linear-gradient(145deg, rgba(255, 244, 210, 0.96), rgba(255, 228, 153, 0.9));
             box-shadow: 0 10px 22px rgba(139, 95, 16, 0.12);
         }
 
@@ -168,9 +429,11 @@
         font-size: 12px;
     }
 
+/* ---------- Ürün kartları ---------- */
+
 .magaza-urun-grid {
     display: grid;
-    grid-template-columns: repeat( 2, minmax(0, 1fr) );
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
 }
 
@@ -180,12 +443,13 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
-    min-height: 260px;
+    min-height: 275px;
     padding: 16px;
     border: 1px solid rgba(255, 255, 255, 0.68);
     border-radius: 22px;
-    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.93), rgba(249, 245, 252, 0.88) );
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.93), rgba(249, 245, 252, 0.88));
     box-shadow: 0 16px 36px rgba(61, 42, 72, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    cursor: pointer;
     transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
@@ -202,22 +466,70 @@
     }
 
     .magaza-urun-karti:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 44px rgba(61, 42, 72, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.94);
+        transform: translateY(-5px) scale(1.015);
+        box-shadow: 0 26px 52px rgba(61, 42, 72, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.94);
+    }
+
+/* Fare ile üzerine gelince kayan parlaklık şeridi */
+.magaza-urun-shine {
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 45%;
+    height: 100%;
+    z-index: 2;
+    background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    transform: skewX(-18deg);
+    pointer-events: none;
+    transition: left 650ms ease;
+}
+
+.magaza-urun-karti:hover .magaza-urun-shine {
+    left: 130%;
+}
+
+/* Efsanevi kartlarda uçuşan pırıltılar */
+.magaza-pirilti {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+    .magaza-pirilti i {
+        position: absolute;
+        top: calc(12% + (var(--i) * 13%));
+        left: calc(8% + (var(--i) * 15%));
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #ffd875;
+        box-shadow: 0 0 6px 1px rgba(255, 216, 117, 0.9);
+        animation: magaza-pirilti-yanip-sonme 2400ms ease-in-out infinite;
+        animation-delay: calc(var(--i) * 320ms);
     }
 
 .magaza-urun-karti--nadir {
-    border-color: rgba(83, 149, 206, 0.2);
+    border-color: rgba(83, 149, 206, 0.24);
+    box-shadow: 0 16px 36px rgba(61, 42, 72, 0.08), 0 0 0 1px rgba(83, 149, 206, 0.08);
 }
 
 .magaza-urun-karti--epik {
-    border-color: rgba(161, 95, 207, 0.22);
-    background: radial-gradient( circle at 95% 0, rgba(183, 111, 228, 0.13), transparent 34% ), linear-gradient( 145deg, rgba(255, 255, 255, 0.93), rgba(248, 239, 255, 0.9) );
+    border-color: rgba(161, 95, 207, 0.3);
+    background: radial-gradient(circle at 95% 0, rgba(183, 111, 228, 0.16), transparent 34%), linear-gradient(145deg, rgba(255, 255, 255, 0.93), rgba(248, 239, 255, 0.9));
+    box-shadow: 0 18px 38px rgba(148, 83, 188, 0.14);
 }
 
 .magaza-urun-karti--efsanevi {
-    border-color: rgba(221, 165, 50, 0.26);
-    background: radial-gradient( circle at 95% 0, rgba(255, 193, 65, 0.2), transparent 35% ), linear-gradient( 145deg, rgba(255, 255, 255, 0.96), rgba(255, 244, 211, 0.91) );
+    border-color: rgba(221, 165, 50, 0.36);
+    background: radial-gradient(circle at 95% 0, rgba(255, 193, 65, 0.26), transparent 35%), linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 244, 211, 0.91));
+    box-shadow: 0 20px 42px rgba(211, 148, 27, 0.2);
+    animation: magaza-efsanevi-parilti 3600ms ease-in-out infinite;
+}
+
+.magaza-urun-karti--vurgulu {
+    outline: 2px solid rgba(212, 154, 47, 0.4);
+    outline-offset: 2px;
 }
 
 .magaza-urun-ust {
@@ -229,15 +541,54 @@
     gap: 10px;
 }
 
+.magaza-urun-ikon-halka {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 66px;
+    height: 66px;
+    border-radius: 20px;
+}
+
+    .magaza-urun-ikon-halka::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        background: conic-gradient(from 0deg, rgba(163, 111, 16, 0.18), rgba(255, 219, 140, 0.5), rgba(163, 111, 16, 0.18));
+        opacity: 0.55;
+        animation: magaza-halka-donus 6s linear infinite;
+    }
+
+.magaza-urun-karti--nadir .magaza-urun-ikon-halka::before {
+    background: conic-gradient(from 0deg, rgba(61, 137, 191, 0.16), rgba(147, 205, 245, 0.55), rgba(61, 137, 191, 0.16));
+}
+
+.magaza-urun-karti--epik .magaza-urun-ikon-halka::before {
+    background: conic-gradient(from 0deg, rgba(148, 83, 188, 0.18), rgba(214, 160, 245, 0.55), rgba(148, 83, 188, 0.18));
+}
+
+.magaza-urun-karti--efsanevi .magaza-urun-ikon-halka::before {
+    background: conic-gradient(from 0deg, rgba(211, 148, 27, 0.24), rgba(255, 224, 140, 0.7), rgba(211, 148, 27, 0.24));
+    animation-duration: 3.5s;
+}
+
 .magaza-urun-ikon {
+    position: relative;
+    z-index: 1;
     display: grid;
     place-items: center;
     width: 58px;
     height: 58px;
     border-radius: 18px;
-    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.94), rgba(244, 236, 251, 0.9) );
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(244, 236, 251, 0.9));
     box-shadow: 0 12px 25px rgba(69, 46, 80, 0.1);
     font-size: 30px;
+    transition: transform 220ms ease;
+}
+
+.magaza-urun-karti:hover .magaza-urun-ikon {
+    transform: scale(1.08) rotate(-4deg);
 }
 
 .magaza-nadirlik {
@@ -250,20 +601,17 @@
     text-transform: uppercase;
 }
 
-.magaza-urun-karti--nadir
-.magaza-nadirlik {
+.magaza-urun-karti--nadir .magaza-nadirlik {
     color: #3f7ca7;
     background: rgba(61, 137, 191, 0.09);
 }
 
-.magaza-urun-karti--epik
-.magaza-nadirlik {
+.magaza-urun-karti--epik .magaza-nadirlik {
     color: #9453bc;
     background: rgba(148, 83, 188, 0.1);
 }
 
-.magaza-urun-karti--efsanevi
-.magaza-nadirlik {
+.magaza-urun-karti--efsanevi .magaza-nadirlik {
     color: #a46a07;
     background: rgba(211, 148, 27, 0.12);
 }
@@ -274,7 +622,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    margin-top: 15px;
+    margin-top: 13px;
 }
 
 .magaza-urun-kategori {
@@ -292,6 +640,13 @@
     line-height: 1.2;
 }
 
+.magaza-yildizlar {
+    display: flex;
+    gap: 2px;
+    margin-top: 5px;
+    color: #d49a2f;
+}
+
 .magaza-urun-icerik p {
     margin: 8px 0 0;
     color: var(--ikincil-metin);
@@ -306,7 +661,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    margin-top: 17px;
+    margin-top: 15px;
 }
 
 .magaza-fiyat {
@@ -320,7 +675,18 @@
         font-size: 16px;
     }
 
+.magaza-coin-donen {
+    transition: transform 500ms cubic-bezier(0.3, 0.6, 0.2, 1);
+}
+
+.magaza-urun-karti:hover .magaza-coin-donen,
+.magaza-firsat-karti:hover .magaza-coin-donen {
+    transform: rotateY(360deg);
+}
+
 .magaza-urun-alt button {
+    position: relative;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -330,17 +696,38 @@
     border: 0;
     border-radius: 12px;
     color: #fff;
-    background: linear-gradient( 135deg, #d49a2f, #b66e19 );
+    background: linear-gradient(135deg, #d49a2f, #b66e19);
     box-shadow: 0 10px 22px rgba(179, 111, 28, 0.22);
     font: inherit;
     font-size: 10px;
     font-weight: 900;
     cursor: pointer;
-    transition: opacity 160ms ease, transform 160ms ease;
+    transition: opacity 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
+    .magaza-urun-alt button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -70%;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+        transform: skewX(-18deg);
+        transition: left 550ms ease;
+    }
+
     .magaza-urun-alt button:hover:not(:disabled) {
-        transform: translateY(-1px);
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(179, 111, 28, 0.3);
+    }
+
+        .magaza-urun-alt button:hover:not(:disabled)::before {
+            left: 120%;
+        }
+
+    .magaza-urun-alt button:active:not(:disabled) {
+        transform: translateY(0) scale(0.97);
     }
 
     .magaza-urun-alt button:disabled {
@@ -348,6 +735,235 @@
         opacity: 0.58;
         box-shadow: none;
     }
+
+.magaza-btn-sahip {
+    background: linear-gradient(135deg, #6bbf7f, #3f9a58) !important;
+}
+
+.magaza-mini-ilerleme {
+    position: relative;
+    z-index: 1;
+    height: 5px;
+    margin-top: 8px;
+    border-radius: 999px;
+    background: rgba(163, 111, 16, 0.12);
+    overflow: hidden;
+}
+
+.magaza-mini-ilerleme-dolu {
+    position: relative;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ffcf6b, #d49a2f);
+    transition: width 420ms ease;
+    overflow: hidden;
+}
+
+    .magaza-mini-ilerleme-dolu::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+        transform: translateX(-100%);
+        animation: magaza-ilerleme-parlama 2200ms ease-in-out infinite;
+    }
+
+/* ---------- Envanter şeridi ---------- */
+
+.magaza-envanter-baslik {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.magaza-envanter h3 {
+    margin: 0;
+    color: var(--metin);
+    font-size: 14px;
+}
+
+.magaza-envanter-sayac {
+    color: var(--ikincil-metin);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.magaza-envanter-satiri {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 4px 2px 8px;
+    scrollbar-width: none;
+}
+
+    .magaza-envanter-satiri::-webkit-scrollbar {
+        display: none;
+    }
+
+.magaza-envanter-ogesi {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    width: 88px;
+    padding: 14px 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 18px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(249, 245, 252, 0.7));
+    box-shadow: 0 10px 22px rgba(61, 42, 72, 0.08);
+    text-align: center;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+    .magaza-envanter-ogesi:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 30px rgba(61, 42, 72, 0.14);
+    }
+
+.magaza-envanter-ogesi--nadir {
+    border-color: rgba(83, 149, 206, 0.28);
+    box-shadow: 0 10px 22px rgba(61, 137, 191, 0.14);
+}
+
+.magaza-envanter-ogesi--epik {
+    border-color: rgba(161, 95, 207, 0.3);
+    background: radial-gradient(circle at 50% -10%, rgba(183, 111, 228, 0.18), transparent 55%), linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(248, 239, 255, 0.72));
+}
+
+.magaza-envanter-ogesi--efsanevi {
+    border-color: rgba(221, 165, 50, 0.4);
+    background: radial-gradient(circle at 50% -10%, rgba(255, 193, 65, 0.26), transparent 55%), linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 244, 211, 0.76));
+    box-shadow: 0 10px 24px rgba(211, 148, 27, 0.2);
+}
+
+.magaza-envanter-rozet {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: grid;
+    place-items: center;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    color: #fff;
+    background: linear-gradient(135deg, #6bbf7f, #3f9a58);
+    box-shadow: 0 3px 8px rgba(63, 154, 88, 0.4);
+}
+
+.magaza-envanter-ikon {
+    font-size: 26px;
+}
+
+.magaza-envanter-ogesi small {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--ikincil-metin);
+    line-height: 1.3;
+}
+
+/* ---------- Ürün detay sheet ---------- */
+
+.magaza-sheet-katmani {
+    position: fixed;
+    inset: 0;
+    z-index: 10020;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(25, 18, 29, 0.48);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.magaza-sheet {
+    position: relative;
+    width: min(100%, 460px);
+    max-height: 82vh;
+    overflow-y: auto;
+    padding: 26px 22px 22px;
+    border-radius: 26px 26px 0 0;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(252, 248, 255, 0.97));
+    box-shadow: 0 -20px 60px rgba(32, 22, 38, 0.3);
+    text-align: center;
+    animation: magaza-sheet-giris 300ms cubic-bezier(0.2, 0.9, 0.25, 1.1);
+}
+
+.magaza-sheet-kapat {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    color: var(--ikincil-metin);
+    background: rgba(125, 92, 140, 0.08);
+    cursor: pointer;
+}
+
+.magaza-sheet-ikon {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto;
+    font-size: 38px;
+}
+
+.magaza-sheet-yildizlar {
+    justify-content: center;
+    margin: 12px 0 0;
+}
+
+.magaza-sheet h2 {
+    margin: 10px 0 0;
+    color: var(--metin);
+    font-size: 21px;
+}
+
+.magaza-sheet p {
+    margin: 8px 0 0;
+    color: var(--ikincil-metin);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.magaza-sheet-alt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+    .magaza-sheet-alt .magaza-fiyat strong {
+        font-size: 19px;
+    }
+
+    .magaza-sheet-alt button {
+        flex: 1;
+        min-height: 46px;
+        border: 0;
+        border-radius: 14px;
+        color: #fff;
+        background: linear-gradient(135deg, #d49a2f, #b66e19);
+        box-shadow: 0 12px 26px rgba(179, 111, 28, 0.24);
+        font: inherit;
+        font-size: 13px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+        .magaza-sheet-alt button:disabled {
+            opacity: 0.55;
+            cursor: default;
+            box-shadow: none;
+        }
+
+/* ---------- Satın alma kutlaması ---------- */
 
 .magaza-kutlama-katmani {
     position: fixed;
@@ -362,15 +978,48 @@
 }
 
 .magaza-kutlama-karti {
+    position: relative;
+    overflow: visible;
     width: min(100%, 390px);
     padding: 27px 22px 22px;
     border: 1px solid rgba(255, 255, 255, 0.72);
     border-radius: 28px;
-    background: radial-gradient( circle at 50% 0, rgba(255, 208, 100, 0.34), transparent 37% ), linear-gradient( 145deg, rgba(255, 255, 255, 0.98), rgba(255, 245, 217, 0.96) );
+    background: radial-gradient(circle at 50% 0, rgba(255, 208, 100, 0.34), transparent 37%), linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(255, 245, 217, 0.96));
     box-shadow: 0 30px 80px rgba(32, 22, 38, 0.36);
     text-align: center;
     animation: magaza-kutlama-giris 420ms cubic-bezier(0.2, 0.9, 0.25, 1.1);
 }
+
+.magaza-kutlama-maskot {
+    position: absolute;
+    top: -64px;
+    right: 6px;
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 20px rgba(32, 22, 38, 0.3));
+    animation: magaza-maskot-zipla 900ms cubic-bezier(0.3, 0.7, 0.3, 1.3) 250ms both, magaza-maskot-sallanma 2600ms ease-in-out 1150ms infinite;
+}
+
+.magaza-konfeti {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 28px;
+    pointer-events: none;
+}
+
+    .magaza-konfeti span {
+        position: absolute;
+        top: -10px;
+        left: calc(7% * var(--i));
+        width: 6px;
+        height: 10px;
+        border-radius: 2px;
+        background: hsl(calc(var(--i) * 27deg), 80%, 60%);
+        animation: magaza-konfeti-dusme 1400ms ease-in forwards;
+        animation-delay: calc(var(--i) * 45ms);
+    }
 
 .magaza-kutlama-ikon {
     display: grid;
@@ -379,7 +1028,7 @@
     height: 82px;
     margin: 0 auto 16px;
     border-radius: 25px;
-    background: linear-gradient( 145deg, #fff9df, #ffe6a7 );
+    background: linear-gradient(145deg, #fff9df, #ffe6a7);
     box-shadow: 0 16px 34px rgba(183, 123, 24, 0.2);
     font-size: 42px;
 }
@@ -410,7 +1059,7 @@
     border: 0;
     border-radius: 15px;
     color: #fff;
-    background: linear-gradient( 135deg, #d49a2f, #b86e19 );
+    background: linear-gradient(135deg, #d49a2f, #b86e19);
     box-shadow: 0 13px 28px rgba(179, 111, 28, 0.24);
     font: inherit;
     font-size: 13px;
@@ -418,30 +1067,123 @@
     cursor: pointer;
 }
 
+/* ---------- Miço'nun coin yetersiz uyarısı ---------- */
+
+.magaza-yetersiz-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    z-index: 10040;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: min(92%, 400px);
+    padding: 12px 14px;
+    border: 1px solid rgba(204, 68, 100, 0.22);
+    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(255, 235, 235, 0.95));
+    box-shadow: 0 20px 46px rgba(120, 30, 40, 0.24);
+    transform: translateX(-50%);
+    animation: magaza-yetersiz-giris 380ms cubic-bezier(0.2, 0.9, 0.25, 1.1);
+}
+
+.magaza-yetersiz-gorsel {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    object-fit: cover;
+    background: rgba(204, 68, 100, 0.08);
+    box-shadow: 0 8px 18px rgba(204, 68, 100, 0.22);
+    animation: magaza-yetersiz-titreme 550ms ease-in-out 300ms 2;
+}
+
+.magaza-yetersiz-metin {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+
+    .magaza-yetersiz-metin strong {
+        display: block;
+        color: #a43d55;
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .magaza-yetersiz-metin p {
+        margin: 3px 0 0;
+        color: var(--metin);
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+.magaza-yetersiz-toast--viki {
+    border-color: rgba(212, 154, 47, 0.28);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 214, 0.95));
+    box-shadow: 0 20px 46px rgba(180, 120, 20, 0.22);
+}
+
+    .magaza-yetersiz-toast--viki .magaza-yetersiz-gorsel {
+        background: rgba(212, 154, 47, 0.1);
+        box-shadow: 0 8px 18px rgba(212, 154, 47, 0.24);
+        animation: magaza-yetersiz-zipla 620ms ease-in-out 300ms 2;
+    }
+
+    .magaza-yetersiz-toast--viki .magaza-yetersiz-metin strong {
+        color: #a3730f;
+    }
+
+.magaza-yetersiz-kapat {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: 50%;
+    color: #a43d55;
+    background: rgba(204, 68, 100, 0.1);
+    cursor: pointer;
+}
+
+[data-theme="koyu"] .magaza-yetersiz-toast {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: linear-gradient(145deg, rgba(44, 32, 32, 0.98), rgba(36, 28, 28, 0.97));
+}
+
 [data-theme="koyu"] .magaza-hero,
+[data-theme="koyu"] .magaza-cuzdan,
+[data-theme="koyu"] .magaza-firsat-karti,
 [data-theme="koyu"] .magaza-urun-karti,
+[data-theme="koyu"] .magaza-sheet,
 [data-theme="koyu"] .magaza-kutlama-karti {
     border-color: rgba(255, 255, 255, 0.08);
-    background: radial-gradient( circle at 90% 0, rgba(194, 137, 36, 0.13), transparent 36% ), linear-gradient( 145deg, rgba(44, 38, 32, 0.98), rgba(36, 31, 28, 0.97) );
+    background: radial-gradient(circle at 90% 0, rgba(194, 137, 36, 0.13), transparent 36%), linear-gradient(145deg, rgba(44, 38, 32, 0.98), rgba(36, 31, 28, 0.97));
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-[data-theme="koyu"] .magaza-kategoriler button {
+[data-theme="koyu"] .magaza-kategoriler button,
+[data-theme="koyu"] .magaza-arama,
+[data-theme="koyu"] .magaza-oneri-karti,
+[data-theme="koyu"] .magaza-envanter-ogesi {
     border-color: rgba(255, 255, 255, 0.07);
     background: rgba(255, 255, 255, 0.045);
 }
 
-    [data-theme="koyu"]
-    .magaza-kategoriler button.aktif {
+    [data-theme="koyu"] .magaza-kategoriler button.aktif {
         color: #e4b95e;
         background: rgba(220, 167, 54, 0.12);
     }
 
-[data-theme="koyu"] .magaza-coin-karti,
 [data-theme="koyu"] .magaza-urun-ikon {
     border-color: rgba(255, 255, 255, 0.07);
     background: rgba(255, 255, 255, 0.06);
 }
+
+/* ---------- Animasyonlar ---------- */
 
 @keyframes magaza-donme {
     to {
@@ -461,9 +1203,188 @@
     }
 }
 
+@keyframes magaza-sheet-giris {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes magaza-konfeti-dusme {
+    from {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(340px) rotate(340deg);
+        opacity: 0;
+    }
+}
+
+@keyframes magaza-efsanevi-parilti {
+    0%, 100% {
+        box-shadow: 0 20px 42px rgba(211, 148, 27, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 20px 52px rgba(211, 148, 27, 0.34);
+    }
+}
+
+@keyframes magaza-halka-donus {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes magaza-pirilti-yanip-sonme {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+}
+
+@keyframes magaza-ilerleme-parlama {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    60%, 100% {
+        transform: translateX(220%);
+    }
+}
+
+@keyframes magaza-maskot-zipla {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.4) rotate(-12deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-8px) scale(1.08) rotate(6deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+}
+
+@keyframes magaza-maskot-sallanma {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-4deg);
+    }
+
+    75% {
+        transform: rotate(4deg);
+    }
+}
+
+@keyframes magaza-yetersiz-giris {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes magaza-yetersiz-titreme {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+
+    20% {
+        transform: rotate(-8deg);
+    }
+
+    40% {
+        transform: rotate(7deg);
+    }
+
+    60% {
+        transform: rotate(-5deg);
+    }
+
+    80% {
+        transform: rotate(4deg);
+    }
+}
+
+@keyframes magaza-altin-coin-donme {
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
+@keyframes magaza-altin-coin-donme-arka {
+    from {
+        transform: rotateY(180deg);
+    }
+
+    to {
+        transform: rotateY(540deg);
+    }
+}
+
+@keyframes magaza-yetersiz-zipla {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+
+    35% {
+        transform: translateY(-6px) scale(1.06);
+    }
+
+    60% {
+        transform: translateY(0) scale(0.98);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .magaza-urun-karti--efsanevi,
+    .magaza-urun-ikon-halka::before,
+    .magaza-pirilti i,
+    .magaza-mini-ilerleme-dolu::after,
+    .magaza-cuzdan-ilerleme-dolu::after,
+    .magaza-kutlama-maskot,
+    .magaza-yetersiz-gorsel,
+    .magaza-altin-coin-yuz {
+        animation: none;
+    }
+
+    .magaza-konfeti span {
+        animation: none;
+        opacity: 0;
+    }
+}
+
 @media (min-width: 780px) {
     .magaza-urun-grid {
-        grid-template-columns: repeat( 3, minmax(0, 1fr) );
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
@@ -474,14 +1395,8 @@
     }
 
     .magaza-hero {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 20px;
-        border-radius: 24px;
-    }
-
-    .magaza-coin-karti {
-        min-width: 0;
+        padding: 18px 20px;
+        border-radius: 22px;
     }
 
     .magaza-urun-grid {
@@ -489,6 +1404,17 @@
     }
 
     .magaza-urun-karti {
-        min-height: 235px;
+        min-height: 250px;
+    }
+
+    .magaza-firsat-govde {
+        flex-wrap: wrap;
+    }
+
+    .magaza-firsat-sag {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
 }

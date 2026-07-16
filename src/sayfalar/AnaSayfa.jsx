@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
     BellRing,
-    CheckCircle2,
-    TriangleAlert,
+    Coins,
+    Droplets,
     Trophy,
+    Utensils,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 
@@ -17,16 +18,9 @@ import {
     rastgeleMotivasyonMesaji,
 } from "../veriler/motivasyonMesajlari";
 
-import {
-    bugununNotunuGetir,
-} from "../veriler/gunlukNotlar";
+import BugununOnceligi from "../bilesenler/BugununOnceligi";
 
-import OgunKarti from "../bilesenler/OgunKarti";
-import SuTakibi from "../bilesenler/SuTakibi";
 import PremiumUstAlan from "../bilesenler/PremiumUstAlan";
-import GunlukNotKarti from "../bilesenler/GunlukNotKarti";
-import HaftalikIlerleme from "../bilesenler/HaftalikIlerleme";
-import GununOzeti from "../bilesenler/GununOzeti";
 import MicoVikiAsistan from "../bilesenler/MicoVikiAsistani";
 import KarakterKutlamasi from "../bilesenler/KarakterKutlamasi";
 import GunSonuKarakterKutlamasi from "../bilesenler/GunSonuKarakterKutlamasi";
@@ -46,16 +40,7 @@ import {
     xpOzetiGetir,
 } from "../services/xpService";
 import {
-    pushAboneligiOlustur,
-} from "../servisler/bildirimServisi";
-
-import {
-    telefonuKaydet,
-} from "../servisler/telefonBildirimServisi";
-
-import {
     gunlukKaydiGuncelle,
-    haftalikOzetiGetir,
 } from "../servisler/gecmisServisi";
 import {
     rozetleriKontrolEt,
@@ -68,6 +53,7 @@ import {
     suHedefiCoinKazandir,
     tumOgunlerCoinKazandir,
 } from "../servisler/coinServisi";
+import "./AnaSayfa.css";
 
 const TAMAMLANANLAR_KEY = "diyet-tamamlanan-ogunler";
 const SU_KEY = "diyet-su-miktari";
@@ -409,33 +395,6 @@ export default function AnaSayfa() {
         useState(() =>
             rastgeleMotivasyonMesaji(),
         );
-
-    const [gunlukNot] =
-        useState(() =>
-            bugununNotunuGetir(),
-        );
-
-    const [
-        haftalikOzet,
-        setHaftalikOzet,
-    ] = useState(() =>
-        haftalikOzetiGetir(),
-    );
-
-    const [
-        bildirimMesaji,
-        setBildirimMesaji,
-    ] = useState("");
-
-    const [
-        bildirimHatasi,
-        setBildirimHatasi,
-    ] = useState("");
-
-    const [
-        bildirimYukleniyor,
-        setBildirimYukleniyor,
-    ] = useState(false);
 
     const [
         tebrikMesaji,
@@ -810,9 +769,6 @@ export default function AnaSayfa() {
             suHedefi,
         });
 
-        setHaftalikOzet(
-            haftalikOzetiGetir(),
-        );
     }, [
         tamamlananlar,
         suMiktari,
@@ -1669,41 +1625,6 @@ export default function AnaSayfa() {
         );
     }
 
-    async function anaSayfadanBildirimAc() {
-        setBildirimMesaji("");
-        setBildirimHatasi("");
-        setBildirimYukleniyor(
-            true,
-        );
-
-        try {
-            const pushAboneligi =
-                await pushAboneligiOlustur();
-
-            await telefonuKaydet(
-                pushAboneligi,
-            );
-
-            setBildirimMesaji(
-                "Bildirimler hazır. Öğün saatlerinde bu telefona hatırlatma gelecek.",
-            );
-        } catch (error) {
-            console.error(
-                "Bildirim açma hatası:",
-                error,
-            );
-
-            setBildirimHatasi(
-                error?.message ||
-                "Bildirimler açılırken beklenmeyen bir hata oluştu.",
-            );
-        } finally {
-            setBildirimYukleniyor(
-                false,
-            );
-        }
-    }
-
     return (
         <div className="ana-sayfa">
             <KarakterKutlamasi
@@ -1719,6 +1640,7 @@ export default function AnaSayfa() {
                 }
                 gunlukSeri={gunlukSeri}
             />
+
             <XPToast
                 gorunur={xpBildirim.gorunur}
                 xp={xpBildirim.xp}
@@ -1749,6 +1671,7 @@ export default function AnaSayfa() {
                     </div>
                 </div>
             )}
+
             <SeviyeKutlamasi
                 gorunur={seviyeKutlamasi.gorunur}
                 seviye={seviyeKutlamasi.seviye}
@@ -1760,6 +1683,7 @@ export default function AnaSayfa() {
                     }))
                 }
             />
+
             <RozetKutlamasi
                 gorunur={rozetKutlamasi.gorunur}
                 rozet={rozetKutlamasi.rozet}
@@ -1770,6 +1694,7 @@ export default function AnaSayfa() {
                     })
                 }
             />
+
             <GorevKutlamasi
                 gorunur={gorevKutlamasi.gorunur}
                 gorev={gorevKutlamasi.gorev}
@@ -1805,12 +1730,7 @@ export default function AnaSayfa() {
                     }
                 }}
             />
-            {/*
-              Üst alan artık coin bakiyesini de taşıyor (coinBakiyesi prop'u).
-              PremiumUstAlan bileşeninde bu değeri küçük bir rozet olarak
-              (örn. kalp ikonunun yanında "🪙 10") göstermen yeterli;
-              ayrı büyük bir coin kartına gerek kalmadı.
-            */}
+
             <PremiumUstAlan
                 tarih={
                     bugununTarihiniGetir()
@@ -1845,241 +1765,105 @@ export default function AnaSayfa() {
                 }
             />
 
-            {xpOzeti && (
-                <section className="xp-ozet-karti">
-                    <div className="xp-ozet-ust">
-                        <div>
-                            <span className="mini-baslik">
-                                Seviye ilerlemesi
-                            </span>
-
-                            <h2>
-                                Seviye {xpOzeti.seviye}
-                            </h2>
-                        </div>
-
-                        <div className="xp-toplam-deger">
-                            <strong>
-                                {xpOzeti.toplam_xp}
-                            </strong>
-
-                            <span>XP</span>
-                        </div>
-                    </div>
-
-                    <div className="xp-ilerleme-bilgisi">
-                        <span>
-                            {xpOzeti.mevcut_seviye_baslangic_xp} XP
-                        </span>
-
-                        <span>
-                            {xpOzeti.sonraki_seviye_xp} XP
-                        </span>
-                    </div>
-
-                    <div className="xp-ilerleme-cubugu">
-                        <div
-                            className="xp-ilerleme-dolgu"
-                            style={{
-                                width: `${Math.min(
-                                    Math.max(
-                                        Number(
-                                            xpOzeti.seviye_ilerleme_yuzdesi,
-                                        ) || 0,
-                                        0,
-                                    ),
-                                    100,
-                                )}%`,
-                            }}
-                        />
-                    </div>
-
-                    <div className="xp-ozet-alt">
-                        <span>
-                            Bugün +{xpOzeti.bugunku_xp} XP
-                        </span>
-
-                        <span>
-                            Sonraki seviyeye{" "}
-                            {xpOzeti.sonraki_seviyeye_kalan_xp} XP
-                        </span>
-                    </div>
-                </section>
-            )}
-
-            {/*
-              Beslenme planı ve su takibi artık ana sayfanın en görünür
-              bölümü: üst alan ve seviye kartından hemen sonra geliyor.
-            */}
-            <section className="bolum">
-                <div className="bolum-baslik">
-                    <div>
-                        <span className="mini-baslik">
-                            Beslenme planı
-                        </span>
-
-                        <h2>
-                            Bugünkü Öğünler
-                        </h2>
-                    </div>
-
-                    <span className="ogun-sayisi">
-                        {tamamlananSayisi}
-                        {" / "}
-                        {toplamOgunSayisi}
-                    </span>
-                </div>
-
-                {beslenmePlaniYukleniyor && (
-                    <div className="aktif-plan-durum-karti">
-                        <strong>
-                            Beslenme planın yükleniyor...
-                        </strong>
-
-                        <span>
-                            Aktif planındaki öğünler hazırlanıyor.
-                        </span>
-                    </div>
-                )}
-
-                {!beslenmePlaniYukleniyor &&
-                    beslenmePlaniHatasi && (
-                        <div className="aktif-plan-durum-karti hata">
-                            <strong>
-                                Beslenme planı yüklenemedi
-                            </strong>
-
-                            <span>
-                                {beslenmePlaniHatasi}
-                            </span>
-
-                            <button
-                                type="button"
-                                onClick={
-                                    aktifPlaniYukle
-                                }
-                            >
-                                Tekrar dene
-                            </button>
-                        </div>
-                    )}
-
-                {!beslenmePlaniYukleniyor &&
-                    !beslenmePlaniHatasi &&
-                    !aktifBeslenmePlani && (
-                        <div className="aktif-plan-durum-karti">
-                            <strong>
-                                Aktif beslenme planı yok
-                            </strong>
-
-                            <span>
-                                Profil → Beslenme Planlarım bölümünden
-                                PDF yükleyip bir planı aktif yapmalısın.
-                            </span>
-                        </div>
-                    )}
-
-                {!beslenmePlaniYukleniyor &&
-                    !beslenmePlaniHatasi &&
-                    aktifBeslenmePlani &&
-                    gunlukProgram.length === 0 && (
-                        <div className="aktif-plan-durum-karti">
-                            <strong>
-                                Bu planda öğün bulunmuyor
-                            </strong>
-
-                            <span>
-                                Planı düzenleyerek en az bir öğün eklemelisin.
-                            </span>
-                        </div>
-                    )}
-
-                <div className="ogun-listesi">
-                    {gunlukProgram.map(
-                        (ogun) => (
-                            <OgunKarti
-                                key={ogun.id}
-                                ogun={ogun}
-                                tamamlandi={tamamlananlar.includes(
-                                    ogun.id,
-                                )}
-                                onToggle={() =>
-                                    ogunDurumunuDegistir(ogun.id)
-                                }
-                            />
+            <BugununOnceligi
+                sonrakiOgun={sonrakiOgun}
+                tamamlananSayisi={
+                    tamamlananSayisi
+                }
+                toplamOgunSayisi={
+                    toplamOgunSayisi
+                }
+                suMiktari={suMiktari}
+                suHedefi={suHedefi}
+                onSuArtir={suArtir}
+                onOgunlereGit={() =>
+                    window.dispatchEvent(
+                        new CustomEvent(
+                            "sayfa-degistir",
+                            {
+                                detail: {
+                                    sayfa:
+                                        "program",
+                                },
+                            },
                         ),
-                    )}
-                </div>
-            </section>
-
-            <SuTakibi
-                miktar={suMiktari}
-                hedef={suHedefi}
-                onArtir={suArtir}
-                onAzalt={suAzalt}
+                    )
+                }
             />
 
-            {xpOzeti && (
-                <section className="karakter-seviye-alani">
-                    <article className="karakter-seviye-karti karakter-seviye-karti--mico">
-                        <div className="karakter-seviye-gorsel">
-                            <img
-                                src="/karakterler/mico-kizgin.png"
-                                alt="Miço"
-                            />
-                        </div>
+            <section className="bugun-ozet-seridi">
+                <article className="bugun-ozet-elemani bugun-ozet-elemani--ogun">
+                    <span className="bugun-ozet-ikon">
+                        <Utensils size={17} />
+                    </span>
 
-                        <div className="karakter-seviye-icerik">
-                            <span>Miço</span>
+                    <div>
+                        <span>Öğün</span>
 
-                            <h3>
-                                Seviye {xpOzeti.mico_seviye}
-                            </h3>
+                        <strong>
+                            {tamamlananSayisi}
+                            {" / "}
+                            {toplamOgunSayisi}
+                        </strong>
+                    </div>
+                </article>
 
-                            <p>
-                                {micoUnvaniniGetir(
-                                    xpOzeti.mico_seviye,
-                                )}
-                            </p>
+                <article className="bugun-ozet-elemani bugun-ozet-elemani--su">
+                    <span className="bugun-ozet-ikon">
+                        <Droplets size={18} />
+                    </span>
 
-                            <strong>
-                                {xpOzeti.mico_xp} XP
-                            </strong>
-                        </div>
-                    </article>
+                    <div>
+                        <span>Su</span>
 
-                    <article className="karakter-seviye-karti karakter-seviye-karti--viki">
-                        <div className="karakter-seviye-gorsel">
-                            <img
-                                src="/karakterler/viki-mama.png"
-                                alt="Viki"
-                            />
-                        </div>
+                        <strong>
+                            {suMiktari}
+                            {" / "}
+                            {suHedefi}
+                        </strong>
+                    </div>
+                </article>
 
-                        <div className="karakter-seviye-icerik">
-                            <span>Viki</span>
+                <article className="bugun-ozet-elemani bugun-ozet-elemani--coin">
+                    <span className="bugun-ozet-ikon">
+                        <Coins size={18} />
+                    </span>
 
-                            <h3>
-                                Seviye {xpOzeti.viki_seviye}
-                            </h3>
+                    <div>
+                        <span>Coin</span>
 
-                            <p>
-                                {vikiUnvaniniGetir(
-                                    xpOzeti.viki_seviye,
-                                )}
-                            </p>
+                        <strong>
+                            {Number(
+                                coinOzeti
+                                    ?.mevcut_coin,
+                            ) || 0}
+                        </strong>
+                    </div>
+                </article>
 
-                            <strong>
-                                {xpOzeti.viki_xp} XP
-                            </strong>
-                        </div>
-                    </article>
-                </section>
-            )}
+                <article className="bugun-ozet-elemani bugun-ozet-elemani--siradaki">
+                    <span className="bugun-ozet-ikon">
+                        <BellRing size={18} />
+                    </span>
+
+                    <div>
+                        <span>Sıradaki</span>
+
+                        <strong>
+                            {sonrakiOgun?.saat ||
+                                "Tamamlandı"}
+                        </strong>
+                    </div>
+                </article>
+            </section>
 
             <MicoVikiAsistan
-                tamamlananOgun={tamamlananSayisi}
-                toplamOgun={toplamOgunSayisi}
+                tamamlananOgun={
+                    tamamlananSayisi
+                }
+                toplamOgun={
+                    toplamOgunSayisi
+                }
                 suMiktari={suMiktari}
                 suHedefi={suHedefi}
                 gunlukSeri={gunlukSeri}
@@ -2095,28 +1879,11 @@ export default function AnaSayfa() {
                     sonTamamlananOgun
                 }
             />
-            <GununOzeti
-                tamamlananOgun={tamamlananSayisi}
-                toplamOgun={toplamOgunSayisi}
-                suMiktari={suMiktari}
-                suHedefi={suHedefi}
-                gunlukSeri={gunlukSeri}
-            />
-
-            <GunlukNotKarti
-                not={gunlukNot}
-            />
-
-            <HaftalikIlerleme
-                ozet={haftalikOzet}
-            />
 
             {tebrikMesaji && (
                 <section className="tebrik-bildirimi">
                     <div className="tebrik-ikon">
-                        <Trophy
-                            size={21}
-                        />
+                        <Trophy size={21} />
                     </div>
 
                     <div>
@@ -2130,81 +1897,6 @@ export default function AnaSayfa() {
                     </div>
                 </section>
             )}
-
-            <section className="bildirim-karti">
-                <div className="bildirim-ikon">
-                    <BellRing
-                        size={23}
-                    />
-                </div>
-
-                <div className="bildirim-metin">
-                    <strong>
-                        Bildirimleri aç
-                    </strong>
-
-                    <span>
-                        Öğün saatlerini
-                        kaçırma
-                    </span>
-                </div>
-
-                <button
-                    type="button"
-                    onClick={
-                        anaSayfadanBildirimAc
-                    }
-                    disabled={
-                        bildirimYukleniyor
-                    }
-                >
-                    {bildirimYukleniyor
-                        ? "Açılıyor..."
-                        : "Aç"}
-                </button>
-            </section>
-
-            {bildirimMesaji && (
-                <section className="bildirim-uyari basarili">
-                    <CheckCircle2
-                        size={19}
-                    />
-
-                    <div>
-                        <strong>
-                            Başarılı
-                        </strong>
-
-                        <span>
-                            {
-                                bildirimMesaji
-                            }
-                        </span>
-                    </div>
-                </section>
-            )}
-
-            {bildirimHatasi && (
-                <section className="bildirim-uyari hata">
-                    <TriangleAlert
-                        size={19}
-                    />
-
-                    <div>
-                        <strong>
-                            Bildirim açılamadı
-                        </strong>
-
-                        <span>
-                            {
-                                bildirimHatasi
-                            }
-                        </span>
-                    </div>
-                </section>
-            )}
         </div>
     );
 }
-
-                    
