@@ -357,6 +357,232 @@
         background: rgba(89, 201, 154, 0.1);
         box-shadow: none;
     }
+/* =====================================================
+   MODERN ÖĞÜN ZAMAN ÇİZGİSİ
+===================================================== */
+
+.ogun-listesi {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    padding-left: 21px;
+}
+
+    /* Kartların solundaki dikey zaman çizgisi */
+    .ogun-listesi::before {
+        content: "";
+        position: absolute;
+        top: 24px;
+        bottom: 24px;
+        left: 7px;
+        width: 2px;
+        border-radius: 999px;
+        background: linear-gradient( to bottom, rgba(242, 118, 160, 0.5), rgba(255, 255, 255, 0.07) );
+    }
+
+    /* Her öğünün zaman çizgisi noktası */
+    .ogun-listesi
+    .premium-ogun-karti::after {
+        content: "";
+        position: absolute;
+        z-index: 3;
+        top: 31px;
+        left: -20px;
+        width: 10px;
+        height: 10px;
+        border: 3px solid #211a25;
+        border-radius: 50%;
+        background: #716776;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
+    }
+
+    /* Sıradaki öğün noktası */
+    .ogun-listesi
+    .premium-ogun-karti.durum-sirada::after {
+        background: #f276a0;
+        box-shadow: 0 0 0 4px rgba(242, 118, 160, 0.12);
+    }
+
+    /* Geçmiş öğün noktası */
+    .ogun-listesi
+    .premium-ogun-karti.durum-gecti::after {
+        background: #f3a65a;
+    }
+
+    /* Tamamlanan öğün noktası */
+    .ogun-listesi
+    .premium-ogun-karti.ogun-tamamlandi::after {
+        background: #59c99a;
+        box-shadow: 0 0 0 4px rgba(89, 201, 154, 0.1);
+    }
+
+/* =====================================================
+   GENEL KART SADELEŞTİRME
+===================================================== */
+
+.premium-ogun-karti {
+    border-radius: 19px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.premium-ogun-ozet {
+    min-height: 72px;
+    padding: 13px 14px 13px 16px;
+}
+
+.premium-ogun-emoji {
+    width: 43px;
+    height: 43px;
+    border-radius: 14px;
+    font-size: 21px;
+}
+
+.premium-ogun-baslik-satiri > strong {
+    font-size: 15px;
+}
+
+/* =====================================================
+   SIRADAKİ ÖĞÜN
+===================================================== */
+
+.premium-ogun-karti.durum-sirada {
+    border-color: rgba(242, 118, 160, 0.28);
+    background: radial-gradient( circle at 100% 0, rgba(242, 118, 160, 0.12), transparent 43% ), linear-gradient( 145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02) ), rgba(31, 24, 36, 0.97);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+}
+
+    .premium-ogun-karti.durum-sirada
+    .premium-ogun-ozet {
+        min-height: 88px;
+        padding: 16px 16px 16px 18px;
+    }
+
+    .premium-ogun-karti.durum-sirada
+    .premium-ogun-emoji {
+        width: 49px;
+        height: 49px;
+        font-size: 23px;
+    }
+
+    .premium-ogun-karti.durum-sirada
+    .premium-ogun-baslik-satiri > strong {
+        font-size: 17px;
+    }
+
+/* =====================================================
+   TAMAMLANAN ÖĞÜNLER
+===================================================== */
+
+.premium-ogun-karti.ogun-tamamlandi {
+    opacity: 0.72;
+    border-color: rgba(89, 201, 154, 0.18);
+}
+
+    .premium-ogun-karti.ogun-tamamlandi:hover,
+    .premium-ogun-karti.ogun-tamamlandi:focus-within {
+        opacity: 1;
+    }
+
+    .premium-ogun-karti.ogun-tamamlandi
+    .premium-ogun-ozet {
+        min-height: 60px;
+        padding: 9px 13px 9px 15px;
+    }
+
+    .premium-ogun-karti.ogun-tamamlandi
+    .premium-ogun-emoji {
+        width: 37px;
+        height: 37px;
+        border-radius: 12px;
+        font-size: 18px;
+    }
+
+    .premium-ogun-karti.ogun-tamamlandi
+    .premium-ogun-baslik-satiri > strong {
+        color: #cbd9d2;
+        font-size: 14px;
+    }
+
+    .premium-ogun-karti.ogun-tamamlandi
+    .premium-ogun-alt-bilgi {
+        margin-top: 5px;
+    }
+
+        /* Tamamlanmış kartlarda gereksiz ikinci bilgileri gizle */
+        .premium-ogun-karti.ogun-tamamlandi
+        .premium-ogun-alt-bilgi span:not(:first-child) {
+            display: none;
+        }
+
+/* =====================================================
+   GEÇEN ÖĞÜNLER
+===================================================== */
+
+.premium-ogun-karti.durum-gecti:not( .ogun-tamamlandi ) {
+    opacity: 0.8;
+}
+
+    .premium-ogun-karti.durum-gecti:not( .ogun-tamamlandi ):hover {
+        opacity: 1;
+    }
+
+/* =====================================================
+   AÇIK KART
+===================================================== */
+
+.premium-ogun-karti:has( .premium-ogun-detay.gorunur ) {
+    opacity: 1;
+}
+
+    .premium-ogun-karti:has( .premium-ogun-detay.gorunur )
+    .premium-ogun-ozet {
+        min-height: 82px;
+    }
+
+/* =====================================================
+   MOBİL
+===================================================== */
+
+@media (max-width: 560px) {
+    .ogun-listesi {
+        padding-left: 17px;
+    }
+
+        .ogun-listesi::before {
+            left: 5px;
+        }
+
+        .ogun-listesi
+        .premium-ogun-karti::after {
+            left: -17px;
+            width: 9px;
+            height: 9px;
+        }
+
+    .premium-ogun-ozet {
+        gap: 10px;
+        min-height: 68px;
+        padding: 12px 11px 12px 14px;
+    }
+
+    .premium-ogun-karti.durum-sirada
+    .premium-ogun-ozet {
+        min-height: 82px;
+        padding: 14px 13px 14px 15px;
+    }
+
+    .premium-ogun-karti.ogun-tamamlandi
+    .premium-ogun-ozet {
+        min-height: 56px;
+        padding: 8px 11px 8px 13px;
+    }
+
+    .premium-ogun-karti.ogun-tamamlandi
+    .premium-ogun-chevron {
+        width: 28px;
+        height: 28px;
+    }
+}
 
 @media (max-width: 560px) {
     .premium-ogun-ozet {

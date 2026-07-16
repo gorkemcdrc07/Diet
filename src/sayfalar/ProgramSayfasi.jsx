@@ -482,50 +482,93 @@ export default function ProgramSayfasi() {
                 onKapat={() => {
                     setTamamlanacakOgun(null);
                 }}
-                onTamamla={({
+                onTamamla={async ({
                     ogun,
                     fotograf,
                     notMetni,
                 }) => {
-                    ogunDurumunuDegistir(
-                        ogun.id,
-                    );
+                    try {
+                        await ogunTamamlamaKaydiniKaydet({
+                            ogunId:
+                                ogun.id,
 
-                    setTamamlanacakOgun(
-                        null,
-                    );
+                            fotograf,
 
-                    console.log(
-                        "Tamamlanan öğün kaydı:",
-                        {
+                            notMetni,
+
+                            kaloriAnalizineGonderildi:
+                                false,
+                        });
+
+                        ogunDurumunuDegistir(
+                            ogun.id,
+                        );
+
+                        setTamamlanacakOgun(
+                            null,
+                        );
+
+                        await ogunKayitlariniYukle();
+                    } catch (error) {
+                        console.error(
+                            "Öğün kaydı oluşturulamadı:",
+                            error,
+                        );
+
+                        window.alert(
+                            error?.message ||
+                            "Öğün kaydedilemedi.",
+                        );
+                    }
+                }}
+                onKaloriAnalizineGonder={async ({
+                    ogun,
+                    fotograf,
+                    notMetni,
+                }) => {
+                    try {
+                        await ogunTamamlamaKaydiniKaydet({
+                            ogunId:
+                                ogun.id,
+
+                            fotograf,
+
+                            notMetni,
+
+                            kaloriAnalizineGonderildi:
+                                true,
+                        });
+
+                        ogunDurumunuDegistir(
+                            ogun.id,
+                        );
+
+                        setKaloriyeGonderilecekOgun({
                             ogun,
                             fotograf,
                             notMetni,
-                        },
-                    );
-                }}
-                onKaloriAnalizineGonder={({
-                    ogun,
-                    fotograf,
-                    notMetni,
-                }) => {
-                    ogunDurumunuDegistir(
-                        ogun.id,
-                    );
+                        });
 
-                    setKaloriyeGonderilecekOgun({
-                        ogun,
-                        fotograf,
-                        notMetni,
-                    });
+                        setTamamlanacakOgun(
+                            null,
+                        );
 
-                    setTamamlanacakOgun(
-                        null,
-                    );
+                        await ogunKayitlariniYukle();
 
-                    setAktifBolum(
-                        "kalori",
-                    );
+                        setAktifBolum(
+                            "kalori",
+                        );
+                    } catch (error) {
+                        console.error(
+                            "Öğün kalori analizine gönderilemedi:",
+                            error,
+                        );
+
+                        window.alert(
+                            error?.message ||
+                            "Kalori analizi başlatılamadı.",
+                        );
+                    }
                 }}
             />
 
@@ -767,6 +810,11 @@ export default function ProgramSayfasi() {
                                             ogun.id,
                                         );
 
+                                    const tamamlanmaKaydi =
+                                        ogunTamamlamaKayitlari[
+                                        String(ogun.id)
+                                        ] || null;
+
                                     return (
                                         <article
                                             key={
@@ -853,6 +901,44 @@ export default function ProgramSayfasi() {
                                                                 )}
                                                             </ul>
                                                         )}
+                                                    {tamamlanmaKaydi
+                                                        ?.fotograf_url && (
+                                                            <div className="program-ogun-fotografi">
+                                                                <img
+                                                                    src={
+                                                                        tamamlanmaKaydi
+                                                                            .fotograf_url
+                                                                    }
+                                                                    alt={`${ogun.baslik} öğün fotoğrafı`}
+                                                                />
+
+                                                                <div className="program-ogun-fotografi-bilgi">
+                                                                    <div>
+                                                                        <span>
+                                                                            Tamamlanan öğün
+                                                                        </span>
+
+                                                                        {tamamlanmaKaydi
+                                                                            .not_metni && (
+                                                                                <small>
+                                                                                    {
+                                                                                        tamamlanmaKaydi
+                                                                                            .not_metni
+                                                                                    }
+                                                                                </small>
+                                                                            )}
+                                                                    </div>
+
+                                                                    {tamamlanmaKaydi
+                                                                        .kalori_analizine_gonderildi && (
+                                                                            <strong>
+                                                                                <Flame size={13} />
+                                                                                Kalori analizi
+                                                                            </strong>
+                                                                        )}
+                                                                </div>
+                                                            </div>
+                                                        )}
 
                                                     <button
                                                         type="button"
@@ -869,11 +955,30 @@ export default function ProgramSayfasi() {
                                                             .join(
                                                                 " ",
                                                             )}
-                                                        onClick={() => {
+                                                        onClick={async () => {
                                                             if (tamamlandi) {
-                                                                ogunDurumunuDegistir(
-                                                                    ogun.id,
-                                                                );
+                                                                try {
+                                                                    await ogunTamamlamaKaydiniSil({
+                                                                        ogunId:
+                                                                            ogun.id,
+                                                                    });
+
+                                                                    ogunDurumunuDegistir(
+                                                                        ogun.id,
+                                                                    );
+
+                                                                    await ogunKayitlariniYukle();
+                                                                } catch (error) {
+                                                                    console.error(
+                                                                        "Öğün kaydı geri alınamadı:",
+                                                                        error,
+                                                                    );
+
+                                                                    window.alert(
+                                                                        error?.message ||
+                                                                        "Öğün kaydı geri alınamadı.",
+                                                                    );
+                                                                }
 
                                                                 return;
                                                             }
