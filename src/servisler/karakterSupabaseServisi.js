@@ -1,4 +1,5 @@
 ﻿import { supabase } from "./supabase";
+
 const VARSAYILAN_DURUM = {
     mico_ofke: 45,
     mico_mutluluk: 45,
@@ -63,15 +64,13 @@ export async function aktifKullaniciyiGetir() {
         return null;
     }
 
-    if (!session?.user) {
-        return null;
-    }
-
-    return session.user;
+    return session?.user || null;
 }
+
 export async function karakterDurumunuGetir() {
     const user =
         await aktifKullaniciyiGetir();
+
     if (!user) {
         return null;
     }
@@ -92,15 +91,25 @@ export async function karakterDurumunuGetir() {
         return data;
     }
 
-    const { data: yeniDurum, error: eklemeHatasi } =
-        await supabase
-            .from("karakter_durumlari")
-            .insert({
+    const {
+        data: yeniDurum,
+        error: eklemeHatasi,
+    } = await supabase
+        .from("karakter_durumlari")
+        .upsert(
+            {
                 user_id: user.id,
                 ...VARSAYILAN_DURUM,
-            })
-            .select()
-            .single();
+                son_giris:
+                    new Date().toISOString(),
+            },
+            {
+                onConflict: "user_id",
+                ignoreDuplicates: true,
+            },
+        )
+        .select()
+        .maybeSingle();
 
     if (eklemeHatasi) {
         throw new Error(
@@ -108,7 +117,26 @@ export async function karakterDurumunuGetir() {
         );
     }
 
-    return yeniDurum;
+    if (yeniDurum) {
+        return yeniDurum;
+    }
+
+    const {
+        data: mevcutDurum,
+        error: mevcutDurumHatasi,
+    } = await supabase
+        .from("karakter_durumlari")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+    if (mevcutDurumHatasi) {
+        throw new Error(
+            `Karakter durumu tekrar alınamadı: ${mevcutDurumHatasi.message}`,
+        );
+    }
+
+    return mevcutDurum;
 }
 
 export async function karakterDurumunuKaydet(
@@ -116,9 +144,11 @@ export async function karakterDurumunuKaydet(
 ) {
     const user =
         await aktifKullaniciyiGetir();
+
     if (!user) {
         return null;
     }
+
     const guvenliGuncellemeler = {
         ...guncellemeler,
     };
@@ -140,7 +170,7 @@ export async function karakterDurumunuKaydet(
             guvenliGuncellemeler[alan] =
                 sayiyiSinirla(
                     guvenliGuncellemeler[
-                        alan
+                    alan
                     ],
                 );
         }
@@ -166,7 +196,7 @@ export async function karakterDurumunuKaydet(
                 Math.max(
                     Number(
                         guvenliGuncellemeler[
-                            alan
+                        alan
                         ],
                     ) || 0,
                     0,
@@ -210,6 +240,10 @@ export async function karakterOlayiKaydet({
     const user =
         await aktifKullaniciyiGetir();
 
+    if (!user) {
+        return null;
+    }
+
     const { data, error } = await supabase
         .from("karakter_olaylari")
         .insert({
@@ -236,14 +270,49 @@ export async function bugununHafizasiniGetir() {
     const user =
         await aktifKullaniciyiGetir();
 
-    const tarih = bugununAnahtari();
+    if (!user) {
+        return null;
+    }
 
-    const { data, error } = await supabase
+    const tarih =
+        bugununAnahtari();
+
+    const {
+        error: olusturmaHatasi,
+    } = await supabase
+        .from("karakter_gunluk_hafiza")
+        .upsert(
+            {
+                user_id: user.id,
+                tarih,
+                tamamlanan_ogunler: [],
+                geciken_ogunler: [],
+                su_miktari: 0,
+                su_hedefi: 8,
+                tum_ogunler_tamamlandi: false,
+                olay_ozeti: {},
+            },
+            {
+                onConflict: "user_id,tarih",
+                ignoreDuplicates: true,
+            },
+        );
+
+    if (olusturmaHatasi) {
+        throw new Error(
+            `Günlük hafıza oluşturulamadı: ${olusturmaHatasi.message}`,
+        );
+    }
+
+    const {
+        data,
+        error,
+    } = await supabase
         .from("karakter_gunluk_hafiza")
         .select("*")
         .eq("user_id", user.id)
         .eq("tarih", tarih)
-        .maybeSingle();
+        .single();
 
     if (error) {
         throw new Error(
@@ -251,35 +320,7 @@ export async function bugununHafizasiniGetir() {
         );
     }
 
-    if (data) {
-        return data;
-    }
-
-    const {
-        data: yeniHafiza,
-        error: eklemeHatasi,
-    } = await supabase
-        .from("karakter_gunluk_hafiza")
-        .insert({
-            user_id: user.id,
-            tarih,
-            tamamlanan_ogunler: [],
-            geciken_ogunler: [],
-            su_miktari: 0,
-            su_hedefi: 8,
-            tum_ogunler_tamamlandi: false,
-            olay_ozeti: {},
-        })
-        .select()
-        .single();
-
-    if (eklemeHatasi) {
-        throw new Error(
-            `Günlük hafıza oluşturulamadı: ${eklemeHatasi.message}`,
-        );
-    }
-
-    return yeniHafiza;
+    return data;
 }
 
 export async function gunlukHafizayiKaydet(
@@ -288,7 +329,12 @@ export async function gunlukHafizayiKaydet(
     const user =
         await aktifKullaniciyiGetir();
 
-    const tarih = bugununAnahtari();
+    if (!user) {
+        return null;
+    }
+
+    const tarih =
+        bugununAnahtari();
 
     const { data, error } = await supabase
         .from("karakter_gunluk_hafiza")
@@ -320,8 +366,15 @@ export async function sonKarakterOlaylariniGetir(
     const user =
         await aktifKullaniciyiGetir();
 
+    if (!user) {
+        return [];
+    }
+
     const guvenliLimit = Math.min(
-        Math.max(Number(limit) || 25, 1),
+        Math.max(
+            Number(limit) || 25,
+            1,
+        ),
         100,
     );
 

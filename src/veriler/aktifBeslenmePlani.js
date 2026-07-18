@@ -8,6 +8,8 @@ export const aktifBeslenmePlani = {
 
     planTarihi: "2026-07-07",
 
+    aktarimSurumu: 2,
+
     aktif: true,
 
     genelNotlar: "",

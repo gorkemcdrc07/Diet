@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 
 import {
+    beslenmePdfiniYukle,
     beslenmePlaniOlustur,
     beslenmePlaniniAktifYap,
     beslenmePlaniniSil,
@@ -89,12 +90,18 @@ export default function BeslenmePlanlariSayfasi({
         planAdi: "",
         diyetisyenAdi: "",
         planTarihi: "",
+        hemenAktifEt: true,
     });
 
     const [
         yeniPlanKaydediliyor,
         setYeniPlanKaydediliyor,
     ] = useState(false);
+
+    const [
+        kayitAsamasi,
+        setKayitAsamasi,
+    ] = useState("");
 
     const [
         pdfDosyasi,
@@ -498,13 +505,14 @@ export default function BeslenmePlanlariSayfasi({
             return;
         }
 
-        if (
-            !pdfOnizleme ||
-            !Array.isArray(
-                pdfOnizleme.ogunler,
-            ) ||
-            pdfOnizleme.ogunler.length === 0
-        ) {
+        const onizlemeOgunleri =
+            Array.isArray(
+                pdfOnizleme?.ogunler,
+            )
+                ? pdfOnizleme.ogunler
+                : [];
+
+        if (onizlemeOgunleri.length === 0) {
             setHata(
                 "Kaydedilecek PDF öğünleri bulunamadı.",
             );
@@ -512,21 +520,50 @@ export default function BeslenmePlanlariSayfasi({
             return;
         }
 
+        const gecersizOgun =
+            onizlemeOgunleri.find(
+                (ogun) =>
+                    !String(
+                        ogun?.ogunAdi || "",
+                    ).trim(),
+            );
+
+        if (gecersizOgun) {
+            setHata(
+                "Tüm öğünlerin bir adı olmalıdır.",
+            );
+
+            return;
+        }
+
         setYeniPlanKaydediliyor(true);
+        setKayitAsamasi(
+            "PDF güvenli alana yükleniyor...",
+        );
         setHata("");
 
+        let olusanPlan = null;
+
         try {
-            const olusanPlan =
+            const yuklenenPdf =
+                await beslenmePdfiniYukle(
+                    pdfDosyasi,
+                );
+
+            setKayitAsamasi(
+                "Beslenme planı oluşturuluyor...",
+            );
+
+            olusanPlan =
                 await beslenmePlaniOlustur({
                     planAdi:
                         temizPlanAdi,
 
                     kaynakDosyaAdi:
-                        pdfDosyasi?.name ||
-                        null,
+                        yuklenenPdf.dosyaAdi,
 
                     kaynakDosyaYolu:
-                        null,
+                        yuklenenPdf.dosyaYolu,
 
                     diyetisyenAdi:
                         yeniPlan
@@ -540,19 +577,25 @@ export default function BeslenmePlanlariSayfasi({
                         null,
 
                     aktif:
-                        planlar.length === 0,
+                        Boolean(
+                            yeniPlan.hemenAktifEt,
+                        ),
                 });
 
             for (
                 let ogunIndex = 0;
                 ogunIndex <
-                pdfOnizleme.ogunler.length;
+                onizlemeOgunleri.length;
                 ogunIndex += 1
             ) {
                 const ogun =
-                    pdfOnizleme.ogunler[
+                    onizlemeOgunleri[
                     ogunIndex
                     ];
+
+                setKayitAsamasi(
+                    `${ogunIndex + 1}/${onizlemeOgunleri.length} öğün kaydediliyor...`,
+                );
 
                 const olusanOgun =
                     await ogunEkle({
@@ -560,13 +603,13 @@ export default function BeslenmePlanlariSayfasi({
                             olusanPlan.id,
 
                         ogunAdi:
-                            ogun.ogunAdi ||
-                            `Öğün ${ogunIndex + 1
-                            }`,
+                            String(
+                                ogun.ogunAdi,
+                            ).trim(),
 
                         saat:
                             ogun.saat ||
-                            "00:00",
+                            "12:00",
 
                         ikon:
                             ogun.ikon ||
@@ -577,9 +620,15 @@ export default function BeslenmePlanlariSayfasi({
                             null,
 
                         sira:
-                            Number(
-                                ogun.sira,
-                            ) || ogunIndex,
+                            Number.isFinite(
+                                Number(
+                                    ogun.sira,
+                                ),
+                            )
+                                ? Number(
+                                    ogun.sira,
+                                )
+                                : ogunIndex,
                     });
 
                 const detaylar =
@@ -600,12 +649,13 @@ export default function BeslenmePlanlariSayfasi({
                         detayIndex
                         ];
 
-                    if (
-                        !String(
+                    const temizBaslik =
+                        String(
                             detay?.baslik ||
                             "",
-                        ).trim()
-                    ) {
+                        ).trim();
+
+                    if (!temizBaslik) {
                         continue;
                     }
 
@@ -614,16 +664,20 @@ export default function BeslenmePlanlariSayfasi({
                             olusanOgun.id,
 
                         baslik:
-                            String(
-                                detay.baslik,
-                            ).trim(),
+                            temizBaslik,
 
                         miktar:
-                            detay.miktar ||
+                            String(
+                                detay.miktar ||
+                                "",
+                            ).trim() ||
                             null,
 
                         aciklama:
-                            detay.aciklama ||
+                            String(
+                                detay.aciklama ||
+                                "",
+                            ).trim() ||
                             null,
 
                         alternatifler:
@@ -631,20 +685,42 @@ export default function BeslenmePlanlariSayfasi({
                                 detay.alternatifler,
                             )
                                 ? detay.alternatifler
+                                    .map(
+                                        (
+                                            alternatif,
+                                        ) =>
+                                            String(
+                                                alternatif,
+                                            ).trim(),
+                                    )
+                                    .filter(
+                                        Boolean,
+                                    )
                                 : [],
 
                         sira:
-                            Number(
-                                detay.sira,
-                            ) || detayIndex,
+                            Number.isFinite(
+                                Number(
+                                    detay.sira,
+                                ),
+                            )
+                                ? Number(
+                                    detay.sira,
+                                )
+                                : detayIndex,
                     });
                 }
             }
+
+            setKayitAsamasi(
+                "Plan hazırlandı.",
+            );
 
             setYeniPlan({
                 planAdi: "",
                 diyetisyenAdi: "",
                 planTarihi: "",
+                hemenAktifEt: true,
             });
 
             setPdfDosyasi(null);
@@ -666,6 +742,21 @@ export default function BeslenmePlanlariSayfasi({
                 error,
             );
 
+            if (olusanPlan?.id) {
+                try {
+                    await beslenmePlaniniSil(
+                        olusanPlan.id,
+                    );
+                } catch (
+                geriAlmaHatasi
+                ) {
+                    console.error(
+                        "Yarım kalan plan geri alınamadı:",
+                        geriAlmaHatasi,
+                    );
+                }
+            }
+
             setHata(
                 error?.message ||
                 "PDF beslenme planı kaydedilemedi.",
@@ -674,8 +765,10 @@ export default function BeslenmePlanlariSayfasi({
             setYeniPlanKaydediliyor(
                 false,
             );
+            setKayitAsamasi("");
         }
     }
+
     function planKartiOlustur(
         plan,
         aktifMi,
@@ -943,74 +1036,74 @@ export default function BeslenmePlanlariSayfasi({
                             </section>
                         )}
 
-                        <section className="beslenme-pdf-yukleme-karti">
-                            <div className="beslenme-pdf-yukleme-ust">
-                                <div>
-                                    <span>
-                                        Otomatik plan oluşturma
-                                    </span>
+                    <section className="beslenme-pdf-yukleme-karti">
+                        <div className="beslenme-pdf-yukleme-ust">
+                            <div>
+                                <span>
+                                    Otomatik plan oluşturma
+                                </span>
 
-                                    <h2>
-                                        PDF’den Beslenme Planı
-                                    </h2>
-                                </div>
-
-                                <FilePlus2 size={22} />
+                                <h2>
+                                    PDF’den Beslenme Planı
+                                </h2>
                             </div>
 
-                            <label className="beslenme-pdf-secici">
-                                <input
-                                    type="file"
-                                    accept="application/pdf"
-                                    onChange={(event) => {
-                                        const dosya =
-                                            event.target.files?.[0] ||
-                                            null;
+                            <FilePlus2 size={22} />
+                        </div>
 
-                                        setPdfDosyasi(dosya);
-                                        setPdfOnizleme(null);
-                                        setHata("");
-                                    }}
-                                />
+                        <label className="beslenme-pdf-secici">
+                            <input
+                                type="file"
+                                accept="application/pdf"
+                                onChange={(event) => {
+                                    const dosya =
+                                        event.target.files?.[0] ||
+                                        null;
 
-                                <strong>
-                                    {pdfDosyasi
-                                        ? pdfDosyasi.name
-                                        : "PDF seç"}
-                                </strong>
+                                    setPdfDosyasi(dosya);
+                                    setPdfOnizleme(null);
+                                    setHata("");
+                                }}
+                            />
 
-                                <span>
-                                    Metin tabanlı PDF dosyaları desteklenir.
-                                </span>
-                            </label>
+                            <strong>
+                                {pdfDosyasi
+                                    ? pdfDosyasi.name
+                                    : "PDF seç"}
+                            </strong>
 
-                            <button
-                                type="button"
-                                onClick={pdfyiAnalizEt}
-                                disabled={
-                                    !pdfDosyasi ||
-                                    pdfAnalizEdiliyor
-                                }
-                            >
-                                {pdfAnalizEdiliyor ? (
-                                    <>
-                                        <LoaderCircle
-                                            size={17}
-                                            className="donen-ikon"
-                                        />
+                            <span>
+                                Metin tabanlı PDF dosyaları desteklenir.
+                            </span>
+                        </label>
 
-                                        PDF analiz ediliyor...
-                                    </>
-                                ) : (
-                                    <>
-                                        <FilePlus2 size={17} />
+                        <button
+                            type="button"
+                            onClick={pdfyiAnalizEt}
+                            disabled={
+                                !pdfDosyasi ||
+                                pdfAnalizEdiliyor
+                            }
+                        >
+                            {pdfAnalizEdiliyor ? (
+                                <>
+                                    <LoaderCircle
+                                        size={17}
+                                        className="donen-ikon"
+                                    />
 
-                                        PDF’yi Analiz Et
-                                    </>
-                                )}
-                            </button>
-                        </section>
-                    </>
+                                    PDF analiz ediliyor...
+                                </>
+                            ) : (
+                                <>
+                                    <FilePlus2 size={17} />
+
+                                    PDF’yi Analiz Et
+                                </>
+                            )}
+                        </button>
+                    </section>
+                </>
             )}
 
             {pdfOnizleme && (
@@ -1291,7 +1384,12 @@ export default function BeslenmePlanlariSayfasi({
 
                                     planTarihi:
                                         pdfOnizleme.planTarihi ||
-                                        "",
+                                        new Date()
+                                            .toISOString()
+                                            .slice(0, 10),
+
+                                    hemenAktifEt:
+                                        true,
                                 });
 
                                 setYeniPlanFormuAcik(
@@ -1325,6 +1423,9 @@ export default function BeslenmePlanlariSayfasi({
 
                             <button
                                 type="button"
+                                disabled={
+                                    yeniPlanKaydediliyor
+                                }
                                 onClick={() =>
                                     setYeniPlanFormuAcik(
                                         false,
@@ -1422,6 +1523,54 @@ export default function BeslenmePlanlariSayfasi({
                             />
                         </label>
 
+                        <label className="beslenme-plan-aktif-secimi">
+                            <input
+                                type="checkbox"
+                                checked={
+                                    yeniPlan.hemenAktifEt
+                                }
+                                onChange={(
+                                    event,
+                                ) =>
+                                    setYeniPlan(
+                                        (
+                                            mevcut,
+                                        ) => ({
+                                            ...mevcut,
+                                            hemenAktifEt:
+                                                event
+                                                    .target
+                                                    .checked,
+                                        }),
+                                    )
+                                }
+                            />
+
+                            <span>
+                                <strong>
+                                    Planı hemen kullanmaya başla
+                                </strong>
+
+                                <small>
+                                    Mevcut aktif plan kapanır ve PDF’den oluşturulan plan günlük programa aktarılır.
+                                </small>
+                            </span>
+                        </label>
+
+                        {yeniPlanKaydediliyor &&
+                            kayitAsamasi && (
+                                <div className="beslenme-plan-kayit-durumu">
+                                    <LoaderCircle
+                                        size={16}
+                                        className="donen-ikon"
+                                    />
+
+                                    <span>
+                                        {kayitAsamasi}
+                                    </span>
+                                </div>
+                            )}
+
                         <div className="beslenme-plan-modal-alt">
                             <button
                                 type="button"
@@ -1460,8 +1609,8 @@ export default function BeslenmePlanlariSayfasi({
                                             }
                                         />
 
-                                            PDF Planını Kaydet
-                                        </>
+                                        Planı Oluştur
+                                    </>
                                 )}
                             </button>
                         </div>

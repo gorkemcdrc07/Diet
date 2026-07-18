@@ -67,8 +67,7 @@ export default defineConfig({
             },
 
             devOptions: {
-                enabled: true,
-                type: "module",
+                enabled: false,
             },
 
             injectManifest: {
@@ -76,7 +75,8 @@ export default defineConfig({
                     "**/*.{js,css,html,ico,png,svg,webp,json}",
                 ],
 
-                maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+                maximumFileSizeToCacheInBytes:
+                    5 * 1024 * 1024,
             },
         }),
     ],

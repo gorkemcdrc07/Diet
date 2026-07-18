@@ -6,7 +6,13 @@
 } from "react";
 
 import {
+    Activity,
+    CalendarDays,
+    CheckCircle2,
+    Clock3,
+    Droplets,
     Heart,
+    MessageCircle,
     RefreshCw,
     Sparkles,
     Utensils,
@@ -16,6 +22,28 @@ import {
 import useSupabaseKarakterMotoru from "../karakterler/useSupabaseKarakterMotoru";
 
 import "./Karakterler.css";
+
+const KARAKTER_BILGILERI = {
+    mico: {
+        ad: "Miço",
+        kisaAd: "M",
+        rozet: "Evin patronu",
+        unvan: "Disiplinli, huysuz ve seni yakından takip ediyor.",
+        gorsel: "/karakterler/mico-kizgin.png",
+        butonMetni: "Miço’yu sev",
+        beklemeMetni: "Miço düşünüyor...",
+    },
+
+    viki: {
+        ad: "Viki",
+        kisaAd: "V",
+        rozet: "Mama uzmanı",
+        unvan: "Sevecen, meraklı ve her zaman mama peşinde.",
+        gorsel: "/karakterler/viki-mama.png",
+        butonMetni: "Viki’ye pati ver",
+        beklemeMetni: "Viki geliyor...",
+    },
+};
 
 function degeriSinirla(deger) {
     return Math.min(
@@ -43,8 +71,8 @@ function DurumCubugu({
                 .join(" ")}
         >
             <div className="kp-durum-ust">
-                <span>
-                    {ikon}
+                <span className="kp-durum-etiket">
+                    <i>{ikon}</i>
                     {baslik}
                 </span>
 
@@ -53,7 +81,14 @@ function DurumCubugu({
                 </strong>
             </div>
 
-            <div className="kp-durum-cubugu">
+            <div
+                className="kp-durum-cubugu"
+                role="progressbar"
+                aria-label={baslik}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow={guvenliDeger}
+            >
                 <span
                     style={{
                         width: `${guvenliDeger}%`,
@@ -68,16 +103,33 @@ function Istatistik({
     ikon,
     deger,
     etiket,
+    aciklama,
+    vurgu = "",
 }) {
     return (
-        <div className="kp-istatistik">
+        <article
+            className={[
+                "kp-istatistik",
+                vurgu
+                    ? `kp-istatistik--${vurgu}`
+                    : "",
+            ]
+                .filter(Boolean)
+                .join(" ")}
+        >
             <span className="kp-istatistik-ikon">
                 {ikon}
             </span>
 
-            <strong>{deger}</strong>
-            <small>{etiket}</small>
-        </div>
+            <div className="kp-istatistik-icerik">
+                <strong>{deger}</strong>
+                <span>{etiket}</span>
+
+                {aciklama && (
+                    <small>{aciklama}</small>
+                )}
+            </div>
+        </article>
     );
 }
 
@@ -90,17 +142,20 @@ function KarakterKarti({
     const micoMu =
         karakter === "mico";
 
-    const ad = micoMu
-        ? "Miço"
-        : "Viki";
+    const bilgi =
+        KARAKTER_BILGILERI[karakter];
 
-    const unvan = micoMu
-        ? "Evin huysuz patronu"
-        : "Mama denetçisi";
+    const ruhHali = micoMu
+        ? durum?.mico_ruh_hali || "kızgın"
+        : durum?.viki_ruh_hali || "aç";
 
-    const gorsel = micoMu
-        ? "/karakterler/mico-kizgin.png"
-        : "/karakterler/viki-mama.png";
+    const dokunmaSayisi = micoMu
+        ? durum?.mico_dokunma_sayisi || 0
+        : durum?.viki_dokunma_sayisi || 0;
+
+    const konusmaSayisi = micoMu
+        ? durum?.mico_konusma_sayisi || 0
+        : durum?.viki_konusma_sayisi || 0;
 
     return (
         <article
@@ -109,13 +164,34 @@ function KarakterKarti({
                 `kp-karakter-karti--${karakter}`,
             ].join(" ")}
         >
-            <div className="kp-karakter-ust">
-                <div className="kp-karakter-gorsel">
-                    <span className="kp-karakter-parilti" />
+            <span className="kp-karakter-dekor kp-karakter-dekor--bir" />
+            <span className="kp-karakter-dekor kp-karakter-dekor--iki" />
+
+            <div className="kp-karakter-kart-ust">
+                <span className="kp-karakter-rozet">
+                    <Sparkles size={13} />
+                    {bilgi.rozet}
+                </span>
+
+                <span
+                    className={[
+                        "kp-karakter-aktiflik",
+                        `kp-karakter-aktiflik--${karakter}`,
+                    ].join(" ")}
+                >
+                    <i />
+                    Aktif
+                </span>
+            </div>
+
+            <div className="kp-karakter-hero">
+                <div className="kp-karakter-gorsel-alani">
+                    <span className="kp-karakter-halka kp-karakter-halka--dis" />
+                    <span className="kp-karakter-halka kp-karakter-halka--ic" />
 
                     <img
-                        src={gorsel}
-                        alt={ad}
+                        src={bilgi.gorsel}
+                        alt={bilgi.ad}
                         draggable="false"
                     />
 
@@ -123,149 +199,174 @@ function KarakterKarti({
                 </div>
 
                 <div className="kp-karakter-kimlik">
-                    <span>
-                        {micoMu
-                            ? "Evin patronu"
-                            : "Mama uzmanı"}
+                    <span className="kp-karakter-mini-baslik">
+                        Dijital arkadaşın
                     </span>
 
-                    <h2>{ad}</h2>
-                    <p>{unvan}</p>
+                    <h2>{bilgi.ad}</h2>
+
+                    <p>{bilgi.unvan}</p>
+
+                    <div className="kp-ruh-hali">
+                        <span>
+                            Ruh hâli
+                        </span>
+
+                        <strong>
+                            {ruhHali}
+                        </strong>
+                    </div>
 
                     <button
                         type="button"
+                        className="kp-etkilesim-butonu"
                         onClick={() =>
-                            onDokun(
-                                karakter,
-                            )
+                            onDokun(karakter)
                         }
                         disabled={
                             islemYapiliyor
                         }
                     >
-                        <Heart size={16} />
-
-                        {islemYapiliyor
-                            ? "Bekle..."
-                            : micoMu
-                              ? "Miço’yu sev"
-                              : "Viki’ye pati ver"}
+                        {islemYapiliyor ? (
+                            <>
+                                <RefreshCw
+                                    size={17}
+                                    className="kp-donen"
+                                />
+                                {
+                                    bilgi.beklemeMetni
+                                }
+                            </>
+                        ) : (
+                            <>
+                                <Heart size={17} />
+                                {
+                                    bilgi.butonMetni
+                                }
+                            </>
+                        )}
                     </button>
                 </div>
             </div>
 
-            <div className="kp-durumlar">
-                {micoMu ? (
-                    <>
-                        <DurumCubugu
-                            baslik="Öfke"
-                            deger={
-                                durum
-                                    ?.mico_ofke
-                            }
-                            ikon="😠"
-                            sinifAdi="kp-durum--ofke"
-                        />
+            <div className="kp-karakter-durum-paneli">
+                <div className="kp-panel-baslik">
+                    <div>
+                        <span>
+                            Canlı durum
+                        </span>
 
-                        <DurumCubugu
-                            baslik="Mutluluk"
-                            deger={
-                                durum
-                                    ?.mico_mutluluk
-                            }
-                            ikon="🤎"
-                            sinifAdi="kp-durum--mutluluk"
-                        />
-                    </>
-                ) : (
-                    <>
-                        <DurumCubugu
-                            baslik="Açlık"
-                            deger={
-                                durum
-                                    ?.viki_aclik
-                            }
-                            ikon="🍗"
-                            sinifAdi="kp-durum--aclik"
-                        />
+                        <strong>
+                            Şu an nasıl?
+                        </strong>
+                    </div>
 
-                        <DurumCubugu
-                            baslik="Mutluluk"
-                            deger={
-                                durum
-                                    ?.viki_mutluluk
-                            }
-                            ikon="🥹"
-                            sinifAdi="kp-durum--mutluluk"
-                        />
-                    </>
-                )}
+                    <Activity size={18} />
+                </div>
+
+                <div className="kp-durumlar">
+                    {micoMu ? (
+                        <>
+                            <DurumCubugu
+                                baslik="Öfke"
+                                deger={
+                                    durum
+                                        ?.mico_ofke
+                                }
+                                ikon="😠"
+                                sinifAdi="kp-durum--ofke"
+                            />
+
+                            <DurumCubugu
+                                baslik="Mutluluk"
+                                deger={
+                                    durum
+                                        ?.mico_mutluluk
+                                }
+                                ikon="🤎"
+                                sinifAdi="kp-durum--mutluluk"
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <DurumCubugu
+                                baslik="Açlık"
+                                deger={
+                                    durum
+                                        ?.viki_aclik
+                                }
+                                ikon="🍗"
+                                sinifAdi="kp-durum--aclik"
+                            />
+
+                            <DurumCubugu
+                                baslik="Mutluluk"
+                                deger={
+                                    durum
+                                        ?.viki_mutluluk
+                                }
+                                ikon="🥹"
+                                sinifAdi="kp-durum--mutluluk"
+                            />
+                        </>
+                    )}
+                </div>
             </div>
 
-            <div className="kp-istatistik-grid">
+            <div className="kp-karakter-istatistikleri">
                 <Istatistik
                     ikon={
-                        <Heart size={16} />
+                        <Heart size={18} />
                     }
-                    deger={
-                        micoMu
-                            ? durum
-                                  ?.mico_dokunma_sayisi ||
-                              0
-                            : durum
-                                  ?.viki_dokunma_sayisi ||
-                              0
-                    }
+                    deger={dokunmaSayisi}
                     etiket="Sevilme"
+                    vurgu="kalp"
                 />
 
                 <Istatistik
                     ikon={
-                        <Volume2 size={16} />
+                        <Volume2 size={18} />
                     }
-                    deger={
-                        micoMu
-                            ? durum
-                                  ?.mico_konusma_sayisi ||
-                              0
-                            : durum
-                                  ?.viki_konusma_sayisi ||
-                              0
-                    }
+                    deger={konusmaSayisi}
                     etiket="Konuşma"
+                    vurgu="mesaj"
                 />
 
                 <Istatistik
                     ikon={
                         micoMu ? (
                             <Sparkles
-                                size={16}
+                                size={18}
                             />
                         ) : (
                             <Utensils
-                                size={16}
+                                size={18}
                             />
                         )
                     }
                     deger={
                         micoMu
-                            ? durum
-                                  ?.mico_ruh_hali ||
-                              "Kızgın"
+                            ? ruhHali
                             : durum
-                                  ?.viki_mama_istegi ||
-                              0
+                                ?.viki_mama_istegi ||
+                            0
                     }
                     etiket={
                         micoMu
-                            ? "Ruh hâli"
+                            ? "Karakter"
                             : "Mama isteği"
+                    }
+                    vurgu={
+                        micoMu
+                            ? "ruh"
+                            : "mama"
                     }
                 />
             </div>
         </article>
     );
 }
+
 function dununOzetiniOlustur(
     dununHafizasi,
 ) {
@@ -273,6 +374,7 @@ function dununOzetiniOlustur(
         return {
             mico:
                 "Dünden kalan bir anım henüz yok. Bugün programı aksatma.",
+
             viki:
                 "Dünden bir kayıt bulamadım… ama bugün mama olabilir mi? 🥹",
         };
@@ -351,6 +453,46 @@ function dununOzetiniOlustur(
     };
 }
 
+function KonusmaKarti({
+    karakter,
+    mesaj,
+}) {
+    const bilgi =
+        KARAKTER_BILGILERI[karakter];
+
+    return (
+        <article
+            className={[
+                "kp-hafiza-mesaj",
+                `kp-hafiza-mesaj--${karakter}`,
+            ].join(" ")}
+        >
+            <div className="kp-hafiza-avatar">
+                <span>
+                    <img
+                        src={bilgi.gorsel}
+                        alt={bilgi.ad}
+                    />
+                </span>
+
+                <div>
+                    <strong>
+                        {bilgi.ad}
+                    </strong>
+
+                    <small>
+                        Dünkü yorumu
+                    </small>
+                </div>
+            </div>
+
+            <div className="kp-konusma-balonu">
+                <MessageCircle size={17} />
+                <p>{mesaj}</p>
+            </div>
+        </article>
+    );
+}
 
 export default function Karakterler() {
     const {
@@ -370,8 +512,15 @@ export default function Karakterler() {
         setIslemYapilanKarakter,
     ] = useState(null);
 
-    const [yerelMesaj, setYerelMesaj] =
-        useState("");
+    const [
+        yerelMesaj,
+        setYerelMesaj,
+    ] = useState("");
+
+    const [
+        yenileniyor,
+        setYenileniyor,
+    ] = useState(false);
 
     useEffect(() => {
         if (aktifTepki?.mesaj) {
@@ -390,6 +539,11 @@ export default function Karakterler() {
         aktifTepki?.karakter ||
         durum?.son_karakter ||
         "mico";
+
+    const sonKarakterBilgisi =
+        KARAKTER_BILGILERI[
+        sonKarakter
+        ] || KARAKTER_BILGILERI.mico;
 
     const karaktereDokun =
         useCallback(
@@ -410,11 +564,15 @@ export default function Karakterler() {
                         await olayCalistir({
                             olay:
                                 "karaktere-dokunuldu",
+
                             karakter,
+
                             ruhHali: micoMu
                                 ? "kizgin"
                                 : "heyecanli",
+
                             mesaj,
+
                             veri: {
                                 kaynak:
                                     "karakter-profili",
@@ -423,7 +581,7 @@ export default function Karakterler() {
 
                     setYerelMesaj(
                         sonuc?.mesaj ||
-                            mesaj,
+                        mesaj,
                     );
                 } catch (error) {
                     console.error(
@@ -439,36 +597,53 @@ export default function Karakterler() {
             [olayCalistir],
         );
 
-    const gunlukOzet = useMemo(() => {
-        const tamamlanan =
-            gunlukHafiza
-                ?.tamamlanan_ogunler;
+    const verileriYenile =
+        useCallback(async () => {
+            setYenileniyor(true);
 
-        const geciken =
-            gunlukHafiza
-                ?.geciken_ogunler;
+            try {
+                await sistemiYukle();
+            } finally {
+                setYenileniyor(false);
+            }
+        }, [sistemiYukle]);
 
-        return {
-            tamamlananOgun:
-                Array.isArray(tamamlanan)
-                    ? tamamlanan.length
-                    : 0,
-
-            gecikenOgun:
-                Array.isArray(geciken)
-                    ? geciken.length
-                    : 0,
-
-            suMiktari:
+    const gunlukOzet =
+        useMemo(() => {
+            const tamamlanan =
                 gunlukHafiza
-                    ?.su_miktari || 0,
+                    ?.tamamlanan_ogunler;
 
-            suHedefi:
+            const geciken =
                 gunlukHafiza
-                    ?.su_hedefi || 8,
-        };
-    }, [gunlukHafiza]);
+                    ?.geciken_ogunler;
 
+            return {
+                tamamlananOgun:
+                    Array.isArray(
+                        tamamlanan,
+                    )
+                        ? tamamlanan.length
+                        : 0,
+
+                gecikenOgun:
+                    Array.isArray(geciken)
+                        ? geciken.length
+                        : 0,
+
+                suMiktari:
+                    Number(
+                        gunlukHafiza
+                            ?.su_miktari,
+                    ) || 0,
+
+                suHedefi:
+                    Number(
+                        gunlukHafiza
+                            ?.su_hedefi,
+                    ) || 8,
+            };
+        }, [gunlukHafiza]);
 
     const dununOzeti = useMemo(
         () =>
@@ -478,107 +653,159 @@ export default function Karakterler() {
         [dununHafizasi],
     );
 
-    const yediGunlukBasari = useMemo(() => {
-        const kayitlar =
-            Array.isArray(sonYediGun)
-                ? sonYediGun
-                : [];
+    const yediGunlukBasari =
+        useMemo(() => {
+            const kayitlar =
+                Array.isArray(
+                    sonYediGun,
+                )
+                    ? sonYediGun
+                    : [];
 
-        const tamamlananGun =
-            kayitlar.filter(
-                (kayit) =>
-                    kayit
-                        .tum_ogunler_tamamlandi,
-            ).length;
+            const tamamlananGun =
+                kayitlar.filter(
+                    (kayit) =>
+                        kayit
+                            .tum_ogunler_tamamlandi,
+                ).length;
 
-        const toplamSu =
-            kayitlar.reduce(
-                (toplam, kayit) =>
-                    toplam +
-                    (Number(
-                        kayit.su_miktari,
-                    ) || 0),
-                0,
-            );
+            const toplamSu =
+                kayitlar.reduce(
+                    (
+                        toplam,
+                        kayit,
+                    ) =>
+                        toplam +
+                        (Number(
+                            kayit
+                                .su_miktari,
+                        ) || 0),
+                    0,
+                );
 
-        return {
-            gunSayisi:
-                kayitlar.length,
-            tamamlananGun,
-            toplamSu,
-        };
-    }, [sonYediGun]);
+            return {
+                gunSayisi:
+                    kayitlar.length,
+
+                tamamlananGun,
+
+                toplamSu,
+            };
+        }, [sonYediGun]);
+
+    const suYuzdesi = Math.min(
+        Math.round(
+            (gunlukOzet.suMiktari /
+                Math.max(
+                    gunlukOzet.suHedefi,
+                    1,
+                )) *
+            100,
+        ),
+        100,
+    );
 
     if (yukleniyor) {
-
         return (
-
             <main className="kp-sayfa">
-
                 <div className="kp-yukleniyor">
-
-                    <span />
-
-
+                    <div className="kp-yukleniyor-gorsel">
+                        <span />
+                        <Sparkles size={24} />
+                    </div>
 
                     <strong>
-
                         Miço ve Viki
-
                         hazırlanıyor...
-
                     </strong>
 
+                    <small>
+                        Anıları ve ruh hâlleri
+                        yükleniyor.
+                    </small>
                 </div>
-
             </main>
-
         );
-
     }
-
 
     return (
         <main className="kp-sayfa">
-            <header className="kp-sayfa-baslik">
-                <div>
-                    <span>
+            <section className="kp-hero">
+                <span className="kp-hero-dekor kp-hero-dekor--bir" />
+                <span className="kp-hero-dekor kp-hero-dekor--iki" />
+
+                <div className="kp-hero-icerik">
+                    <span className="kp-hero-rozet">
+                        <Sparkles size={14} />
                         Dijital arkadaşların
                     </span>
 
                     <h1>
-                        Miço &amp; Viki
+                        Miço
+                        <span>&amp;</span>
+                        Viki
                     </h1>
 
                     <p>
-                        Ruh hâllerini,
-                        anılarını ve günlük
-                        durumlarını buradan
-                        takip edebilirsin.
+                        Günlük programını takip
+                        eden, seninle konuşan ve
+                        yaşadıklarını hatırlayan
+                        dijital dostların.
                     </p>
+
+                    <div className="kp-hero-bilgiler">
+                        <span>
+                            <Activity size={15} />
+                            2 karakter aktif
+                        </span>
+
+                        <span>
+                            <CalendarDays
+                                size={15}
+                            />
+                            Günlük hafıza açık
+                        </span>
+                    </div>
                 </div>
 
                 <button
                     type="button"
-                    onClick={
-                        sistemiYukle
-                    }
+                    className="kp-yenile-butonu"
+                    onClick={verileriYenile}
+                    disabled={yenileniyor}
                     aria-label="Verileri yenile"
                 >
                     <RefreshCw
-                        size={19}
+                        size={20}
+                        className={
+                            yenileniyor
+                                ? "kp-donen"
+                                : ""
+                        }
                     />
+
+                    <span>
+                        {yenileniyor
+                            ? "Yenileniyor"
+                            : "Yenile"}
+                    </span>
                 </button>
-            </header>
+            </section>
 
             {hata && (
                 <div className="kp-hata">
-                    <strong>
-                        Karakter sistemi
-                        yüklenemedi
-                    </strong>
+                    <span className="kp-hata-ikon">
+                        !
+                    </span>
 
-                    <span>{hata}</span>
+                    <div>
+                        <strong>
+                            Karakter sistemi
+                            yüklenemedi
+                        </strong>
+
+                        <span>{hata}</span>
+                    </div>
                 </div>
             )}
 
@@ -588,29 +815,42 @@ export default function Karakterler() {
                     `kp-son-mesaj--${sonKarakter}`,
                 ].join(" ")}
             >
-                <div className="kp-son-mesaj-kimlik">
+                <div className="kp-son-mesaj-avatar">
                     <span>
-                        {sonKarakter ===
-                        "mico"
-                            ? "M"
-                            : "V"}
+                        <img
+                            src={
+                                sonKarakterBilgisi.gorsel
+                            }
+                            alt={
+                                sonKarakterBilgisi.ad
+                            }
+                        />
                     </span>
 
-                    <div>
-                        <strong>
-                            {sonKarakter ===
-                            "mico"
-                                ? "Miço"
-                                : "Viki"}
-                        </strong>
-
-                        <small>
-                            Son düşüncesi
-                        </small>
-                    </div>
+                    <i />
                 </div>
 
-                <p>{sonMesaj}</p>
+                <div className="kp-son-mesaj-icerik">
+                    <div className="kp-son-mesaj-baslik">
+                        <div>
+                            <strong>
+                                {
+                                    sonKarakterBilgisi.ad
+                                }
+                            </strong>
+
+                            <small>
+                                Son düşüncesi
+                            </small>
+                        </div>
+
+                        <MessageCircle
+                            size={19}
+                        />
+                    </div>
+
+                    <p>{sonMesaj}</p>
+                </div>
             </section>
 
             <section className="kp-karakter-listesi">
@@ -639,167 +879,213 @@ export default function Karakterler() {
                 />
             </section>
 
-            <section className="kp-hafiza-karti">
-                <div className="kp-hafiza-baslik">
-                    <div>
-                        <span>
-                            Karakter hafızası
-                        </span>
+            <section className="kp-alt-icerik">
+                <article className="kp-hafiza-karti">
+                    <div className="kp-bolum-basligi">
+                        <div>
+                            <span>
+                                Karakter hafızası
+                            </span>
 
-                        <h2>
-                            Dünden hatırladıkları
-                        </h2>
+                            <h2>
+                                Dünden
+                                hatırladıkları
+                            </h2>
+
+                            <p>
+                                Miço ve Viki,
+                                dünkü ilerlemeni
+                                kendi tarzlarıyla
+                                yorumladı.
+                            </p>
+                        </div>
+
+                        <span className="kp-tarih-rozeti">
+                            <CalendarDays
+                                size={14}
+                            />
+                            Dün
+                        </span>
                     </div>
 
-                    <span className="kp-hafiza-tarih">
-                        Dün
-                    </span>
-                </div>
+                    <div className="kp-hafiza-konusmalar">
+                        <KonusmaKarti
+                            karakter="mico"
+                            mesaj={
+                                dununOzeti.mico
+                            }
+                        />
 
-                <div className="kp-hafiza-konusmalar">
-                    <article className="kp-hafiza-mesaj kp-hafiza-mesaj--mico">
-                        <div className="kp-hafiza-karakter">
-                            <img
-                                src="/karakterler/mico-kizgin.png"
-                                alt="Miço"
-                            />
+                        <KonusmaKarti
+                            karakter="viki"
+                            mesaj={
+                                dununOzeti.viki
+                            }
+                        />
+                    </div>
 
-                            <div>
-                                <strong>
-                                    Miço
-                                </strong>
-
-                                <small>
-                                    Dünkü yorumu
-                                </small>
-                            </div>
-                        </div>
-
-                        <p>
-                            {dununOzeti.mico}
-                        </p>
-                    </article>
-
-                    <article className="kp-hafiza-mesaj kp-hafiza-mesaj--viki">
-                        <div className="kp-hafiza-karakter">
-                            <img
-                                src="/karakterler/viki-mama.png"
-                                alt="Viki"
-                            />
-
-                            <div>
-                                <strong>
-                                    Viki
-                                </strong>
-
-                                <small>
-                                    Dünkü yorumu
-                                </small>
-                            </div>
-                        </div>
-
-                        <p>
-                            {dununOzeti.viki}
-                        </p>
-                    </article>
-                </div>
-
-                <div className="kp-yedi-gun">
-                    <div>
-                        <strong>
-                            {
+                    <div className="kp-yedi-gun">
+                        <Istatistik
+                            ikon={
+                                <CalendarDays
+                                    size={18}
+                                />
+                            }
+                            deger={
                                 yediGunlukBasari
                                     .gunSayisi
                             }
-                        </strong>
+                            etiket="Kayıtlı gün"
+                            aciklama="Son 7 gün"
+                            vurgu="takvim"
+                        />
 
-                        <small>
-                            Kayıtlı gün
-                        </small>
-                    </div>
-
-                    <div>
-                        <strong>
-                            {
+                        <Istatistik
+                            ikon={
+                                <CheckCircle2
+                                    size={18}
+                                />
+                            }
+                            deger={
                                 yediGunlukBasari
                                     .tamamlananGun
                             }
-                        </strong>
+                            etiket="Kusursuz gün"
+                            aciklama="Tüm öğünler"
+                            vurgu="basari"
+                        />
 
-                        <small>
-                            Kusursuz gün
-                        </small>
-                    </div>
-
-                    <div>
-                        <strong>
-                            {
+                        <Istatistik
+                            ikon={
+                                <Droplets
+                                    size={18}
+                                />
+                            }
+                            deger={
                                 yediGunlukBasari
                                     .toplamSu
                             }
-                        </strong>
-
-                        <small>
-                            Toplam su
-                        </small>
+                            etiket="Toplam su"
+                            aciklama="Bardak"
+                            vurgu="su"
+                        />
                     </div>
-                </div>
-            </section>
+                </article>
 
-            <section className="kp-gunluk-ozet">
-                <div className="kp-gunluk-ozet-baslik">
-                    <div>
+                <article className="kp-gunluk-ozet">
+                    <div className="kp-bolum-basligi">
+                        <div>
+                            <span>
+                                Bugünün hafızası
+                            </span>
+
+                            <h2>
+                                Bugün neler
+                                oldu?
+                            </h2>
+
+                            <p>
+                                Gün içerisindeki
+                                öğün ve su
+                                ilerlemen.
+                            </p>
+                        </div>
+
+                        <span className="kp-canli">
+                            <i />
+                            Canlı
+                        </span>
+                    </div>
+
+                    <div className="kp-gunluk-grid">
+                        <Istatistik
+                            ikon={
+                                <CheckCircle2
+                                    size={19}
+                                />
+                            }
+                            deger={
+                                gunlukOzet
+                                    .tamamlananOgun
+                            }
+                            etiket="Tamamlanan"
+                            aciklama="Öğün"
+                            vurgu="basari"
+                        />
+
+                        <Istatistik
+                            ikon={
+                                <Clock3
+                                    size={19}
+                                />
+                            }
+                            deger={
+                                gunlukOzet
+                                    .gecikenOgun
+                            }
+                            etiket="Geciken"
+                            aciklama="Öğün"
+                            vurgu="geciken"
+                        />
+
+                        <Istatistik
+                            ikon={
+                                <Droplets
+                                    size={19}
+                                />
+                            }
+                            deger={`${gunlukOzet.suMiktari}/${gunlukOzet.suHedefi}`}
+                            etiket="Su hedefi"
+                            aciklama={`%${suYuzdesi}`}
+                            vurgu="su"
+                        />
+                    </div>
+
+                    <div className="kp-su-paneli">
+                        <div className="kp-su-paneli-ust">
+                            <span>
+                                <Droplets
+                                    size={17}
+                                />
+                                Günlük su
+                                ilerlemesi
+                            </span>
+
+                            <strong>
+                                %{suYuzdesi}
+                            </strong>
+                        </div>
+
+                        <div className="kp-su-cubugu">
+                            <span
+                                style={{
+                                    width: `${suYuzdesi}%`,
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="kp-hafiza-mesaji">
                         <span>
-                            Bugünün hafızası
+                            <Sparkles
+                                size={19}
+                            />
                         </span>
 
-                        <h2>
-                            Bugün neler oldu?
-                        </h2>
+                        <div>
+                            <strong>
+                                Günün notu
+                            </strong>
+
+                            <p>
+                                {gunlukHafiza
+                                    ?.tum_ogunler_tamamlandi
+                                    ? "Miço bugünkü programı onayladı. Viki kutlama mamasını bekliyor."
+                                    : "Gün ilerledikçe Miço ve Viki yaşananları burada hatırlayacak."}
+                            </p>
+                        </div>
                     </div>
-
-                    <span className="kp-canli">
-                        <i />
-                        Supabase
-                    </span>
-                </div>
-
-                <div className="kp-gunluk-grid">
-                    <Istatistik
-                        ikon="🥣"
-                        deger={
-                            gunlukOzet
-                                .tamamlananOgun
-                        }
-                        etiket="Tamamlanan öğün"
-                    />
-
-                    <Istatistik
-                        ikon="⏰"
-                        deger={
-                            gunlukOzet
-                                .gecikenOgun
-                        }
-                        etiket="Geciken öğün"
-                    />
-
-                    <Istatistik
-                        ikon="💧"
-                        deger={`${gunlukOzet.suMiktari}/${gunlukOzet.suHedefi}`}
-                        etiket="Su"
-                    />
-                </div>
-
-                <div className="kp-hafiza-mesaji">
-                    <Sparkles size={18} />
-
-                    <p>
-                        {gunlukHafiza
-                            ?.tum_ogunler_tamamlandi
-                            ? "Miço bugünkü programı onayladı. Viki kutlama mamasını bekliyor."
-                            : "Gün ilerledikçe Miço ve Viki yaşananları burada hatırlayacak."}
-                    </p>
-                </div>
+                </article>
             </section>
         </main>
     );

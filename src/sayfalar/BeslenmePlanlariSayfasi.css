@@ -662,6 +662,176 @@
             background: rgba(255, 255, 255, 0.06);
         }
 
+/* =====================================================
+   PDF YÜKLEME ALANI — ZORUNLU DÜZELTME
+===================================================== */
+
+.beslenme-pdf-yukleme-karti {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
+    padding: 20px !important;
+    border: 1px solid var(--cizgi) !important;
+    border-radius: 24px !important;
+    color: var(--metin) !important;
+    background: radial-gradient( circle at 95% 0%, rgba(135, 103, 214, 0.16), transparent 38% ), var(--kart) !important;
+    box-shadow: var(--golge) !important;
+}
+
+.beslenme-pdf-yukleme-ust {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    width: 100% !important;
+}
+
+    .beslenme-pdf-yukleme-ust > div {
+        min-width: 0 !important;
+    }
+
+    .beslenme-pdf-yukleme-ust span {
+        display: block !important;
+        margin: 0 0 6px !important;
+        color: var(--ikincil-metin) !important;
+        font-size: 10px !important;
+        font-weight: 900 !important;
+        letter-spacing: 0.09em !important;
+        text-transform: uppercase !important;
+    }
+
+    .beslenme-pdf-yukleme-ust h2 {
+        margin: 0 !important;
+        color: var(--metin) !important;
+        font-size: 21px !important;
+        font-weight: 900 !important;
+        line-height: 1.2 !important;
+    }
+
+    .beslenme-pdf-yukleme-ust > svg {
+        flex: 0 0 auto !important;
+        width: 44px !important;
+        height: 44px !important;
+        padding: 11px !important;
+        border-radius: 14px !important;
+        color: var(--mor) !important;
+        background: var(--mor-acik) !important;
+    }
+
+.beslenme-pdf-secici {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 7px !important;
+    min-height: 150px !important;
+    width: 100% !important;
+    padding: 22px !important;
+    overflow: hidden !important;
+    border: 1px dashed rgba(149, 117, 221, 0.45) !important;
+    border-radius: 19px !important;
+    color: var(--metin) !important;
+    background: rgba(132, 96, 205, 0.07) !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: border-color 160ms ease, background 160ms ease, transform 160ms ease !important;
+}
+
+    .beslenme-pdf-secici:hover {
+        border-color: var(--mor) !important;
+        background: rgba(132, 96, 205, 0.12) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    .beslenme-pdf-secici::before {
+        content: "PDF" !important;
+        display: grid !important;
+        place-items: center !important;
+        width: 48px !important;
+        height: 48px !important;
+        margin-bottom: 3px !important;
+        border-radius: 15px !important;
+        color: var(--mor) !important;
+        background: var(--mor-acik) !important;
+        font-size: 11px !important;
+        font-weight: 950 !important;
+        letter-spacing: 0.07em !important;
+    }
+
+    .beslenme-pdf-secici input[type="file"] {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 0 !important;
+        cursor: pointer !important;
+    }
+
+    .beslenme-pdf-secici strong {
+        display: block !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        color: var(--metin) !important;
+        font-size: 13px !important;
+        font-weight: 900 !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .beslenme-pdf-secici span {
+        display: block !important;
+        max-width: 320px !important;
+        color: var(--ikincil-metin) !important;
+        font-size: 10px !important;
+        font-weight: 650 !important;
+        line-height: 1.5 !important;
+    }
+
+.beslenme-pdf-yukleme-karti > button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    padding: 0 16px !important;
+    border: 0 !important;
+    border-radius: 15px !important;
+    color: #ffffff !important;
+    background: linear-gradient( 135deg, #8164c4, #6b4caf ) !important;
+    box-shadow: 0 10px 24px rgba(105, 72, 169, 0.22) !important;
+    font-family: inherit !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    cursor: pointer !important;
+}
+
+    .beslenme-pdf-yukleme-karti > button:disabled {
+        color: var(--ikincil-metin) !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        box-shadow: none !important;
+        cursor: not-allowed !important;
+        opacity: 0.65 !important;
+    }
+
+@media (max-width: 520px) {
+    .beslenme-pdf-yukleme-karti {
+        padding: 16px !important;
+        border-radius: 21px !important;
+    }
+
+    .beslenme-pdf-yukleme-ust h2 {
+        font-size: 19px !important;
+    }
+
+    .beslenme-pdf-secici {
+        min-height: 140px !important;
+        padding: 18px !important;
+    }
+}
+
 @media (max-width: 560px) {
     .beslenme-pdf-onizleme-ogun-baslik {
         grid-template-columns: auto minmax(0, 1fr);
@@ -729,5 +899,83 @@
         .beslenme-plan-ekleme-karti > button {
             grid-column: 1 / -1;
             justify-content: center;
+        }
+}
+
+
+/* =====================================================
+   PDF PLAN AKTÝFLEÞTÝRME VE KAYIT DURUMU
+===================================================== */
+
+.beslenme-plan-aktif-secimi {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: flex-start;
+    gap: 11px !important;
+    padding: 13px;
+    border: 1px solid var(--cizgi);
+    border-radius: 15px;
+    background: var(--yesil-acik);
+    cursor: pointer;
+}
+
+    .beslenme-plan-aktif-secimi > input {
+        width: 19px !important;
+        height: 19px !important;
+        min-height: 0 !important;
+        margin: 1px 0 0;
+        accent-color: var(--yesil);
+    }
+
+    .beslenme-plan-aktif-secimi > span {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .beslenme-plan-aktif-secimi strong {
+        color: var(--metin);
+        font-size: 11px;
+    }
+
+    .beslenme-plan-aktif-secimi small {
+        color: var(--ikincil-metin);
+        font-size: 9px;
+        line-height: 1.5;
+    }
+
+.beslenme-plan-kayit-durumu {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 12px;
+    border: 1px solid rgba(97, 185, 139, 0.2);
+    border-radius: 13px;
+    color: var(--yesil);
+    background: rgba(97, 185, 139, 0.08);
+    font-size: 10px;
+    font-weight: 850;
+}
+
+.beslenme-plan-modal-ust > button:disabled {
+    cursor: default;
+    opacity: 0.45;
+}
+
+@media (max-width: 520px) {
+    .beslenme-plan-modal {
+        width: 100%;
+        max-height: calc(100dvh - 20px);
+        padding: 17px;
+        border-radius: 22px;
+    }
+
+    .beslenme-plan-modal-alt {
+        grid-template-columns: 1fr;
+    }
+
+        .beslenme-plan-modal-alt button {
+            min-height: 49px;
         }
 }
