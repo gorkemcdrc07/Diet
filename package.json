@@ -7,11 +7,9 @@
     "dev": "concurrently -n FRONTEND,BACKEND -c cyan,green \"npm:frontend\" \"npm:backend\"",
     "frontend": "vite",
     "backend": "npm --prefix backend run dev",
-
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-
     "hatirlatici:gonder": "node scripts/hatirlaticiGonder.js"
   },
   "dependencies": {
@@ -27,6 +25,7 @@
     "web-push": "^3.6.7"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.4.2",
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.17",
@@ -41,4 +40,3 @@
     "vite-plugin-pwa": "^1.3.0"
   }
 }
-
